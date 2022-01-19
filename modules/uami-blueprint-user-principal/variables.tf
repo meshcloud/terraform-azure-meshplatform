@@ -4,5 +4,6 @@ variable "spp_name_suffix" {
 }
 
 variable "subscriptions" {
-  type = list(any)
+  type        = list(any)
+  description = "The scope to which UAMI blueprint service principal role assignment is applied."
 }

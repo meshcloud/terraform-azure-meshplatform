@@ -10,10 +10,12 @@ variable "scope" {
 
 variable "additional_required_resource_accesses" {
   type        = list(object({ resource_app_id = string, resource_accesses = list(object({ id = string, type = string })) }))
+  default     = []
   description = "Additional AAD-Level Resource Accesses the customer needs"
 }
 
 variable "additional_permissions" {
   type        = list(string)
+  default     = []
   description = "Additional Subscription-Level Permissions that the SPP needs"
 }
