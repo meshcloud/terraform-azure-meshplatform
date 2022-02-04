@@ -33,6 +33,8 @@ module "meshplatform" {
 }
 ```
 
+
+
 By default, kraken, replicator, and idplookup service principals are enabled and will be created. To disable a service principal, set its according flag to `false`. 
 
 e.g.:
@@ -49,3 +51,10 @@ module "meshplatform" {
   idplookup_enabled  = false
 }
 ```
+# Prerequisites
+Permissions on AAD level are needed to run this module.
+Tenant wide admin consent must be granted for a succesful meshPlatform setup. Therefore to integrate a meshPlatform you need: 
+
+> An Azure account with one of the following roles: Global Administrator, Privileged Role Administrator, Cloud Application Administrator, or Application Administrator. A user can also be authorized to grant tenant-wide consent if they are assigned a custom directory role that includes the permission to grant permissions to applications.[^1]
+
+[^1]: See [Azure public documentation](https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/grant-admin-consent#prerequisites)
