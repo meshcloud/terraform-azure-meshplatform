@@ -1,4 +1,4 @@
-# meshPlatform Azure Module
+# Azure meshPlatform Module
 
 Terraform module to integrate Azure as a meshPlatform into meshStack instance.
 
