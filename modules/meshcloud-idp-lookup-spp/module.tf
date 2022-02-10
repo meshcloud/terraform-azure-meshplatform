@@ -1,25 +1,3 @@
-terraform {
-  required_version = ">= 0.13"
-  required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "2.12.0"
-    }
-    random = {
-      source  = "hashicorp/random"
-      version = "2.2.1"
-    }
-    azuread = {
-      source  = "hashicorp/azuread"
-      version = "0.9.0"
-    }
-  }
-}
-
-provider "azurerm" {
-  features {}
-}
-
 resource "azuread_application" "meshcloud_idp_lookup" {
   name = "idplookup.${var.spp_name_suffix}"
 
