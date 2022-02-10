@@ -1,3 +1,22 @@
+
+terraform {
+  required_version = ">= 0.13"
+  required_providers {
+    azurerm = {
+      source  = "hashicorp/azurerm"
+      version = "2.12.0"
+    }
+    random = {
+      source  = "hashicorp/random"
+      version = "2.2.1"
+    }
+    azuread = {
+      source  = "hashicorp/azuread"
+      version = "0.9.0"
+    }
+  }
+}
+
 resource "azurerm_role_definition" "meshcloud_replicator" {
   name        = "replicator.${var.spp_name_suffix}"
   scope       = var.scope
