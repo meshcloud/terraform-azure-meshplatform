@@ -15,11 +15,18 @@ Tenant wide admin consent must be granted for a succesful meshPlatform setup. Th
 
 ## How to use this module
 
+Prerequisites:
+
+- [Azure CLI installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli)
+- [Terraform installed](https://learn.hashicorp.com/tutorials/terraform/install-cli)
+
+### Using Azure Portal
+
 1. Login into [Azure Portal](https://portal.azure.com/) with your Admin user.
 
 2. Open a cloud shell.
 
-3. Create a directory and change into it 
+3. Create a directory and change into it
 
     ```sh
     mkdir terraform-azure-meshplatform
@@ -53,6 +60,34 @@ Tenant wide admin consent must be granted for a succesful meshPlatform setup. Th
     terraform output -json
     ```
 
+### Using CLI
+  
+1. Login with az CLI
+   ```sh
+   az login --tenant TENANT_ID
+   ```
+2. Create a directory and change into it
+   ```sh
+   mkdir terraform-azure-meshplatform
+   cd terraform-azure-meshplatform
+   ```
+
+3. Create a `main.tf` and an `output.tf` files in the created directory that references this module
+   > Sample files can be found in [examples](./examples/basic-azure-integration)
+
+4. Run
+
+    ```sh
+    terraform init
+    terraform apply
+    ```
+
+5. Access terraform output and pass it securely to meshcloud.
+
+    ```sh
+    # The JSON output contains sensitive values that must not be transmitted to meshcloud in plain text.
+    terraform output -json
+    ```
 ## Advanced Usage
 
 The default case creates kraken, replicator and idplookup service principals.
@@ -61,8 +96,8 @@ The default case creates kraken, replicator and idplookup service principals.
 module "meshplatform" {
   source = "git@github.com:meshcloud/terraform-azure-meshplatform.git"
 
-  spp_name_suffix = "unique-name"
-  mgmt_group_name = "management-group-name"
+  spp_name_suffix = "UNIQUE_NAME"
+  mgmt_group_name = "MANAGEMENT_GROUP_NAME|MANAGEMENT_GROUP_UUID"
 }
 ```
 
@@ -72,8 +107,8 @@ If UAMI blueprint user principal is needed, you also need to pass a list of subs
 module "meshplatform" {
   source = "git@github.com:meshcloud/terraform-azure-meshplatform.git"
 
-  spp_name_suffix = "unique-name"
-  mgmt_group_name = "management-group-name"
+  spp_name_suffix = "UNIQUE_NAME"
+  mgmt_group_name = "MANAGEMENT_GROUP_NAME|MANAGEMENT_GROUP_UUID"
 
   subscriptions = [
     "abcdefgh-abcd-efgh-abcd-abcdefgh1234"
@@ -87,8 +122,10 @@ module "meshplatform" {
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 2.12.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | 2.18.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 2.97.0 |
+| <a name="requirement_random"></a> [random](#requirement\_random) | 2.2.1 |
 
 ## Providers
 
@@ -109,7 +146,7 @@ module "meshplatform" {
 
 | Name | Type |
 |------|------|
-| [azurerm_management_group.root](https://registry.terraform.io/providers/hashicorp/azurerm/2.12.0/docs/data-sources/management_group) | data source |
+| [azurerm_management_group.root](https://registry.terraform.io/providers/hashicorp/azurerm/2.97.0/docs/data-sources/management_group) | data source |
 
 ## Inputs
 

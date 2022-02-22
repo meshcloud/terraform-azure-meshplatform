@@ -4,7 +4,7 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "2.12.0"
+      version = "2.97.0"
     }
     random = {
       source  = "hashicorp/random"
@@ -12,7 +12,7 @@ terraform {
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "0.9.0"
+      version = "2.18.0"
     }
   }
 }
@@ -58,10 +58,13 @@ resource "azurerm_role_definition" "meshcloud_replicator" {
 }
 
 resource "azuread_application" "meshcloud_replicator" {
-  name = "replicator.${var.spp_name_suffix}"
+  display_name = "replicator.${var.spp_name_suffix}"
 
-  oauth2_allow_implicit_flow = false
-
+  web {
+    implicit_grant {
+      access_token_issuance_enabled = false
+    }
+  }
   required_resource_access {
     resource_app_id = "00000003-0000-0000-c000-000000000000" # Microsoft Graph
 
@@ -140,15 +143,7 @@ resource "azurerm_role_assignment" "meshcloud_replicator" {
   principal_id       = azuread_service_principal.meshcloud_replicator.id
 }
 
-resource "random_password" "spp_pw" {
-  length = 64
-  # Currently there are some passwords which do not allow you to login using az cli (see https://github.com/Azure/azure-cli/issues/12332)
-  # Which is the reason we have set the flag to false
-  special = false
-}
-
 resource "azuread_service_principal_password" "spp_pw" {
   service_principal_id = azuread_service_principal.meshcloud_replicator.id
-  value                = random_password.spp_pw.result
   end_date             = "2999-01-01T01:02:03Z" # no expiry
 }
