@@ -73,9 +73,9 @@ resource "azurerm_role_definition" "meshcloud_kraken_cloud_inventory_role" {
 }
 
 resource "azurerm_role_assignment" "meshcloud_kraken_cloud_inventory" {
-  scope                = var.scope
-  role_definition_name = azurerm_role_definition.meshcloud_kraken_cloud_inventory_role.name
-  principal_id         = azuread_service_principal.meshcloud_kraken.id
+  scope              = var.scope
+  role_definition_id = azurerm_role_definition.meshcloud_kraken_cloud_inventory_role.role_definition_resource_id
+  principal_id       = azuread_service_principal.meshcloud_kraken.id
 }
 
 resource "azuread_application" "meshcloud_kraken" {
