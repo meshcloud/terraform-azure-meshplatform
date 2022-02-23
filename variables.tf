@@ -1,6 +1,6 @@
 variable "spp_name_suffix" {
   type        = string
-  description = "Service principal name suffix."
+  description = "Service principal name suffix. Make sure this is unique."
 }
 
 variable "mgmt_group_name" {
@@ -31,16 +31,19 @@ variable "idplookup_enabled" {
   description = "Whether to create idplookup SPP or not."
 }
 
+# additional_required_resource_accesses are useful if replicator needs 
+# resource access specifically scoped to a meshstack implementation (e.g. accessing an azure function)
+# For an example usage, see https://github.com/meshcloud/terraform-azure-meshplatform/tree/main/examples/azure-integration-with-additional-resource-access
 variable "additional_required_resource_accesses" {
   type        = list(object({ resource_app_id = string, resource_accesses = list(object({ id = string, type = string })) }))
   default     = []
-  description = "Additional AAD-Level Resource Accesses the customer needs"
+  description = "Additional AAD-Level Resource Accesses the replicator SPP needs."
 }
 
 variable "additional_permissions" {
   type        = list(string)
   default     = []
-  description = "Additional Subscription-Level Permissions that the SPP needs"
+  description = "Additional Subscription-Level Permissions the SPP needs."
 }
 
 variable "subscriptions" {

@@ -14,4 +14,5 @@ module "meshplatform" {
   spp_name_suffix = "<UNIQUE_NAME>"
   mgmt_group_name = "<MANAGEMENT_GROUP_NAME>|<MANAGEMENT_GROUP_UUID>"
 
+  subscriptions = ["<SUBSCRIPTION_ID>"]
 }

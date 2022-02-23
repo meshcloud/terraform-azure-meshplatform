@@ -84,23 +84,6 @@ resource "azuread_application" "meshcloud_replicator" {
     }
   }
 
-  # These configure additional required_resource_accesses that can be specified by the caller of the module
-  # They are useful if replicator needs resource access specifically scoped to a meshstack implementation (e.g. accessing an azure function)
-  # Example usage:
-  #
-  # additional_required_resource_accesses = [
-  #   
-  #   {
-  #     resource_app_id = "fe81736c-99c6-4fca-8cc2-2818a2365451"
-  #     resource_accesses = [
-  #       {
-  #         id   = "e29066a1-ecb1-4a8e-af2d-1627fae35711" # Access (SPP-Access)
-  #         type = "Role"
-  #       },
-  #     ]
-  #   },
-  # ]
-
   dynamic "required_resource_access" {
     for_each = var.additional_required_resource_accesses
 

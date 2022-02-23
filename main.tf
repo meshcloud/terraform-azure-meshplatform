@@ -31,8 +31,8 @@ module "replicator_spp" {
   spp_name_suffix = var.spp_name_suffix
   scope           = data.azurerm_management_group.root.id
 
-  additional_required_resource_accesses = []
-  additional_permissions                = []
+  additional_required_resource_accesses = var.additional_required_resource_accesses
+  additional_permissions                = var.additional_permissions
 }
 
 module "kraken_spp" {

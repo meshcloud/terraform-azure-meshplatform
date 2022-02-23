@@ -29,7 +29,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_scope"></a> [scope](#input\_scope) | The scope to which SPP permissions should be assigned to. Usually this is a management group that sits atop the subscriptions | `string` | n/a | yes |
+| <a name="input_scope"></a> [scope](#input\_scope) | The scope to which SPP permissions should be assigned to. Usually this is a management group that sits atop the subscriptions. | `string` | n/a | yes |
 | <a name="input_spp_name_suffix"></a> [spp\_name\_suffix](#input\_spp\_name\_suffix) | Service principal name suffix. | `string` | n/a | yes |
 
 ## Outputs

@@ -1,3 +1,4 @@
+
 output "replicator_spp" {
   description = "Replicator Service Principal."
   value       = module.meshplatform.replicator_spp
