@@ -7,8 +7,6 @@ output "service_principal" {
 }
 
 output "service_principal_password" {
-  value = {
-    password = azuread_service_principal_password.spp_pw.value
-  }
+  value     = azuread_service_principal_password.spp_pw.value
   sensitive = true
 }

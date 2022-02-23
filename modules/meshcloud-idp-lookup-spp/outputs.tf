@@ -9,8 +9,6 @@ output "service_principal" {
 
 output "service_principal_password" {
   description = "Password for the Service Principal."
-  value = {
-    password = azuread_service_principal_password.spp_pw.value
-  }
-  sensitive = true
+  value       = azuread_service_principal_password.spp_pw.value
+  sensitive   = true
 }
