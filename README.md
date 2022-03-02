@@ -11,6 +11,7 @@ To run this module, you need the following:
   - Privileged Role Administrator
   - Cloud Application Administrator
   - Application Administrator
+- Permissions on [Enterprise Agreement level](https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-role). An Azure account that is Account Owner for an enrollment account.
 - [Terraform installed](https://learn.hashicorp.com/tutorials/terraform/install-cli) (already installed in Azure Portal)
 - [Azure CLI installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) (already installed in Azure Portal)
 
@@ -18,7 +19,7 @@ To run this module, you need the following:
 
 ## Module Structure
 
-For an overview of the module structure, refer to [generated terraform docs](./TERRAFORM_DOCS.md)
+For an overview of the module structure, refer to [generated terraform docs](./TERRAFORM_DOCS.md).
 
 ## How to Use This Module
 
