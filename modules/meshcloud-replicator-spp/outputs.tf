@@ -12,3 +12,8 @@ output "service_principal_password" {
   value       = azuread_service_principal_password.spp_pw.value
   sensitive   = true
 }
+
+output "blueprint_service_principal_object_id" {
+  description = "Object ID of the BluePrint Service Principal of this AAD."
+  value       = data.azuread_application.blueprint_service_principal.object_id
+}

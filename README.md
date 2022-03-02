@@ -30,7 +30,7 @@ For an overview of the module structure, refer to [generated terraform docs](./T
 
 3. Download the example `main.tf` and an `output.tf` files.
 
-    ```sh
+    ```powershell
     # Downloads main.tf and output.tf files into ~/terraform-azure-meshplatform
     wget https://raw.githubusercontent.com/meshcloud/terraform-azure-meshplatform/main/examples/basic-azure-integration/main.tf -P ~/terraform-azure-meshplatform
     wget https://raw.githubusercontent.com/meshcloud/terraform-azure-meshplatform/main/examples/basic-azure-integration/outputs.tf -P ~/terraform-azure-meshplatform
@@ -40,7 +40,7 @@ For an overview of the module structure, refer to [generated terraform docs](./T
 
 5. Execute the module.
 
-    ```sh
+    ```powershell
     # Changes into ~/terraform-azure-meshplatform and applies terraform
     cd ~/terraform-azure-meshplatform
     terraform init
@@ -66,29 +66,7 @@ For an overview of the module structure, refer to [generated terraform docs](./T
    az login --tenant TENANT_ID
    ```
 
-2. Create a directory and change into it
-
-   ```sh
-   mkdir terraform-azure-meshplatform
-   cd terraform-azure-meshplatform
-   ```
-
-3. Create a `main.tf` and an `output.tf` files in the created directory that references this module
-   > See [Example Usages](#example-usages)
-
-4. Run
-
-    ```sh
-    terraform init
-    terraform apply
-    ```
-
-5. Access terraform output and pass it securely to meshcloud.
-
-    ```sh
-    # The JSON output contains sensitive values that must not be transmitted to meshcloud in plain text.
-    terraform output -json
-    ```
+2. Follow the instructions for Azure Portal
 
 ## Example Usages
 

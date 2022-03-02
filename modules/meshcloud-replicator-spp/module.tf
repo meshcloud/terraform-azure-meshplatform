@@ -126,3 +126,7 @@ resource "azuread_service_principal_password" "spp_pw" {
   service_principal_id = azuread_service_principal.meshcloud_replicator.id
   end_date             = "2999-01-01T01:02:03Z" # no expiry
 }
+
+data "azuread_application" "blueprint_service_principal" {
+  application_id = "f71766dc-90d9-4b7d-bd9d-4499c4331c3f"
+}

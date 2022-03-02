@@ -54,3 +54,5 @@ module "uami_blueprint_user_principal" {
   spp_name_suffix = var.spp_name_suffix
   subscriptions   = var.subscriptions
 }
+
+data "azuread_client_config" "current" {}
