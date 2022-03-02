@@ -55,9 +55,7 @@ For an overview of the module structure, refer to [generated terraform docs](./T
     terraform output -json
     ```
 
-7. Grant admin consent to the newly created Replicator Service Principal. See the terraform output on how to do this.
-
-8. Grant access on the enrollment account as described in the [meshcloud public docs](https://docs.dev.meshcloud.io/docs/meshstack.how-to.integrate-meshplatform-azure-manually.html#set-up-subscription-provisioning).
+7. Grant access on the enrollment account as described in the [meshcloud public docs](https://docs.dev.meshcloud.io/docs/meshstack.how-to.integrate-meshplatform-azure-manually.html#set-up-subscription-provisioning).
 
 ### Using CLI
 
