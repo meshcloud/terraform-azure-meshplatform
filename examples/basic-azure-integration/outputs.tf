@@ -30,3 +30,9 @@ output "uami_blueprint_user_principal_password" {
   value       = module.meshplatform.uami_blueprint_user_principal_password
   sensitive   = true
 }
+
+output "azure_ad_tenant_id" {
+  description = "The Azure AD tenant id."
+  value       = module.meshplatform.azure_ad_tenant_id
+}
+
