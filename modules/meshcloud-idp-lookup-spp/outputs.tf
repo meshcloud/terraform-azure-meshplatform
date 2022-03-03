@@ -1,4 +1,5 @@
 output "service_principal" {
+  description = "Service Principal application id and object id"
   value = {
     object_id = azuread_service_principal.meshcloud_idp_lookup.id
     app_id    = azuread_service_principal.meshcloud_idp_lookup.application_id
