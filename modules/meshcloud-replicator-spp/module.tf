@@ -157,3 +157,44 @@ resource "azuread_service_principal_password" "spp_pw" {
 # data "azuread_application" "blueprint_service_principal" {
 #   application_id = "f71766dc-90d9-4b7d-bd9d-4499c4331c3f"
 # }
+
+data "azuread_client_config" "current" {}
+
+resource "azurerm_policy_definition" "meshcloud_escalation_prevention" {
+  name                = "meshcloud_escalation_prevention"
+  policy_type         = "Custom"
+  mode                = "All"
+  display_name        = "meshcloud Privilege Escalation Prevention"
+  description         = "Prevent replicator Service Principal from assigning itself new roles."
+  management_group_id = data.azuread_client_config.current.tenant_id # Tenant root group ID = AAD ID
+
+  policy_rule = <<POLICY_RULE
+   {
+       "if": {
+         "allOf": [
+           {
+             "equals": "Microsoft.Authorization/roleAssignments",
+             "field": "type"
+           },
+           {
+             "allOf": [
+               {
+                 "field": "Microsoft.Authorization/roleAssignments/principalId",
+                 "equals": "${azuread_service_principal.meshcloud_replicator.object_id}"
+               },
+             ]
+           }
+         ]
+       },
+       "then": {
+         "effect": "deny"
+       }
+   }
+POLICY_RULE
+}
+
+resource "azurerm_management_group_policy_assignment" "meshcloud_escalation_prevention" {
+  name                 = "meshcloud_escalation_prevention"
+  policy_definition_id = azurerm_policy_definition.meshcloud_escalation_prevention.id
+  management_group_id  = data.azuread_client_config.current.tenant_id # Tenant root group ID = AAD ID
+}
