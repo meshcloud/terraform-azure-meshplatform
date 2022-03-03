@@ -20,22 +20,21 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [azuread_app_role_assignment.meshcloud_idp_lookup](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/app_role_assignment) | resource |
-| [azuread_application.meshcloud_idp_lookup](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/application) | resource |
-| [azuread_service_principal.meshcloud_idp_lookup](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/service_principal) | resource |
+| [azuread_application.meshcloud_sso](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/application) | resource |
+| [azuread_application_password.meshcloud_sso](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/application_password) | resource |
 | [azuread_service_principal.msgraph](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/service_principal) | resource |
-| [azuread_service_principal_password.spp_pw](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/service_principal_password) | resource |
 | [azuread_application_published_app_ids.well_known](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/data-sources/application_published_app_ids) | data source |
 
 ## Inputs
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_meshstack_redirect_uri"></a> [meshstack\_redirect\_uri](#input\_meshstack\_redirect\_uri) | Redirect URI that will be provided by meshcloud. It is individual per meshStack. | `string` | n/a | yes |
 | <a name="input_spp_name_suffix"></a> [spp\_name\_suffix](#input\_spp\_name\_suffix) | Service principal name suffix. | `string` | n/a | yes |
 
 ## Outputs
 
 | Name | Description |
 |------|-------------|
-| <a name="output_service_principal"></a> [service\_principal](#output\_service\_principal) | Service Principal application id and object id |
-| <a name="output_service_principal_password"></a> [service\_principal\_password](#output\_service\_principal\_password) | Password for the Service Principal. |
+| <a name="output_app_registration"></a> [app\_registration](#output\_app\_registration) | Application registration application id and object id |
+| <a name="output_app_registration_client_secret"></a> [app\_registration\_client\_secret](#output\_app\_registration\_client\_secret) | Password for the application registration. |

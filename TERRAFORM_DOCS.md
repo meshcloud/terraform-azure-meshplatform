@@ -10,7 +10,8 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 2.12.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.18.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 2.97.0 |
 
 ## Modules
 
@@ -25,6 +26,7 @@
 
 | Name | Type |
 |------|------|
+| [azuread_client_config.current](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/data-sources/client_config) | data source |
 | [azurerm_management_group.root](https://registry.terraform.io/providers/hashicorp/azurerm/2.97.0/docs/data-sources/management_group) | data source |
 
 ## Inputs
@@ -44,6 +46,7 @@
 
 | Name | Description |
 |------|-------------|
+| <a name="output_azure_ad_tenant_id"></a> [azure\_ad\_tenant\_id](#output\_azure\_ad\_tenant\_id) | The Azure AD tenant id. |
 | <a name="output_idp_lookup_spp"></a> [idp\_lookup\_spp](#output\_idp\_lookup\_spp) | IDP Lookup Service Principal. |
 | <a name="output_idp_lookup_spp_password"></a> [idp\_lookup\_spp\_password](#output\_idp\_lookup\_spp\_password) | Password for IDP Lookup Service Principal. |
 | <a name="output_kraken_spp"></a> [kraken\_spp](#output\_kraken\_spp) | Kraken Service Principal. |
