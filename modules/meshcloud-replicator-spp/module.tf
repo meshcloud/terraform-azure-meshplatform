@@ -152,6 +152,8 @@ resource "azuread_service_principal_password" "spp_pw" {
   end_date             = "2999-01-01T01:02:03Z" # no expiry
 }
 
-data "azuread_application" "blueprint_service_principal" {
-  application_id = "f71766dc-90d9-4b7d-bd9d-4499c4331c3f"
-}
+# Terraform does not find the blueprint service principal, even though I find it with
+# ` az ad sp list --filter "appId eq 'f71766dc-90d9-4b7d-bd9d-4499c4331c3f'"`
+# data "azuread_application" "blueprint_service_principal" {
+#   application_id = "f71766dc-90d9-4b7d-bd9d-4499c4331c3f"
+# }
