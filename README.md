@@ -29,10 +29,10 @@ For an overview of the module structure, refer to [generated terraform docs](./T
 
 2. Open a cloud shell.
 
-3. Download the example `main.tf` and an `output.tf` files.
+3. Download the example `main.tf` and `outputs.tf` files.
 
     ```powershell
-    # Downloads main.tf and output.tf files into ~/terraform-azure-meshplatform
+    # Downloads main.tf and outputs.tf files into ~/terraform-azure-meshplatform
     wget https://raw.githubusercontent.com/meshcloud/terraform-azure-meshplatform/main/examples/basic-azure-integration/main.tf -P ~/terraform-azure-meshplatform
     wget https://raw.githubusercontent.com/meshcloud/terraform-azure-meshplatform/main/examples/basic-azure-integration/outputs.tf -P ~/terraform-azure-meshplatform
     ```
