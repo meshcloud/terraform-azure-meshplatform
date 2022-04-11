@@ -1,22 +1,22 @@
-output "replicator_spp" {
+output "replicator_service_principal" {
   description = "Replicator Service Principal."
-  value       = module.meshplatform.replicator_spp
+  value       = module.meshplatform.replicator_service_principal
 }
 
-output "replicator_spp_password" {
+output "replicator_service_principal_password" {
   description = "Password for Replicator Service Principal."
-  value       = module.meshplatform.replicator_spp_password
+  value       = module.meshplatform.replicator_service_principal_password
   sensitive   = true
 }
 
-output "kraken_spp" {
+output "kraken_service_principal" {
   description = "Kraken Service Principal."
-  value       = module.meshplatform.kraken_spp
+  value       = module.meshplatform.kraken_service_principal
 }
 
-output "kraken_spp_password" {
+output "kraken_service_principal_password" {
   description = "Password for Kraken Service Principal."
-  value       = module.meshplatform.kraken_spp_password
+  value       = module.meshplatform.kraken_service_principal_password
   sensitive   = true
 }
 
