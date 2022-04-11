@@ -14,7 +14,7 @@ terraform {
 module "meshplatform" {
   source = "git::https://github.com/meshcloud/terraform-azure-meshplatform.git"
 
-  spp_name_suffix = "<UNIQUE_NAME>"
-  mgmt_group_name = "<MANAGEMENT_GROUP_NAME>|<MANAGEMENT_GROUP_UUID>"
+  service_principal_name_suffix = "<UNIQUE_NAME>"
+  mgmt_group_name               = "<MANAGEMENT_GROUP_NAME>|<MANAGEMENT_GROUP_UUID>"
 
 }

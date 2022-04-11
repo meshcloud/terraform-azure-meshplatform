@@ -14,7 +14,7 @@ terraform {
 }
 
 resource "azurerm_role_definition" "meshcloud_replicator" {
-  name        = "replicator.${var.spp_name_suffix}"
+  name        = "replicator.${var.service_principal_name_suffix}"
   scope       = var.scope
   description = "Permissions required by meshcloud in order to configure subscriptions and manage users"
 
@@ -61,7 +61,7 @@ resource "azuread_service_principal" "msgraph" {
 }
 
 resource "azuread_application" "meshcloud_replicator" {
-  display_name = "replicator.${var.spp_name_suffix}"
+  display_name = "replicator.${var.service_principal_name_suffix}"
 
   web {
     implicit_grant {
@@ -147,7 +147,7 @@ resource "azuread_app_role_assignment" "meshcloud_replicator-user" {
   resource_object_id  = azuread_service_principal.msgraph.object_id
 }
 
-resource "azuread_service_principal_password" "spp_pw" {
+resource "azuread_service_principal_password" "service_principal_pw" {
   service_principal_id = azuread_service_principal.meshcloud_replicator.id
   end_date             = "2999-01-01T01:02:03Z" # no expiry
 }

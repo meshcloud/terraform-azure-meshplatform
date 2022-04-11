@@ -20,7 +20,7 @@ resource "azuread_service_principal" "msgraph" {
 }
 
 resource "azuread_application" "meshcloud_idp_lookup" {
-  display_name = "idplookup.${var.spp_name_suffix}"
+  display_name = "idplookup.${var.service_principal_name_suffix}"
 
   web {
     implicit_grant {
@@ -60,7 +60,7 @@ resource "azuread_app_role_assignment" "meshcloud_idp_lookup" {
   resource_object_id  = azuread_service_principal.msgraph.object_id
 }
 
-resource "azuread_service_principal_password" "spp_pw" {
+resource "azuread_service_principal_password" "service_principal_pw" {
   service_principal_id = azuread_service_principal.meshcloud_idp_lookup.id
   end_date             = "2999-01-01T01:02:03Z" # no expiry
 }

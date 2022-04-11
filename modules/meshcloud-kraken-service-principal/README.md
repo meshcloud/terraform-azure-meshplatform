@@ -23,7 +23,7 @@ No modules.
 |------|------|
 | [azuread_application.meshcloud_kraken](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/application) | resource |
 | [azuread_service_principal.meshcloud_kraken](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/service_principal) | resource |
-| [azuread_service_principal_password.spp_pw](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/service_principal_password) | resource |
+| [azuread_service_principal_password.service_principal_pw](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/service_principal_password) | resource |
 | [azurerm_role_assignment.meshcloud_kraken](https://registry.terraform.io/providers/hashicorp/azurerm/2.97.0/docs/resources/role_assignment) | resource |
 | [azurerm_role_assignment.meshcloud_kraken_cloud_inventory](https://registry.terraform.io/providers/hashicorp/azurerm/2.97.0/docs/resources/role_assignment) | resource |
 | [azurerm_role_definition.meshcloud_kraken_cloud_inventory_role](https://registry.terraform.io/providers/hashicorp/azurerm/2.97.0/docs/resources/role_definition) | resource |
@@ -32,8 +32,8 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_scope"></a> [scope](#input\_scope) | The scope to which SPP permissions should be assigned to. Usually this is a management group that sits atop the subscriptions. | `string` | n/a | yes |
-| <a name="input_spp_name_suffix"></a> [spp\_name\_suffix](#input\_spp\_name\_suffix) | Service principal name suffix. | `string` | n/a | yes |
+| <a name="input_scope"></a> [scope](#input\_scope) | The scope to which Service Principal permissions should be assigned to. Usually this is a management group that sits atop the subscriptions. | `string` | n/a | yes |
+| <a name="input_service_principal_name_suffix"></a> [service\_principal\_name\_suffix](#input\_service\_principal\_name\_suffix) | Service principal name suffix. | `string` | n/a | yes |
 
 ## Outputs
 

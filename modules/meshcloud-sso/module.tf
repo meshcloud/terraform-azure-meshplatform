@@ -20,7 +20,7 @@ resource "azuread_service_principal" "msgraph" {
 }
 
 resource "azuread_application" "meshcloud_sso" {
-  display_name = "sso.${var.spp_name_suffix}"
+  display_name = "sso.${var.service_principal_name_suffix}"
 
   required_resource_access {
     resource_app_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph

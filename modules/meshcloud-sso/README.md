@@ -30,7 +30,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_meshstack_redirect_uri"></a> [meshstack\_redirect\_uri](#input\_meshstack\_redirect\_uri) | Redirect URI that will be provided by meshcloud. It is individual per meshStack. | `string` | n/a | yes |
-| <a name="input_spp_name_suffix"></a> [spp\_name\_suffix](#input\_spp\_name\_suffix) | Service principal name suffix. | `string` | n/a | yes |
+| <a name="input_service_principal_name_suffix"></a> [service\_principal\_name\_suffix](#input\_service\_principal\_name\_suffix) | Service principal name suffix. | `string` | n/a | yes |
 
 ## Outputs
 

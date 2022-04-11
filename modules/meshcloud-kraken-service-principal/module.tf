@@ -19,7 +19,7 @@ terraform {
 # HOWEVER, since Microsoft decided you cannot assign the 'Microsoft.Billing/billingPeriods/read' via the api (Status=400 Code="InvalidActionOrNotAction" Message="'Microsoft.Billing/billingPeriods/read' does not match any of the actions supported by the providers.")
 # we have to use a built in role for now that has that permission. If in the future they fix this problem, we can use the following custom role snippet
 # resource azurerm_role_definition meshcloud_kraken {
-#   name        = "kraken.${var.spp_name_suffix}"
+#   name        = "kraken.${var.service_principal_name_suffix}"
 #   scope       = var.scope
 #   description = "Permissions required by meshcloud in order to supply billing and usage data via its kraken module"
 
@@ -51,7 +51,7 @@ resource "azurerm_role_assignment" "meshcloud_kraken" {
 
 # If more resources are collected in the future, the permissions to read those should be added here.
 resource "azurerm_role_definition" "meshcloud_kraken_cloud_inventory_role" {
-  name        = "kraken.${var.spp_name_suffix}_cloud_inventory_role"
+  name        = "kraken.${var.service_principal_name_suffix}_cloud_inventory_role"
   scope       = var.scope
   description = "Permissions required by meshcloud in order to collect information about resources in the kraken module"
 
@@ -75,7 +75,7 @@ resource "azurerm_role_assignment" "meshcloud_kraken_cloud_inventory" {
 }
 
 resource "azuread_application" "meshcloud_kraken" {
-  display_name = "kraken.${var.spp_name_suffix}"
+  display_name = "kraken.${var.service_principal_name_suffix}"
 
   web {
     implicit_grant {
@@ -89,7 +89,7 @@ resource "azuread_service_principal" "meshcloud_kraken" {
   application_id = azuread_application.meshcloud_kraken.application_id
 }
 
-resource "azuread_service_principal_password" "spp_pw" {
+resource "azuread_service_principal_password" "service_principal_pw" {
   service_principal_id = azuread_service_principal.meshcloud_kraken.id
   end_date             = "2999-01-01T01:02:03Z" # no expiry
 }
