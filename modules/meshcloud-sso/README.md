@@ -2,9 +2,9 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | 2.18.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 2.97.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 3.3.0 |
 
 ## Providers
 
