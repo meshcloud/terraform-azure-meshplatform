@@ -2,9 +2,9 @@
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 0.13 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | 2.18.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 2.97.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 3.3.0 |
 
 ## Providers
 
@@ -31,7 +31,6 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
-| <a name="input_scope"></a> [scope](#input\_scope) | The scope to which Service Principal permissions should be assigned to. Usually this is a management group that sits atop the subscriptions. | `string` | n/a | yes |
 | <a name="input_service_principal_name_suffix"></a> [service\_principal\_name\_suffix](#input\_service\_principal\_name\_suffix) | Service principal name suffix. | `string` | n/a | yes |
 
 ## Outputs

@@ -4,22 +4,22 @@
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | 2.18.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 2.97.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 3.3.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 0.9.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 2.12.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.18.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.3.0 |
 
 ## Modules
 
 | Name | Source | Version |
 |------|--------|---------|
-| <a name="module_idp_lookup_service_principal"></a> [idp\_lookup\_service\_principal](#module\_idp\_lookup\_service\_principal) | ./modules/meshcloud-idp-lookup-service_principal/ | n/a |
-| <a name="module_kraken_service_principal"></a> [kraken\_service\_principal](#module\_kraken\_service\_principal) | ./modules/meshcloud-kraken-service_principal/ | n/a |
-| <a name="module_replicator_service_principal"></a> [replicator\_service\_principal](#module\_replicator\_service\_principal) | ./modules/meshcloud-replicator-service_principal/ | n/a |
+| <a name="module_idp_lookup_service_principal"></a> [idp\_lookup\_service\_principal](#module\_idp\_lookup\_service\_principal) | ./modules/meshcloud-idp-lookup-service-principal/ | n/a |
+| <a name="module_kraken_service_principal"></a> [kraken\_service\_principal](#module\_kraken\_service\_principal) | ./modules/meshcloud-kraken-service-principal/ | n/a |
+| <a name="module_replicator_service_principal"></a> [replicator\_service\_principal](#module\_replicator\_service\_principal) | ./modules/meshcloud-replicator-service-principal/ | n/a |
 | <a name="module_uami_blueprint_user_principal"></a> [uami\_blueprint\_user\_principal](#module\_uami\_blueprint\_user\_principal) | ./modules/uami-blueprint-user-principal/ | n/a |
 
 ## Resources
@@ -27,7 +27,7 @@
 | Name | Type |
 |------|------|
 | [azuread_client_config.current](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/data-sources/client_config) | data source |
-| [azurerm_management_group.root](https://registry.terraform.io/providers/hashicorp/azurerm/2.97.0/docs/data-sources/management_group) | data source |
+| [azurerm_management_group.root](https://registry.terraform.io/providers/hashicorp/azurerm/3.3.0/docs/data-sources/management_group) | data source |
 
 ## Inputs
 
