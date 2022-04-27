@@ -44,7 +44,6 @@ module "idp_lookup_service_principal" {
   source = "./modules/meshcloud-idp-lookup-service-principal/"
 
   service_principal_name_suffix = var.service_principal_name_suffix
-  scope                         = data.azurerm_management_group.root.id
 }
 
 module "uami_blueprint_user_principal" {
