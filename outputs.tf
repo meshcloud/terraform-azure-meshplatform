@@ -16,12 +16,12 @@ output "replicator_service_principal_password" {
 # }
 
 output "kraken_service_principal" {
-  description = "Kraken Service Principal."
+  description = "Metering Service Principal."
   value       = length(module.kraken_service_principal) > 0 ? module.kraken_service_principal[0].service_principal : null
 }
 
 output "kraken_service_principal_password" {
-  description = "Password for Kraken Service Principal."
+  description = "Password for Metering Service Principal."
   value       = length(module.kraken_service_principal) > 0 ? module.kraken_service_principal[0].service_principal_password : null
   sensitive   = true
 }
