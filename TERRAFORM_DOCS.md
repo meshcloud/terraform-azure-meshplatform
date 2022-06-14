@@ -49,8 +49,8 @@
 | <a name="output_azure_ad_tenant_id"></a> [azure\_ad\_tenant\_id](#output\_azure\_ad\_tenant\_id) | The Azure AD tenant id. |
 | <a name="output_idp_lookup_service_principal"></a> [idp\_lookup\_service\_principal](#output\_idp\_lookup\_service\_principal) | IDP Lookup Service Principal. |
 | <a name="output_idp_lookup_service_principal_password"></a> [idp\_lookup\_service\_principal\_password](#output\_idp\_lookup\_service\_principal\_password) | Password for IDP Lookup Service Principal. |
-| <a name="output_kraken_service_principal"></a> [kraken\_service\_principal](#output\_kraken\_service\_principal) | Kraken Service Principal. |
-| <a name="output_kraken_service_principal_password"></a> [kraken\_service\_principal\_password](#output\_kraken\_service\_principal\_password) | Password for Kraken Service Principal. |
+| <a name="output_kraken_service_principal"></a> [kraken\_service\_principal](#output\_kraken\_service\_principal) | Metering Service Principal. |
+| <a name="output_kraken_service_principal_password"></a> [kraken\_service\_principal\_password](#output\_kraken\_service\_principal\_password) | Password for Metering Service Principal. |
 | <a name="output_replicator_service_principal"></a> [replicator\_service\_principal](#output\_replicator\_service\_principal) | Replicator Service Principal. |
 | <a name="output_replicator_service_principal_password"></a> [replicator\_service\_principal\_password](#output\_replicator\_service\_principal\_password) | Password for Replicator Service Principal. |
 | <a name="output_uami_blueprint_user_principal"></a> [uami\_blueprint\_user\_principal](#output\_uami\_blueprint\_user\_principal) | UAMI Blueprint Assignment Service Principal. |
