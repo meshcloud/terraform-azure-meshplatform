@@ -22,7 +22,7 @@ variable "replicator_enabled" {
 variable "kraken_enabled" {
   type        = bool
   default     = true
-  description = "Whether to create kraken Service Principal or not."
+  description = "Whether to create Metering Service Principal or not."
 }
 
 variable "idplookup_enabled" {
