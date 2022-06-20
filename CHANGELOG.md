@@ -12,6 +12,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Rename all occurences of spp to service_principal for more clarity.
 - Using submodules directly is only possible with Terraform v1.0 or above.
 
+### Changed
+
+- Documentation for kraken now mentions the use-case: metering.^
+
 ### Added
 
 - Added CHANGELOG.md
