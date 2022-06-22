@@ -51,3 +51,19 @@ module "uami_blueprint_user_principal" {
 }
 
 data "azuread_client_config" "current" {}
+
+# facilitate migration from v0.1.0 of the module
+moved {
+  from = module.replicator_spp
+  to  = module.replicator_service_principal
+}
+
+moved {
+  from = module.kraken_spp
+  to  = module.kraken_service_principal
+}
+
+moved {
+  from = module.idp_lookup_spp
+  to  = module.idp_lookup_service_principal
+}
