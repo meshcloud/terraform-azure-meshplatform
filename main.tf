@@ -11,11 +11,7 @@ terraform {
     }
   }
 }
-
-provider "azurerm" {
-  features {}
-}
-
+ 
 data "azurerm_management_group" "root" {
   name = var.mgmt_group_name
 }
