@@ -31,3 +31,14 @@ resource "azurerm_role_assignment" "service_principal_pw" {
   scope                = "/subscriptions/${var.subscriptions[count.index]}"
   role_definition_name = "Contributor"
 }
+
+# facilitate migration from v0.1.0 of the module
+moved {
+  from = azuread_service_principal_password.spp_pw
+  to   = azuread_service_principal_password.service_principal_pw
+}
+
+moved {
+  from = azurerm_role_assignment.spp_pw
+  to   = azurerm_role_assignment.service_principal_pw
+}

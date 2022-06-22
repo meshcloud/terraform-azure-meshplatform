@@ -64,3 +64,10 @@ resource "azuread_service_principal_password" "service_principal_pw" {
   service_principal_id = azuread_service_principal.meshcloud_idp_lookup.id
   end_date             = "2999-01-01T01:02:03Z" # no expiry
 }
+
+
+# facilitate migration from v0.1.0 of the module
+moved {
+  from = azuread_service_principal_password.spp_pw
+  to   = azuread_service_principal_password.service_principal_pw
+}
