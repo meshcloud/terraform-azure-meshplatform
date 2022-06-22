@@ -157,3 +157,9 @@ resource "azuread_service_principal_password" "service_principal_pw" {
 # data "azuread_application" "blueprint_service_principal" {
 #   application_id = "f71766dc-90d9-4b7d-bd9d-4499c4331c3f"
 # }
+
+# facilitate migration from v0.1.0 of the module
+moved {
+  from = azuread_service_principal_password.spp_pw
+  to   = azuread_service_principal_password.service_principal_pw
+}
