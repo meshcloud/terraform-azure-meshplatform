@@ -55,9 +55,8 @@ resource "azurerm_role_definition" "meshcloud_replicator" {
 
 data "azuread_application_published_app_ids" "well_known" {}
 
-resource "azuread_service_principal" "msgraph" {
+data "azuread_service_principal" "msgraph" {
   application_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
-  use_existing   = true
 }
 
 resource "azuread_application" "meshcloud_replicator" {
@@ -72,17 +71,17 @@ resource "azuread_application" "meshcloud_replicator" {
     resource_app_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
 
     resource_access {
-      id   = azuread_service_principal.msgraph.app_role_ids["Directory.Read.All"]
+      id   = data.azuread_service_principal.msgraph.app_role_ids["Directory.Read.All"]
       type = "Role"
     }
 
     resource_access {
-      id   = azuread_service_principal.msgraph.app_role_ids["Group.ReadWrite.All"]
+      id   = data.azuread_service_principal.msgraph.app_role_ids["Group.ReadWrite.All"]
       type = "Role"
     }
 
     resource_access {
-      id   = azuread_service_principal.msgraph.app_role_ids["User.Invite.All"]
+      id   = data.azuread_service_principal.msgraph.app_role_ids["User.Invite.All"]
       type = "Role"
     }
   }
@@ -130,21 +129,21 @@ resource "azurerm_role_assignment" "meshcloud_replicator" {
 }
 
 resource "azuread_app_role_assignment" "meshcloud_replicator-directory" {
-  app_role_id         = azuread_service_principal.msgraph.app_role_ids["Directory.Read.All"]
+  app_role_id         = data.azuread_service_principal.msgraph.app_role_ids["Directory.Read.All"]
   principal_object_id = azuread_service_principal.meshcloud_replicator.object_id
-  resource_object_id  = azuread_service_principal.msgraph.object_id
+  resource_object_id  = data.azuread_service_principal.msgraph.object_id
 }
 
 resource "azuread_app_role_assignment" "meshcloud_replicator-group" {
-  app_role_id         = azuread_service_principal.msgraph.app_role_ids["Group.ReadWrite.All"]
+  app_role_id         = data.azuread_service_principal.msgraph.app_role_ids["Group.ReadWrite.All"]
   principal_object_id = azuread_service_principal.meshcloud_replicator.object_id
-  resource_object_id  = azuread_service_principal.msgraph.object_id
+  resource_object_id  = data.azuread_service_principal.msgraph.object_id
 }
 
 resource "azuread_app_role_assignment" "meshcloud_replicator-user" {
-  app_role_id         = azuread_service_principal.msgraph.app_role_ids["User.Invite.All"]
+  app_role_id         = data.azuread_service_principal.msgraph.app_role_ids["User.Invite.All"]
   principal_object_id = azuread_service_principal.meshcloud_replicator.object_id
-  resource_object_id  = azuread_service_principal.msgraph.object_id
+  resource_object_id  = data.azuread_service_principal.msgraph.object_id
 }
 
 resource "azuread_service_principal_password" "service_principal_pw" {

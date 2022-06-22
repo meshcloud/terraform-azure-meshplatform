@@ -14,9 +14,8 @@ terraform {
 
 data "azuread_application_published_app_ids" "well_known" {}
 
-resource "azuread_service_principal" "msgraph" {
+data "azuread_service_principal" "msgraph" {
   application_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
-  use_existing   = true
 }
 
 resource "azuread_application" "meshcloud_idp_lookup" {
@@ -33,7 +32,7 @@ resource "azuread_application" "meshcloud_idp_lookup" {
     # We only require this User.Read.All permission to see all of the Users in the AAD https://docs.microsoft.com/en-us/graph/permissions-reference#microsoft-graph-permission-names
     # Since this is a role (and not a scope) permission, you also have to enable admin consent in azure portal
     resource_access {
-      id   = azuread_service_principal.msgraph.app_role_ids["User.Read.All"]
+      id   = data.azuread_service_principal.msgraph.app_role_ids["User.Read.All"]
       type = "Role"
     }
 
@@ -55,9 +54,9 @@ resource "azuread_service_principal" "meshcloud_idp_lookup" {
 }
 
 resource "azuread_app_role_assignment" "meshcloud_idp_lookup" {
-  app_role_id         = azuread_service_principal.msgraph.app_role_ids["User.Read.All"]
+  app_role_id         = data.azuread_service_principal.msgraph.app_role_ids["User.Read.All"]
   principal_object_id = azuread_service_principal.meshcloud_idp_lookup.object_id
-  resource_object_id  = azuread_service_principal.msgraph.object_id
+  resource_object_id  = data.azuread_service_principal.msgraph.object_id
 }
 
 resource "azuread_service_principal_password" "service_principal_pw" {
