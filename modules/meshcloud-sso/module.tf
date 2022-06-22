@@ -14,9 +14,8 @@ terraform {
 
 data "azuread_application_published_app_ids" "well_known" {}
 
-resource "azuread_service_principal" "msgraph" {
+data "azuread_service_principal" "msgraph" {
   application_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
-  use_existing   = true
 }
 
 resource "azuread_application" "meshcloud_sso" {
@@ -26,7 +25,7 @@ resource "azuread_application" "meshcloud_sso" {
     resource_app_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
 
     resource_access {
-      id   = azuread_service_principal.msgraph.app_role_ids["User.Read"]
+      id   = data.azuread_service_principal.msgraph.app_role_ids["User.Read"]
       type = "Scope"
     }
 
