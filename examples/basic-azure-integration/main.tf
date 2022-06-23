@@ -17,4 +17,6 @@ module "meshplatform" {
   service_principal_name_suffix = "<UNIQUE_NAME>"
   mgmt_group_name               = "<MANAGEMENT_GROUP_NAME>|<MANAGEMENT_GROUP_UUID>"
 
+  # If you want to integrate your AAD as SSO for meshStack, set the below value to true to create the necessary Application.
+  idplookup_enabled = false
 }
