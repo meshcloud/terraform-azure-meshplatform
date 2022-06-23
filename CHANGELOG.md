@@ -14,7 +14,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### Changed
 
-- Documentation for kraken now mentions the use-case: metering.^
+- Documentation for kraken now mentions the use-case: metering.
 
 ### Added
 
