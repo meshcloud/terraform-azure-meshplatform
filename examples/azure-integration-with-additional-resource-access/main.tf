@@ -15,7 +15,7 @@ module "meshplatform" {
   mgmt_group_name               = "<MANAGEMENT_GROUP_NAME>|<MANAGEMENT_GROUP_UUID>"
 
   additional_required_resource_accesses = [
-    # The block below configures replicator access 
+    # The block below configures replicator access
     # to the app with id `fe81736c-99c6-4fca-8cc2-2818a2365451` with the appRole with id `e29066a1-ecb1-4a8e-af2d-1627fae35711`
     #
     # This example configures access to an azure function
