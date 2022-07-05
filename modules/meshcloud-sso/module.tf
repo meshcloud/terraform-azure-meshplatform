@@ -29,18 +29,18 @@ resource "azuread_application" "meshcloud_sso" {
       id   = azuread_service_principal.msgraph.app_role_ids["User.Read"]
       type = "Scope"
     }
-
-    # As far as we know it is not possible to automate the "Grant admin consent button" for app registrations
-    # You have to grant admin consent manually
-    lifecycle {
-      ignore_changes = [
-        app_role
-      ]
-    }
   }
 
   web {
     redirect_uris = [var.meshstack_redirect_uri]
+  }
+
+  # As far as we know it is not possible to automate the "Grant admin consent button" for app registrations
+  # You have to grant admin consent manually
+  lifecycle {
+    ignore_changes = [
+      app_role
+    ]
   }
 }
 

@@ -1,8 +1,8 @@
 output "app_registration" {
   description = "Application registration application id and object id"
   value = {
-    object_id = azuread_service_principal.meshcloud_sso.id
-    app_id    = azuread_service_principal.meshcloud_sso.application_id
+    object_id = azuread_application.meshcloud_sso.object_id
+    app_id    = azuread_application.meshcloud_sso.application_id
   }
 }
 

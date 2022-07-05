@@ -1,3 +1,4 @@
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -39,3 +40,4 @@ No modules.
 |------|-------------|
 | <a name="output_service_principal"></a> [service\_principal](#output\_service\_principal) | n/a |
 | <a name="output_service_principal_password"></a> [service\_principal\_password](#output\_service\_principal\_password) | n/a |
+<!-- END_TF_DOCS -->

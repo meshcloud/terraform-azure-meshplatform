@@ -1,3 +1,4 @@
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -38,3 +39,4 @@ No modules.
 |------|-------------|
 | <a name="output_app_registration"></a> [app\_registration](#output\_app\_registration) | Application registration application id and object id |
 | <a name="output_app_registration_client_secret"></a> [app\_registration\_client\_secret](#output\_app\_registration\_client\_secret) | Password for the application registration. |
+<!-- END_TF_DOCS -->
