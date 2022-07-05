@@ -15,10 +15,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Changed
 
 - Documentation for kraken now mentions the use-case: metering.
+- Fixed meshcloud-sso module output reference
+- Fixed syntax error in a resource in meshcloud-sso module
 
 ### Added
 
 - Added CHANGELOG.md
+- Added pre-commit hooks
 
 ## [v0.1.0]
 
