@@ -22,7 +22,7 @@ variable "replicator_enabled" {
 variable "kraken_enabled" {
   type        = bool
   default     = true
-  description = "Whether to create kraken Service Principal or not."
+  description = "Whether to create Metering Service Principal or not."
 }
 
 variable "idplookup_enabled" {
@@ -31,7 +31,7 @@ variable "idplookup_enabled" {
   description = "Whether to create idplookup Service Principal or not."
 }
 
-# additional_required_resource_accesses are useful if replicator needs 
+# additional_required_resource_accesses are useful if replicator needs
 # resource access specifically scoped to a meshstack implementation (e.g. accessing an azure function)
 # For an example usage, see https://github.com/meshcloud/terraform-azure-meshplatform/tree/main/examples/azure-integration-with-additional-resource-access
 variable "additional_required_resource_accesses" {

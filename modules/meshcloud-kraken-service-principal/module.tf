@@ -53,7 +53,7 @@ resource "azurerm_role_assignment" "meshcloud_kraken" {
 resource "azurerm_role_definition" "meshcloud_kraken_cloud_inventory_role" {
   name        = "kraken.${var.service_principal_name_suffix}_cloud_inventory_role"
   scope       = var.scope
-  description = "Permissions required by meshcloud in order to collect information about resources in the kraken module"
+  description = "Permissions required by meshcloud in order to collect information about resources in the metering module"
 
   permissions {
     actions = [

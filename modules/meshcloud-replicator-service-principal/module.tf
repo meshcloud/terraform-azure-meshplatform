@@ -41,7 +41,7 @@ resource "azurerm_role_definition" "meshcloud_replicator" {
       "Microsoft.Management/managementGroups/write",
 
       # Permissions for reading and writing tags
-      "Microsoft.Resources/tags/write",
+      "Microsoft.Resources/tags/*",
 
       # Permission we need to activate/register required Resource Providers
       "*/register/action"

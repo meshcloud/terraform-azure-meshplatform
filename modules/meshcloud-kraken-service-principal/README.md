@@ -1,3 +1,4 @@
+<!-- BEGIN_TF_DOCS -->
 ## Requirements
 
 | Name | Version |
@@ -41,3 +42,4 @@ No modules.
 |------|-------------|
 | <a name="output_service_principal"></a> [service\_principal](#output\_service\_principal) | Service Principal application id and object id |
 | <a name="output_service_principal_password"></a> [service\_principal\_password](#output\_service\_principal\_password) | Password for the Service Principal. |
+<!-- END_TF_DOCS -->

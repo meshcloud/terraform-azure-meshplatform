@@ -10,12 +10,12 @@ output "replicator_service_principal_password" {
 }
 
 output "kraken_service_principal" {
-  description = "Kraken Service Principal."
+  description = "Metering Service Principal."
   value       = module.meshplatform.kraken_service_principal
 }
 
 output "kraken_service_principal_password" {
-  description = "Password for Kraken Service Principal."
+  description = "Password for Metering Service Principal."
   value       = module.meshplatform.kraken_service_principal_password
   sensitive   = true
 }
