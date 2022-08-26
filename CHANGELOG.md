@@ -9,7 +9,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ### BREAKING
 
-- Rename all occurences of spp to service_principal for more clarity.
+- Rename all occurrences of spp to service principal for more clarity.
 - Using submodules directly is only possible with Terraform v1.0 or above.
 
 ### Changed
@@ -17,6 +17,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 - Documentation for kraken now mentions the use-case: metering.
 - Fixed meshcloud-sso module output reference
 - Fixed syntax error in a resource in meshcloud-sso module
+- Add permissions for tags replication
 
 ### Added
 
