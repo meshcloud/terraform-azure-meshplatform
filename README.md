@@ -13,7 +13,7 @@ To run this module, you need the following:
 - Permissions on AAD level. An Azure account with one of the following roles[^1]:
   - Global Administrator
   - Privileged Role Administrator
-  - Cloud Application Administrator
+  - Cloud Application Administratoraaa
   - Application Administrator
 - Permissions on [Enterprise Agreement level](https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-role). An Azure account that is Account Owner for an enrollment account.
 - [Terraform installed](https://learn.hashicorp.com/tutorials/terraform/install-cli) (already installed in Azure Portal)
