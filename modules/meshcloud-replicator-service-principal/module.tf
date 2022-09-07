@@ -147,6 +147,7 @@ resource "azuread_app_role_assignment" "meshcloud_replicator-user" {
 }
 
 resource "azuread_service_principal_password" "service_principal_pw" {
+  display_name = "replicator.${var.service_principal_name_suffix}.key"
   service_principal_id = azuread_service_principal.meshcloud_replicator.id
   end_date             = "2999-01-01T01:02:03Z" # no expiry
 }
