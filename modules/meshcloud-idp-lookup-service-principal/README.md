@@ -24,9 +24,9 @@ No modules.
 | [azuread_app_role_assignment.meshcloud_idp_lookup](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/app_role_assignment) | resource |
 | [azuread_application.meshcloud_idp_lookup](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/application) | resource |
 | [azuread_service_principal.meshcloud_idp_lookup](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/service_principal) | resource |
-| [azuread_service_principal.msgraph](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/service_principal) | resource |
 | [azuread_service_principal_password.service_principal_pw](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/service_principal_password) | resource |
 | [azuread_application_published_app_ids.well_known](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/data-sources/application_published_app_ids) | data source |
+| [azuread_service_principal.msgraph](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/data-sources/service_principal) | data source |
 
 ## Inputs
 

@@ -76,7 +76,7 @@ Check [examples](./examples/) for different use cases. As a quick start we recom
 
 | Name | Version |
 |------|---------|
-| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.0 |
+| <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | >= 1.1 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | 2.18.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 3.3.0 |
 
