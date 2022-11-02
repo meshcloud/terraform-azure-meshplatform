@@ -21,10 +21,6 @@ To run this module, you need the following:
 
 [^1]: Tenant wide admin consent must be granted for a successful meshPlatform setup. See [Azure public documentation](https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/grant-admin-consent#prerequisites) for more details.
 
-## Module Structure
-
-For an overview of the module structure, refer to [generated terraform docs](./TERRAFORM_DOCS.md).
-
 ## How to Use This Module
 
 ### Using Azure Portal
