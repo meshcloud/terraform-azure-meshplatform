@@ -30,7 +30,6 @@ resource "azurerm_role_definition" "meshcloud_replicator" {
       "Microsoft.Resources/deployments/*",
       "Microsoft.Blueprint/blueprintAssignments/*",
       "Microsoft.Resources/subscriptions/resourceGroups/read",
-      "Microsoft.Resources/deployments/*",
 
       # Fetching Blueprints
       "Microsoft.Management/managementGroups/read",
