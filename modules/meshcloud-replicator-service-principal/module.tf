@@ -44,7 +44,14 @@ resource "azurerm_role_definition" "meshcloud_replicator" {
 
       # Permission we need to activate/register required Resource Providers
       "*/register/action"
-    ], var.additional_permissions)
+      ],
+      var.replicator_rg_enabled ? [
+        # Additional permission if this principal should be used for
+        # Resource Group Azure replication as well
+        "Microsoft.Resources/subscriptions/resourceGroups/write"
+      ] : [],
+      var.additional_permissions
+    )
   }
 
   assignable_scopes = [
