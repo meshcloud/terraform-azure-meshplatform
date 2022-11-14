@@ -17,7 +17,7 @@ data "azurerm_management_group" "root" {
 }
 
 module "replicator_service_principal" {
-  count  = var.replicator_enabled ? 1 : 0
+  count  = var.replicator_enabled || var.replicator_rg_enabled ? 1 : 0
   source = "./modules/meshcloud-replicator-service-principal/"
 
   service_principal_name_suffix = var.service_principal_name_suffix

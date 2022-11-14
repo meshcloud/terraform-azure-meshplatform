@@ -19,3 +19,9 @@ variable "additional_permissions" {
   default     = []
   description = "Additional Subscription-Level Permissions the Service Principal needs."
 }
+
+variable "replicator_rg_enabled" {
+  type        = bool
+  default     = false
+  description = "Whether the created replicator Service Principal should be usable for Azure Resource Group based replication."
+}

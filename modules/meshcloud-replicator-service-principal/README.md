@@ -41,6 +41,7 @@ No modules.
 | <a name="input_additional_required_resource_accesses"></a> [additional\_required\_resource\_accesses](#input\_additional\_required\_resource\_accesses) | Additional AAD-Level Resource Accesses the Service Principal needs. | `list(object({ resource_app_id = string, resource_accesses = list(object({ id = string, type = string })) }))` | `[]` | no |
 | <a name="input_scope"></a> [scope](#input\_scope) | The scope to which Service Principal permissions should be assigned to. Usually this is the management group id of form `/providers/Microsoft.Management/managementGroups/<tenantId>` that sits atop the subscriptions. | `string` | n/a | yes |
 | <a name="input_service_principal_name_suffix"></a> [service\_principal\_name\_suffix](#input\_service\_principal\_name\_suffix) | Service principal name suffix. | `string` | n/a | yes |
+| <a name="replicator_rg_enabled"></a> [replicator\_rg\_enabled](#input\_service\_principal\_name\_suffix) | Whether the created replicator Service Principal should be usable for Azure Resource Group based replication. | `bool` | false | no |
 
 ## Outputs
 
