@@ -157,6 +157,44 @@ resource "azuread_service_principal_password" "service_principal_pw" {
   end_date             = "2999-01-01T01:02:03Z" # no expiry
 }
 
+resource "azurerm_policy_definition" "privilege_escalation_prevention" {
+  name                = "meshcloud-privilege-escalation-prevention"
+  policy_type         = "Custom"
+  mode                = "All"
+  display_name        = "meshcloud Privilege Escalation Prevention"
+  management_group_id = var.scope
+
+  policy_rule = <<RULE
+  {
+      "if": {
+        "allOf": [
+          {
+            "equals": "Microsoft.Authorization/roleAssignments",
+            "field": "type"
+          },
+          {
+            "allOf": [
+              {
+                "field": "Microsoft.Authorization/roleAssignments/principalId",
+                "equals": "${azuread_service_principal.meshcloud_replicator.object_id}"
+              },
+            ]
+          }
+        ]
+      },
+      "then": {
+        "effect": "deny"
+      }
+  }
+RULE
+}
+
+resource "azurerm_management_group_policy_assignment" "privilege-escalation-prevention" {
+  name                 = "mesh-priv-escal-prev"
+  policy_definition_id = azurerm_policy_definition.privilege_escalation_prevention.id
+  management_group_id  = var.scope
+}
+
 # Terraform does not find the blueprint service principal, even though I find it with
 # ` az ad sp list --filter "appId eq 'f71766dc-90d9-4b7d-bd9d-4499c4331c3f'"`
 # data "azuread_application" "blueprint_service_principal" {
