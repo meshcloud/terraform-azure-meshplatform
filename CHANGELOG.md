@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Added privilege escalation prevention policy for replicator
+
 ## [v0.2.0]
 
 ### BREAKING
