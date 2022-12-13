@@ -48,10 +48,10 @@ To run this module, you need the following:
     terraform apply
     ```
 
-6. Access terraform output and pass it securely to meshcloud.
+6. Use the information from terraform output to configure the platform in meshStack.
 
     ```sh
-    # The JSON output contains sensitive values that must not be transmitted to meshcloud in plain text.
+    # The JSON output contains sensitive values that must not be transmitted anywhere other then the platform config screen in meshStack.
     terraform output -json
     ```
 
