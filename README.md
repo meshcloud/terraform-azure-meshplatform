@@ -55,7 +55,7 @@ To run this module, you need the following:
     terraform output -json
     ```
 
-7. Grant access on the enrollment account as described in the [meshcloud public docs](https://docs.dev.meshcloud.io/docs/meshstack.how-to.integrate-meshplatform-azure-manually.html#set-up-subscription-provisioning).
+7. Grant access on the enrollment account as described in the [meshcloud public docs](https://docs.meshcloud.io/docs/meshstack.how-to.integrate-meshplatform-azure-manually.html#set-up-subscription-provisioning).
 
 ### Using CLI
 
