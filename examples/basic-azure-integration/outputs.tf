@@ -28,7 +28,7 @@ output "idp_lookup_service_principal" {
 output "idp_lookup_service_principal_password" {
   description = "Password for IDP Lookup Service Principal."
   value       = module.meshplatform.idp_lookup_service_principal_password
-  sensitive = true
+  sensitive   = true
 }
 
 output "uami_blueprint_user_principal" {
