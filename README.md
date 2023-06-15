@@ -10,15 +10,13 @@ Terraform module to integrate Azure as a meshPlatform into meshStack instance. W
 
 To run this module, you need the following:
 
-- Permissions on AAD level. An Azure account with one of the following roles[^1]:
+- Permissions on AAD level. An Azure account with one of the following roles:
   1. Global Administrator
   2. Privileged Role Administrator AND (Cloud) Application Administrator
 - Permissions on Azure Resource Level: User Access Administrator on the Management Group that should be managed by meshStack
 - Permissions on [Enterprise Agreement level](https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-role): Account Owner for the enrollment account that should be used for creating subscriptions
 - [Terraform installed](https://learn.hashicorp.com/tutorials/terraform/install-cli) (already installed in Azure Portal)
 - [Azure CLI installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) (already installed in Azure Portal)
-
-[^1]: Tenant wide admin consent must be granted for a successful meshPlatform setup. See [Azure public documentation](https://docs.microsoft.com/en-us/azure/active-directory/manage-apps/grant-admin-consent#prerequisites) for more details.
 
 ## How to Use This Module
 
