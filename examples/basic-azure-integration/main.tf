@@ -6,12 +6,12 @@
 # Please be aware that you cannot destroy the created resources via terraform if you lose the state file.
 terraform {
   backend "azurerm" {
-    use_azuread_auth     = true
     tenant_id            = "aadTenantId"
     subscription_id      = "subscriptionId"
-    resource_group_name  = "cf-tfstates-iqw0x"
+    resource_group_name  = "rg-cloud-foundation"
     storage_account_name = "tfstatesiqw0x"
     container_name       = "tfstates"
+    key                  = "meshplatform-setup"
   }
 }
 
@@ -25,7 +25,4 @@ module "meshplatform" {
 
   service_principal_name_suffix = "<UNIQUE_NAME>"
   mgmt_group_name               = "<MANAGEMENT_GROUP_NAME>|<MANAGEMENT_GROUP_ID>" # Either the Management group Name or ID
-
-  # If you want to integrate your AAD as SSO for meshStack, set the below value to true to create the necessary Application.
-  idplookup_enabled = false
 }
