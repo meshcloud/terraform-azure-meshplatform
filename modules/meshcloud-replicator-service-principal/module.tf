@@ -173,12 +173,8 @@ resource "azurerm_policy_definition" "privilege_escalation_prevention" {
             "field": "type"
           },
           {
-            "allOf": [
-              {
-                "field": "Microsoft.Authorization/roleAssignments/principalId",
-                "equals": "${azuread_service_principal.meshcloud_replicator.object_id}"
-              },
-            ]
+            "field": "Microsoft.Authorization/roleAssignments/principalId",
+            "equals": "${azuread_service_principal.meshcloud_replicator.object_id}"
           }
         ]
       },
