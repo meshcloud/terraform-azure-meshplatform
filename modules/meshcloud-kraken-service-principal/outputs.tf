@@ -3,7 +3,7 @@ output "service_principal" {
   value = {
     object_id = azuread_service_principal.meshcloud_kraken.id
     app_id    = azuread_service_principal.meshcloud_kraken.application_id
-    password  = "Execute `terraform output kraken_service_principal_password` to see the password"
+    password  = "Execute `terraform output service_principal_password` to see the password"
   }
 }
 
