@@ -25,8 +25,6 @@ module "replicator_service_principal" {
 
   additional_required_resource_accesses = var.additional_required_resource_accesses
   additional_permissions                = var.additional_permissions
-
-  enterprise_agreement = var.enterprise_agreement
 }
 
 module "kraken_service_principal" {
