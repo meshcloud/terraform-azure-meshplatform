@@ -124,7 +124,7 @@ resource "azuread_service_principal" "meshcloud_replicator" {
   # The following tags are needed to create an Enterprise Application
   # See https://github.com/hashicorp/terraform-provider-azuread/issues/7#issuecomment-529597534
   tags = [
-    "WindowsAzureActiveDirectoryIntegratedApp",
+    var.enterprise_agreement ? "WindowsAzureActiveDirectoryIntegratedApp" : null, # only apply tag if using Enterprise Agreement. MCA does't require this tag
   ]
 }
 
