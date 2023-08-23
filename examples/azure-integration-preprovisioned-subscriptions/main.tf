@@ -18,7 +18,4 @@ module "meshplatform" {
   mgmt_group_name               = "<MANAGEMENT_GROUP_NAME>|<MANAGEMENT_GROUP_UUID>"
 
   additional_permissions = ["Microsoft.Subscription/rename/action"]
-
-  # If you want to integrate your AAD as SSO for meshStack, set the below value to true to create the necessary Application.
-  idplookup_enabled = false
 }
