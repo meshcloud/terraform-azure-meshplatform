@@ -14,7 +14,7 @@ To run this module, you need the following:
   1. Global Administrator
   2. Privileged Role Administrator AND (Cloud) Application Administrator
 - Permissions on Azure Resource Level: User Access Administrator on the Management Group that should be managed by meshStack
-- Permissions on [Enterprise Agreement level](https://docs.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-role): Account Owner for the enrollment account that should be used for creating subscriptions
+- Permissions on [Enterprise Agreement level](https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles): Account Owner for the enrollment account that should be used for creating subscriptions
 - [Terraform installed](https://learn.hashicorp.com/tutorials/terraform/install-cli) (already installed in Azure Portal)
 - [Azure CLI installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) (already installed in Azure Portal)
 

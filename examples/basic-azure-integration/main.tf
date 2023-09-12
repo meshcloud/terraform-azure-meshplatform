@@ -20,6 +20,10 @@ provider "azurerm" {
   features {}
 }
 
+provider "azuread" {
+  # Configuration options
+}
+
 module "meshplatform" {
   source = "meshcloud/meshplatform/azure"
 

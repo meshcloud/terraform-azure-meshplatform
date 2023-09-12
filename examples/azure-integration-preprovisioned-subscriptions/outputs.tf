@@ -20,16 +20,6 @@ output "kraken_service_principal_password" {
   sensitive   = true
 }
 
-output "idp_lookup_service_principal" {
-  description = "IDP Lookup Service Principal."
-  value       = module.meshplatform.idp_lookup_service_principal
-}
-
-output "idp_lookup_service_principal_password" {
-  description = "Password for IDP Lookup Service Principal."
-  value       = module.meshplatform.idp_lookup_service_principal_password
-}
-
 output "uami_blueprint_user_principal" {
   description = "UAMI Blueprint Assignment Service Principal."
   value       = module.meshplatform.uami_blueprint_user_principal

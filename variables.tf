@@ -33,7 +33,7 @@ variable "kraken_enabled" {
 
 variable "idplookup_enabled" {
   type        = bool
-  default     = true
+  default     = false
   description = "Whether to create idplookup Service Principal or not."
 }
 
