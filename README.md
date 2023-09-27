@@ -2,6 +2,8 @@
 
 Terraform module to integrate Azure as a meshPlatform into meshStack instance. With this module, service principals used by meshStack are created with the required permissions. The output of this module is a set of credentials that need to be configured in meshStack as described in [meshcloud public docs](https://docs.meshcloud.io/docs/meshstack.how-to.integrate-meshplatform.html).
 
+We currently support [Microsoft Enterprise Agreements](https://www.microsoft.com/en-us/licensing/licensing-programs/enterprise?activetab=enterprise-tab%3aprimaryr2) and [Microsoft Customer Agreements](https://www.microsoft.com/en-us/licensing/how-to-buy/microsoft-customer-agreement) when integrating Azure as a meshPlatform.
+
 <p align="center">
   <img src="/.github/Icon_Azure_Meshi_Hugs.png" width="250">
 </p>
@@ -10,17 +12,24 @@ Terraform module to integrate Azure as a meshPlatform into meshStack instance. W
 
 To run this module, you need the following:
 
-- Permissions on AAD level. An Azure account with one of the following roles:
+- [Terraform installed](https://learn.hashicorp.com/tutorials/terraform/install-cli) (already installed in Azure Portal)
+- [Azure CLI installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) (already installed in Azure Portal)
+- Permissions on AAD level. If using Microsoft Customer Agreement, AAD level permissions must be set in the Tenant Directory that will create the subscriptions (*Source Tenant*) as well as the Tenant Directory that will receive the subscriptions (*Destination Tenant*). An Azure account with one of the following roles:
   1. Global Administrator
   2. Privileged Role Administrator AND (Cloud) Application Administrator
 - Permissions on Azure Resource Level: User Access Administrator on the Management Group that should be managed by meshStack
+
+### If using an Enterprise Agreement
 - Permissions on [Enterprise Agreement level](https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles): Account Owner for the enrollment account that should be used for creating subscriptions
-- [Terraform installed](https://learn.hashicorp.com/tutorials/terraform/install-cli) (already installed in Azure Portal)
-- [Azure CLI installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) (already installed in Azure Portal)
+
+### If using a Microsoft Customer Agreement
+- Permissions in Source Tenant for granting access to the billing account used for subscription creation: Account Administrator
 
 ## How to Use This Module
 
 ### Using Azure Portal
+
+> If using a **Microsoft Customer Agreement**, go through these steps in the **Destination Tenant**
 
 1. Login into [Azure Portal](https://portal.azure.com/) with your Admin user.
 
@@ -52,7 +61,21 @@ To run this module, you need the following:
     terraform output -json
     ```
 
-7. Grant access on the enrollment account as described in the [meshcloud public docs](https://docs.meshcloud.io/docs/meshstack.how-to.integrate-meshplatform-azure-manually.html#set-up-subscription-provisioning).
+#### If Using an Enterprise Agreement
+1. Grant access on the enrollment account as described in the section [Use an Enteprise Enrollment](https://docs.meshcloud.io/docs/meshstack.how-to.integrate-meshplatform-azure-manually.html#use-an-enterprise-enrollment).
+
+#### If Using Microsoft Customer Agreement
+1. Switch to the Tenant Directory that contains your Billing Account and follow the steps to [Register an Application](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#register-an-application) and [Add Credentials](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#add-credentials). Make sure to copy down the **Directory (tenant) ID**, **Application (client) ID**, **Object ID** and the **App Secret** value that was generated. The App Secret is only visible during the creation process.
+2. You must grant the Enterprise Application permissions on the Billing Account, Billing Profile, or Invoice Section so that it can generate new subscriptions. Follow the steps in [this guide](https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/understand-mca-roles#manage-billing-roles-in-the-azure-portal) to grant the necessary permissions. You must grant one of the following permissions
+  - Billing Account or Billing Profile: Owner, Contributor
+  - Invoice Section: Owner, Contributor, Azure Subscription Creator
+3. Write down the Billing Scope ID that looks something like this <samp>/providers/Microsoft.Billing/billingAccounts/5e98e158-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_xxxx-xx-xx/billingProfiles/AW4F-xxxx-xxx-xxx/invoiceSections/SH3V-xxxx-xxx-xxx</samp>
+4. Use the following information to configure the platform in meshStack
+  - Billing Scope
+  - Destination Tenant ID
+  - Source Tenant ID
+  - Billing Account Principal Client ID (Application Client ID that will be used to create new subscriptions)
+  - Principal Client Secret (Application Secret created in the Source Tenant)
 
 ### Using CLI
 
