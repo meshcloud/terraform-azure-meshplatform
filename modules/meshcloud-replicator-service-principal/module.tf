@@ -1,4 +1,6 @@
-
+//---------------------------------------------------------------------------
+// Terraform Settings
+//---------------------------------------------------------------------------
 terraform {
   required_version = ">= 1.0"
   required_providers {
@@ -13,6 +15,9 @@ terraform {
   }
 }
 
+//---------------------------------------------------------------------------
+// Role Definition for the Replicator on the specified Scope
+//---------------------------------------------------------------------------
 resource "azurerm_role_definition" "meshcloud_replicator" {
   name        = "replicator.${var.service_principal_name_suffix}"
   scope       = var.scope
@@ -59,12 +64,20 @@ resource "azurerm_role_definition" "meshcloud_replicator" {
   ]
 }
 
+//---------------------------------------------------------------------------
+// Queries Entra ID for information about well-known application IDs.
+// Retrieve details about the service principal 
+//---------------------------------------------------------------------------
+
 data "azuread_application_published_app_ids" "well_known" {}
 
 data "azuread_service_principal" "msgraph" {
   application_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
 }
 
+//---------------------------------------------------------------------------
+// Create New application in Microsoft Entra ID
+//---------------------------------------------------------------------------
 resource "azuread_application" "meshcloud_replicator" {
   display_name = "replicator.${var.service_principal_name_suffix}"
 
@@ -119,6 +132,9 @@ resource "azuread_application" "meshcloud_replicator" {
   }
 }
 
+//---------------------------------------------------------------------------
+// Create new Enterprise Application and associate it with the previous application
+//---------------------------------------------------------------------------
 resource "azuread_service_principal" "meshcloud_replicator" {
   application_id = azuread_application.meshcloud_replicator.application_id
   # The following tags are needed to create an Enterprise Application
@@ -128,12 +144,18 @@ resource "azuread_service_principal" "meshcloud_replicator" {
   ]
 }
 
+//---------------------------------------------------------------------------
+// Assign the created ARM role to the Enterprise application
+//---------------------------------------------------------------------------
 resource "azurerm_role_assignment" "meshcloud_replicator" {
   scope              = var.scope
   role_definition_id = azurerm_role_definition.meshcloud_replicator.role_definition_resource_id
   principal_id       = azuread_service_principal.meshcloud_replicator.id
 }
 
+//---------------------------------------------------------------------------
+// Assign Entra ID Roles to the Enterprise application
+//---------------------------------------------------------------------------
 resource "azuread_app_role_assignment" "meshcloud_replicator-directory" {
   app_role_id         = data.azuread_service_principal.msgraph.app_role_ids["Directory.Read.All"]
   principal_object_id = azuread_service_principal.meshcloud_replicator.object_id
@@ -152,11 +174,19 @@ resource "azuread_app_role_assignment" "meshcloud_replicator-user" {
   resource_object_id  = data.azuread_service_principal.msgraph.object_id
 }
 
+//---------------------------------------------------------------------------
+// Generate new password for the service principal
+//---------------------------------------------------------------------------
 resource "azuread_service_principal_password" "service_principal_pw" {
   service_principal_id = azuread_service_principal.meshcloud_replicator.id
   end_date             = "2999-01-01T01:02:03Z" # no expiry
 }
 
+
+//---------------------------------------------------------------------------
+// Policy Definition for preventing the Application from assigning other privileges to itself
+// Assign it to the specified scope
+//---------------------------------------------------------------------------
 resource "azurerm_policy_definition" "privilege_escalation_prevention" {
   name                = "meshcloud-privilege-escalation-prevention"
   policy_type         = "Custom"
@@ -184,6 +214,7 @@ resource "azurerm_policy_definition" "privilege_escalation_prevention" {
   }
 RULE
 }
+
 
 resource "azurerm_management_group_policy_assignment" "privilege-escalation-prevention" {
   name                 = "mesh-priv-escal-prev"
