@@ -9,14 +9,14 @@ output "replicator_service_principal_password" {
   sensitive   = true
 }
 
-output "kraken_service_principal" {
+output "metering_service_principal" {
   description = "Metering Service Principal."
-  value       = module.meshplatform.kraken_service_principal
+  value       = module.meshplatform.metering_service_principal
 }
 
-output "kraken_service_principal_password" {
+output "metering_service_principal_password" {
   description = "Password for Metering Service Principal."
-  value       = module.meshplatform.kraken_service_principal_password
+  value       = module.meshplatform.metering_service_principal_password
   sensitive   = true
 }
 

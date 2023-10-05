@@ -112,7 +112,7 @@ Check [examples](./examples/) for different use cases. As a quick start we recom
 | Name | Source | Version |
 |------|--------|---------|
 | <a name="module_idp_lookup_service_principal"></a> [idp\_lookup\_service\_principal](#module\_idp\_lookup\_service\_principal) | ./modules/meshcloud-idp-lookup-service-principal/ | n/a |
-| <a name="module_kraken_service_principal"></a> [kraken\_service\_principal](#module\_kraken\_service\_principal) | ./modules/meshcloud-kraken-service-principal/ | n/a |
+| <a name="module_metering_service_principal"></a> [metering\_service\_principal](#module\_metering\_service\_principal) | ./modules/meshcloud-metering-service-principal/ | n/a |
 | <a name="module_replicator_service_principal"></a> [replicator\_service\_principal](#module\_replicator\_service\_principal) | ./modules/meshcloud-replicator-service-principal/ | n/a |
 | <a name="module_uami_blueprint_user_principal"></a> [uami\_blueprint\_user\_principal](#module\_uami\_blueprint\_user\_principal) | ./modules/uami-blueprint-user-principal/ | n/a |
 
@@ -130,7 +130,7 @@ Check [examples](./examples/) for different use cases. As a quick start we recom
 | <a name="input_additional_permissions"></a> [additional\_permissions](#input\_additional\_permissions) | Additional Subscription-Level Permissions the Service Principal needs. | `list(string)` | `[]` | no |
 | <a name="input_additional_required_resource_accesses"></a> [additional\_required\_resource\_accesses](#input\_additional\_required\_resource\_accesses) | Additional AAD-Level Resource Accesses the replicator Service Principal needs. | `list(object({ resource_app_id = string, resource_accesses = list(object({ id = string, type = string })) }))` | `[]` | no |
 | <a name="input_idplookup_enabled"></a> [idplookup\_enabled](#input\_idplookup\_enabled) | Whether to create idplookup Service Principal or not. | `bool` | `true` | no |
-| <a name="input_kraken_enabled"></a> [kraken\_enabled](#input\_kraken\_enabled) | Whether to create Metering Service Principal or not. | `bool` | `true` | no |
+| <a name="input_metering_enabled"></a> [metering\_enabled](#input\_metering\_enabled) | Whether to create Metering Service Principal or not. | `bool` | `true` | no |
 | <a name="input_mgmt_group_name"></a> [mgmt\_group\_name](#input\_mgmt\_group\_name) | The name or UUID of the Management Group. | `string` | n/a | yes |
 | <a name="input_replicator_enabled"></a> [replicator\_enabled](#input\_replicator\_enabled) | Whether to create replicator Service Principal or not. | `bool` | `true` | no |
 | <a name="input_replicator_rg_enabled"></a> [replicator\_rg\_enabled](#input\_replicator\_rg\_enabled) | Enables the replicator service principal to be used for Azure Resource Group replication. Implicitly enables the `replicator_enabled` flag. | `bool` | `true` | no |
@@ -144,8 +144,8 @@ Check [examples](./examples/) for different use cases. As a quick start we recom
 | <a name="output_azure_ad_tenant_id"></a> [azure\_ad\_tenant\_id](#output\_azure\_ad\_tenant\_id) | The Azure AD tenant id. |
 | <a name="output_idp_lookup_service_principal"></a> [idp\_lookup\_service\_principal](#output\_idp\_lookup\_service\_principal) | IDP Lookup Service Principal. |
 | <a name="output_idp_lookup_service_principal_password"></a> [idp\_lookup\_service\_principal\_password](#output\_idp\_lookup\_service\_principal\_password) | Password for IDP Lookup Service Principal. |
-| <a name="output_kraken_service_principal"></a> [kraken\_service\_principal](#output\_kraken\_service\_principal) | Metering Service Principal. |
-| <a name="output_kraken_service_principal_password"></a> [kraken\_service\_principal\_password](#output\_kraken\_service\_principal\_password) | Password for Metering Service Principal. |
+| <a name="output_metering_service_principal"></a> [metering\_service\_principal](#output\_metering\_service\_principal) | Metering Service Principal. |
+| <a name="output_metering_service_principal_password"></a> [metering\_service\_principal\_password](#output\_metering\_service\_principal\_password) | Password for Metering Service Principal. |
 | <a name="output_replicator_service_principal"></a> [replicator\_service\_principal](#output\_replicator\_service\_principal) | Replicator Service Principal. |
 | <a name="output_replicator_service_principal_password"></a> [replicator\_service\_principal\_password](#output\_replicator\_service\_principal\_password) | Password for Replicator Service Principal. |
 | <a name="output_uami_blueprint_user_principal"></a> [uami\_blueprint\_user\_principal](#output\_uami\_blueprint\_user\_principal) | UAMI Blueprint Assignment Service Principal. |

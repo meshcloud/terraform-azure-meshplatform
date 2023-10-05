@@ -15,14 +15,14 @@ output "replicator_service_principal_password" {
 #   value       = length(module.replicator_service_principal) > 0 ? module.replicator_service_principal[0].azuread_application.blueprint_service_principal.object_id : null
 # }
 
-output "kraken_service_principal" {
+output "metering_service_principal" {
   description = "Metering Service Principal."
-  value       = length(module.kraken_service_principal) > 0 ? module.kraken_service_principal[0].service_principal : null
+  value       = length(module.metering_service_principal) > 0 ? module.metering_service_principal[0].service_principal : null
 }
 
-output "kraken_service_principal_password" {
+output "metering_service_principal_password" {
   description = "Password for Metering Service Principal."
-  value       = length(module.kraken_service_principal) > 0 ? module.kraken_service_principal[0].service_principal_password : null
+  value       = length(module.metering_service_principal) > 0 ? module.metering_service_principal[0].service_principal_password : null
   sensitive   = true
 }
 
