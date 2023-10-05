@@ -25,7 +25,7 @@ variable "replicator_rg_enabled" {
   description = "Whether the created replicator Service Principal should be usable for Azure Resource Group based replication. Implicitly enables replicator_enabled if set to true."
 }
 
-variable "kraken_enabled" {
+variable "metering_enabled" {
   type        = bool
   default     = true
   description = "Whether to create Metering Service Principal or not."

@@ -27,9 +27,9 @@ module "replicator_service_principal" {
   additional_permissions                = var.additional_permissions
 }
 
-module "kraken_service_principal" {
-  count  = var.kraken_enabled ? 1 : 0
-  source = "./modules/meshcloud-kraken-service-principal/"
+module "metering_service_principal" {
+  count  = var.metering_enabled ? 1 : 0
+  source = "./modules/meshcloud-metering-service-principal/"
 
   service_principal_name_suffix = var.service_principal_name_suffix
   scope                         = data.azurerm_management_group.root.id
@@ -59,8 +59,8 @@ moved {
 }
 
 moved {
-  from = module.kraken_spp
-  to   = module.kraken_service_principal
+  from = module.metering_spp
+  to   = module.metering_service_principal
 }
 
 moved {
