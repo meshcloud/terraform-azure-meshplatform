@@ -92,6 +92,10 @@ resource "azurerm_role_assignment" "meshcloud_metering_cloud_inventory" {
 resource "azuread_application" "meshcloud_metering" {
   display_name = "metering.${var.service_principal_name_suffix}"
 
+  feature_tags {
+    enterprise = true
+  }
+
   web {
     implicit_grant {
       access_token_issuance_enabled = false
@@ -110,13 +114,24 @@ resource "azuread_service_principal" "meshcloud_metering" {
 //---------------------------------------------------------------------------
 // Create a password for the Enterprise application
 //---------------------------------------------------------------------------
-resource "azuread_service_principal_password" "service_principal_pw" {
-  service_principal_id = azuread_service_principal.meshcloud_metering.id
-  end_date             = "2999-01-01T01:02:03Z" # no expiry
+resource "time_rotating" "replicator_secret_rotation" {
+  rotation_days = 365
 }
 
-# facilitate migration from v0.1.0 of the module
-moved {
-  from = azuread_service_principal_password.spp_pw
-  to   = azuread_service_principal_password.service_principal_pw
+resource "azuread_application_password" "service_principal_pw" {
+  application_object_id = azuread_application.meshcloud_metering.object_id
+  rotate_when_changed = {
+    rotation = time_rotating.replicator_secret_rotation.id
+  }
 }
+
+# resource "azuread_service_principal_password" "service_principal_pw" {
+#   service_principal_id = azuread_service_principal.meshcloud_metering.id
+#   end_date             = "2999-01-01T01:02:03Z" # no expiry
+# }
+
+# # facilitate migration from v0.1.0 of the module
+# moved {
+#   from = azuread_application_password.spp_pw
+#   to   = azuread_application_password.service_principal_pw
+# }
