@@ -81,6 +81,9 @@ data "azuread_service_principal" "msgraph" {
 resource "azuread_application" "meshcloud_replicator" {
   display_name = "replicator.${var.service_principal_name_suffix}"
 
+  feature_tags {
+    enterprise = true
+  }
   web {
     implicit_grant {
       access_token_issuance_enabled = false
@@ -133,16 +136,37 @@ resource "azuread_application" "meshcloud_replicator" {
 }
 
 //---------------------------------------------------------------------------
+// Create new client secret and associate it with the previous application
+//---------------------------------------------------------------------------
+resource "time_rotating" "replicator_secret_rotation" {
+  rotation_days = 365
+}
+resource "azuread_application_password" "service_principal_pw" {
+  application_object_id = azuread_application.meshcloud_replicator.object_id
+  rotate_when_changed = {
+    rotation = time_rotating.replicator_secret_rotation.id
+  }
+}
+
+//---------------------------------------------------------------------------
 // Create new Enterprise Application and associate it with the previous application
 //---------------------------------------------------------------------------
 resource "azuread_service_principal" "meshcloud_replicator" {
   application_id = azuread_application.meshcloud_replicator.application_id
   # The following tags are needed to create an Enterprise Application
   # See https://github.com/hashicorp/terraform-provider-azuread/issues/7#issuecomment-529597534
-  tags = [
-    "WindowsAzureActiveDirectoryIntegratedApp",
-  ]
+  # tags = [
+  #   "WindowsAzureActiveDirectoryIntegratedApp",
+  # ]
 }
+
+# //---------------------------------------------------------------------------
+# // Generate new password for the service principal
+# //---------------------------------------------------------------------------
+# resource "azuread_service_principal_password" "service_principal_pw" {
+#   service_principal_id = azuread_service_principal.meshcloud_replicator.id
+#   end_date             = "2999-01-01T01:02:03Z" # no expiry
+# }
 
 //---------------------------------------------------------------------------
 // Assign the created ARM role to the Enterprise application
@@ -172,14 +196,6 @@ resource "azuread_app_role_assignment" "meshcloud_replicator-user" {
   app_role_id         = data.azuread_service_principal.msgraph.app_role_ids["User.Invite.All"]
   principal_object_id = azuread_service_principal.meshcloud_replicator.object_id
   resource_object_id  = data.azuread_service_principal.msgraph.object_id
-}
-
-//---------------------------------------------------------------------------
-// Generate new password for the service principal
-//---------------------------------------------------------------------------
-resource "azuread_service_principal_password" "service_principal_pw" {
-  service_principal_id = azuread_service_principal.meshcloud_replicator.id
-  end_date             = "2999-01-01T01:02:03Z" # no expiry
 }
 
 
@@ -229,7 +245,7 @@ resource "azurerm_management_group_policy_assignment" "privilege-escalation-prev
 # }
 
 # facilitate migration from v0.1.0 of the module
-moved {
-  from = azuread_service_principal_password.spp_pw
-  to   = azuread_service_principal_password.service_principal_pw
-}
+# moved {
+#   from = azuread_application_password.spp_pw
+#   to   = azuread_application_password.service_principal_pw
+# }
