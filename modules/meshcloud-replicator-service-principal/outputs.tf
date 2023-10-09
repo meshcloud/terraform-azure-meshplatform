@@ -3,7 +3,7 @@ output "credentials" {
   value = {
     Enterprise_Application_Object_ID = azuread_service_principal.meshcloud_replicator.id
     Application_Client_ID            = azuread_application.meshcloud_replicator.application_id
-    Client_Secret                    = "Execute `terraform output service_principal_password` to see the password"
+    Client_Secret                    = "Execute `terraform output replicator_service_principal_password` to see the password"
   }
 }
 

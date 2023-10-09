@@ -8,6 +8,15 @@ terraform {
   }
 }
 
+provider "azurerm" {
+  # Configuration options
+  features {}
+}
+
+provider "azuread" {
+  # Configuration options
+}
+
 module "meshplatform" {
   source = "meshcloud/meshplatform/azure"
 
