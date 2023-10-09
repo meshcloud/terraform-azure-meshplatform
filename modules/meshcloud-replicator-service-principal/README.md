@@ -27,7 +27,8 @@ No modules.
 | [azuread_app_role_assignment.meshcloud_replicator-user](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/app_role_assignment) | resource |
 | [azuread_application.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/application) | resource |
 | [azuread_service_principal.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/service_principal) | resource |
-| [azuread_application_password.service_principal_pw](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/resources/service_principal_password) | resource |
+| [azuread_application_password.application_pw](https://registry.terraform.io/providers/hashicorp/azuread/2.43.0/docs/resources/application_password) | resource |
+| [time_rotating.replicator_secret_rotation](https://registry.terraform.io/providers/hashicorp/time/0.9.1/docs/resources/rotating) | resource |
 | [azurerm_role_assignment.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azurerm/3.3.0/docs/resources/role_assignment) | resource |
 | [azurerm_role_definition.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azurerm/3.3.0/docs/resources/role_definition) | resource |
 | [azuread_application_published_app_ids.well_known](https://registry.terraform.io/providers/hashicorp/azuread/2.18.0/docs/data-sources/application_published_app_ids) | data source |
@@ -47,6 +48,6 @@ No modules.
 
 | Name | Description |
 |------|-------------|
-| <a name="output_service_principal"></a> [service\_principal](#output\_service\_principal) | Service Principal application id and object id |
-| <a name="output_service_principal_password"></a> [service\_principal\_password](#output\_service\_principal\_password) | Password for the Service Principal. |
+| <a name="output_credentials"></a> [credentials](#output\_credentials) | Service Principal application id and object id |
+| <a name="output_application_client_secret"></a> [application\_client\_secret](#output\_application\_client\_secret) | Password for the Service Principal. |
 <!-- END_TF_DOCS -->
