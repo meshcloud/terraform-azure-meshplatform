@@ -138,25 +138,25 @@ resource "azuread_application_password" "application_pw" {
 
 moved {
   from = azurerm_role_assignment.meshcloud_kraken
-  to = azurerm_role_assignment.meshcloud_metering
+  to   = azurerm_role_assignment.meshcloud_metering
 }
 
 moved {
   from = azurerm_role_definition.meshcloud_kraken_cloud_inventory_role
-  to = azurerm_role_definition.meshcloud_metering_cloud_inventory_role
+  to   = azurerm_role_definition.meshcloud_metering_cloud_inventory_role
 }
 
 moved {
   from = azurerm_role_assignment.meshcloud_kraken_cloud_inventory
-  to = azurerm_role_assignment.meshcloud_metering_cloud_inventory
+  to   = azurerm_role_assignment.meshcloud_metering_cloud_inventory
 }
 
 moved {
   from = azuread_application.meshcloud_kraken
-  to = azuread_application.meshcloud_metering
+  to   = azuread_application.meshcloud_metering
 }
 
 moved {
   from = azuread_service_principal.meshcloud_kraken
-  to = azuread_service_principal.meshcloud_metering
+  to   = azuread_service_principal.meshcloud_metering
 }
