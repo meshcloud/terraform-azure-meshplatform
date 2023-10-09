@@ -1,4 +1,4 @@
-output "service_principal" {
+output "credentials" {
   description = "Service Principal application id and object id"
   value = {
     Enterprise_Application_Object_ID = azuread_service_principal.meshcloud_metering.id
@@ -7,8 +7,8 @@ output "service_principal" {
   }
 }
 
-output "service_principal_password" {
-  description = "Password for the Service Principal."
-  value       = azuread_application_password.service_principal_pw.value
+output "application_client_secret" {
+  description = "Client Secret Of the Application."
+  value       = azuread_application_password.application_pw.value
   sensitive   = true
 }
