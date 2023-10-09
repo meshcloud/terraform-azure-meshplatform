@@ -5,7 +5,7 @@ Terraform module to integrate Azure as a meshPlatform into meshStack instance. W
 We currently support [Microsoft Enterprise Agreements](https://www.microsoft.com/en-us/licensing/licensing-programs/enterprise?activetab=enterprise-tab%3aprimaryr2) and [Microsoft Customer Agreements](https://www.microsoft.com/en-us/licensing/how-to-buy/microsoft-customer-agreement) when integrating Azure as a meshPlatform.
 
 <p align="center">
-  <img src="/.github/Icon_Azure_Meshi_Hugs.png" width="250">
+  <img src="https://github.com/meshcloud/terraform-azure-meshplatform/assets/96071919/b18a128b-8a43-44ea-80da-bf42e58fd61a" width="250">
 </p>
 
 ## Prerequisites
