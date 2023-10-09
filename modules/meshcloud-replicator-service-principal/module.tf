@@ -43,7 +43,6 @@ resource "azurerm_role_definition" "meshcloud_replicator" {
       # Assigning Subscriptions to Management Groups
       "Microsoft.Management/managementGroups/subscriptions/write",
       "Microsoft.Management/managementGroups/write",
-
       # Permissions for reading and writing tags
       "Microsoft.Resources/tags/*",
 
@@ -141,7 +140,7 @@ resource "azuread_application" "meshcloud_replicator" {
 resource "time_rotating" "replicator_secret_rotation" {
   rotation_days = 365
 }
-resource "azuread_application_password" "service_principal_pw" {
+resource "azuread_application_password" "application_pw" {
   application_object_id = azuread_application.meshcloud_replicator.object_id
   rotate_when_changed = {
     rotation = time_rotating.replicator_secret_rotation.id

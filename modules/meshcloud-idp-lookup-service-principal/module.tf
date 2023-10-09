@@ -65,8 +65,8 @@ resource "azuread_service_principal_password" "service_principal_pw" {
 }
 
 
-# facilitate migration from v0.1.0 of the module
-moved {
-  from = azuread_service_principal_password.spp_pw
-  to   = azuread_service_principal_password.service_principal_pw
-}
+# # facilitate migration from v0.1.0 of the module
+# moved {
+#   from = azuread_service_principal_password.spp_pw
+#   to   = azuread_service_principal_password.service_principal_pw
+# }

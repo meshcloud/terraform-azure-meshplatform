@@ -1,12 +1,12 @@
 
 output "replicator_service_principal" {
   description = "Replicator Service Principal."
-  value       = length(module.replicator_service_principal) > 0 ? module.replicator_service_principal[0].service_principal : null
+  value       = length(module.replicator_service_principal) > 0 ? module.replicator_service_principal[0].credentials : null
 }
 
 output "replicator_service_principal_password" {
   description = "Password for Replicator Service Principal."
-  value       = length(module.replicator_service_principal) > 0 ? module.replicator_service_principal[0].service_principal_password : null
+  value       = length(module.replicator_service_principal) > 0 ? module.replicator_service_principal[0].application_client_secret : null
   sensitive   = true
 }
 
@@ -17,12 +17,12 @@ output "replicator_service_principal_password" {
 
 output "metering_service_principal" {
   description = "Metering Service Principal."
-  value       = length(module.metering_service_principal) > 0 ? module.metering_service_principal[0].service_principal : null
+  value       = length(module.metering_service_principal) > 0 ? module.metering_service_principal[0].credentials : null
 }
 
 output "metering_service_principal_password" {
   description = "Password for Metering Service Principal."
-  value       = length(module.metering_service_principal) > 0 ? module.metering_service_principal[0].service_principal_password : null
+  value       = length(module.metering_service_principal) > 0 ? module.metering_service_principal[0].application_client_secret : null
   sensitive   = true
 }
 

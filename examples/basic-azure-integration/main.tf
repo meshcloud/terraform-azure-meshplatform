@@ -4,16 +4,16 @@
 #
 # Remove/comment the backend block below if you are only testing the module.
 # Please be aware that you cannot destroy the created resources via terraform if you lose the state file.
-terraform {
-  backend "azurerm" {
-    tenant_id            = "aadTenantId"
-    subscription_id      = "subscriptionId"
-    resource_group_name  = "rg-cloud-foundation"
-    storage_account_name = "tfstatesiqw0x"
-    container_name       = "tfstates"
-    key                  = "meshplatform-setup"
-  }
-}
+# terraform {
+#   backend "azurerm" {
+#     tenant_id            = "aadTenantId"
+#     subscription_id      = "subscriptionId"
+#     resource_group_name  = "rg-cloud-foundation"
+#     storage_account_name = "tfstatesiqw0x"
+#     container_name       = "tfstates"
+#     key                  = "meshplatform-setup"
+#   }
+# }
 
 provider "azurerm" {
   # Configuration options

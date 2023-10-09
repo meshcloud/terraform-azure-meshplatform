@@ -118,7 +118,7 @@ resource "time_rotating" "replicator_secret_rotation" {
   rotation_days = 365
 }
 
-resource "azuread_application_password" "service_principal_pw" {
+resource "azuread_application_password" "application_pw" {
   application_object_id = azuread_application.meshcloud_metering.object_id
   rotate_when_changed = {
     rotation = time_rotating.replicator_secret_rotation.id
