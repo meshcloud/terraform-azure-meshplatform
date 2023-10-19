@@ -79,6 +79,9 @@ resource "azuread_application" "meshcloud_metering" {
 //---------------------------------------------------------------------------
 resource "azuread_service_principal" "meshcloud_metering" {
   application_id = azuread_application.meshcloud_metering.application_id
+  feature_tags {
+    enterprise = true
+  }
 }
 
 //---------------------------------------------------------------------------
