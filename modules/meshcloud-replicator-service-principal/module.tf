@@ -77,12 +77,19 @@ data "azuread_service_principal" "msgraph" {
 //---------------------------------------------------------------------------
 // Create New application in Microsoft Entra ID
 //---------------------------------------------------------------------------
+data "azuread_application_template" "enterprise_app" {
+  # will create the application based on this template ID to have features like Provisioning
+  # available in the enterprise application
+  template_id = "8adf8e6e-67b2-4cf2-a259-e3dc5476c621"
+}
 resource "azuread_application" "meshcloud_replicator" {
   display_name = "replicator.${var.service_principal_name_suffix}"
-
+  template_id  = data.azuread_application_template.enterprise_app.template_id
   feature_tags {
     enterprise = true
   }
+
+
   web {
     implicit_grant {
       access_token_issuance_enabled = false
@@ -152,20 +159,15 @@ resource "azuread_application_password" "application_pw" {
 //---------------------------------------------------------------------------
 resource "azuread_service_principal" "meshcloud_replicator" {
   application_id = azuread_application.meshcloud_replicator.application_id
-  # The following tags are needed to create an Enterprise Application
-  # See https://github.com/hashicorp/terraform-provider-azuread/issues/7#issuecomment-529597534
-  # tags = [
-  #   "WindowsAzureActiveDirectoryIntegratedApp",
-  # ]
+  feature_tags {
+    enterprise = true
+  }
+  # creating an application base on the template, makes a enterprise application being created
+  # to use that enterprise application we have to include use_existing line.
+  # there is caveat here, if an error happens during destorying this enterprise app, Terraform
+  # might not display it https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal#use_existing
+  use_existing = true
 }
-
-# //---------------------------------------------------------------------------
-# // Generate new password for the service principal
-# //---------------------------------------------------------------------------
-# resource "azuread_service_principal_password" "service_principal_pw" {
-#   service_principal_id = azuread_service_principal.meshcloud_replicator.id
-#   end_date             = "2999-01-01T01:02:03Z" # no expiry
-# }
 
 //---------------------------------------------------------------------------
 // Assign the created ARM role to the Enterprise application
@@ -236,15 +238,3 @@ resource "azurerm_management_group_policy_assignment" "privilege-escalation-prev
   policy_definition_id = azurerm_policy_definition.privilege_escalation_prevention.id
   management_group_id  = var.scope
 }
-
-# Terraform does not find the blueprint service principal, even though I find it with
-# ` az ad sp list --filter "appId eq 'f71766dc-90d9-4b7d-bd9d-4499c4331c3f'"`
-# data "azuread_application" "blueprint_service_principal" {
-#   application_id = "f71766dc-90d9-4b7d-bd9d-4499c4331c3f"
-# }
-
-# facilitate migration from v0.1.0 of the module
-# moved {
-#   from = azuread_application_password.spp_pw
-#   to   = azuread_application_password.service_principal_pw
-# }
