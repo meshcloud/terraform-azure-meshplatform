@@ -95,17 +95,6 @@ resource "azuread_application_password" "application_pw" {
   }
 }
 
-# resource "azuread_service_principal_password" "service_principal_pw" {
-#   service_principal_id = azuread_service_principal.meshcloud_metering.id
-#   end_date             = "2999-01-01T01:02:03Z" # no expiry
-# }
-
-# # facilitate migration from v0.1.0 of the module
-# moved {
-#   from = azuread_application_password.spp_pw
-#   to   = azuread_application_password.service_principal_pw
-# }
-
 moved {
   from = azurerm_role_assignment.meshcloud_kraken
   to   = azurerm_role_assignment.meshcloud_metering
