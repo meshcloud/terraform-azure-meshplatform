@@ -55,36 +55,6 @@ resource "azurerm_role_assignment" "meshcloud_metering" {
   principal_id         = azuread_service_principal.meshcloud_metering.id
 }
 
-//---------------------------------------------------------------------------
-// Create custom role definition 
-//---------------------------------------------------------------------------
-# If more resources are collected in the future, the permissions to read those should be added here.
-resource "azurerm_role_definition" "meshcloud_metering_cloud_inventory_role" {
-  name        = "metering.${var.service_principal_name_suffix}_cloud_inventory_role"
-  scope       = var.scope
-  description = "Permissions required by meshcloud in order to collect information about resources in the metering module"
-
-  permissions {
-    actions = [
-      "Microsoft.Network/publicIPAddresses/read",
-      "Microsoft.Network/networkInterfaces/read",
-      "Microsoft.Compute/virtualMachines/*/read"
-    ]
-  }
-
-  assignable_scopes = [
-    var.scope
-  ]
-}
-
-//---------------------------------------------------------------------------
-// Assign Custom role to the enterprise application
-//---------------------------------------------------------------------------
-resource "azurerm_role_assignment" "meshcloud_metering_cloud_inventory" {
-  scope              = var.scope
-  role_definition_id = azurerm_role_definition.meshcloud_metering_cloud_inventory_role.role_definition_resource_id
-  principal_id       = azuread_service_principal.meshcloud_metering.id
-}
 
 //---------------------------------------------------------------------------
 // Create New application in Microsoft Entra ID
@@ -139,16 +109,6 @@ resource "azuread_application_password" "application_pw" {
 moved {
   from = azurerm_role_assignment.meshcloud_kraken
   to   = azurerm_role_assignment.meshcloud_metering
-}
-
-moved {
-  from = azurerm_role_definition.meshcloud_kraken_cloud_inventory_role
-  to   = azurerm_role_definition.meshcloud_metering_cloud_inventory_role
-}
-
-moved {
-  from = azurerm_role_assignment.meshcloud_kraken_cloud_inventory
-  to   = azurerm_role_assignment.meshcloud_metering_cloud_inventory
 }
 
 moved {
