@@ -6,11 +6,11 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.3.0"
+      version = ">=3.3.0, <4.0.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "2.18.0"
+      version = ">=2.18.0, <3.0.0"
     }
   }
 }
@@ -53,6 +53,7 @@ resource "azurerm_role_assignment" "meshcloud_metering" {
   scope                = var.scope
   role_definition_name = "Cost Management Reader"
   principal_id         = azuread_service_principal.meshcloud_metering.id
+  depends_on           = [azuread_application.meshcloud_metering]
 }
 
 
@@ -78,7 +79,7 @@ resource "azuread_application" "meshcloud_metering" {
 // Create New Enterprise application and associate it with the previously created app
 //---------------------------------------------------------------------------
 resource "azuread_service_principal" "meshcloud_metering" {
-  application_id = azuread_application.meshcloud_metering.application_id
+  client_id = azuread_application.meshcloud_metering.client_id
   feature_tags {
     enterprise = true
   }
