@@ -17,7 +17,7 @@ resource "azuread_application" "uami_blueprint_principal" {
 }
 
 resource "azuread_service_principal" "uami_blueprint_principal" {
-  client_id = azuread_application.uami_blueprint_principal.application_id
+  client_id = azuread_application.uami_blueprint_principal.client_id
 }
 
 resource "azuread_service_principal_password" "service_principal_pw" {
