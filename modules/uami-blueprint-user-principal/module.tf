@@ -1,13 +1,13 @@
 terraform {
-  required_version = ">= 1.0"
+  required_version = "> 1.0"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.3.0"
+      version = "3.81.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "2.18.0"
+      version = "2.46.0"
     }
   }
 }
@@ -17,7 +17,7 @@ resource "azuread_application" "uami_blueprint_principal" {
 }
 
 resource "azuread_service_principal" "uami_blueprint_principal" {
-  application_id = azuread_application.uami_blueprint_principal.application_id
+  client_id = azuread_application.uami_blueprint_principal.application_id
 }
 
 resource "azuread_service_principal_password" "service_principal_pw" {

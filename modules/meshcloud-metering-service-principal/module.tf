@@ -93,7 +93,7 @@ resource "time_rotating" "replicator_secret_rotation" {
 }
 
 resource "azuread_application_password" "application_pw" {
-  application_object_id = azuread_application.meshcloud_metering.object_id
+  application_id = azuread_application.meshcloud_metering.client_id
   rotate_when_changed = {
     rotation = time_rotating.replicator_secret_rotation.id
   }
