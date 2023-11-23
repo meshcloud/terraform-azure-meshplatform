@@ -53,7 +53,7 @@ resource "azurerm_role_assignment" "meshcloud_metering" {
   scope                = var.scope
   role_definition_name = "Cost Management Reader"
   principal_id         = azuread_service_principal.meshcloud_metering.id
-  depends_on           = [azuread_application.meshcloud_metering]
+  depends_on           = [azuread_service_principal.meshcloud_metering]
 }
 
 

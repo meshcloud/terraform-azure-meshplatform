@@ -30,7 +30,7 @@ resource "azurerm_role_assignment" "service_principal_pw" {
   principal_id         = azuread_service_principal.uami_blueprint_principal.id
   scope                = "/subscriptions/${var.subscriptions[count.index]}"
   role_definition_name = "Contributor"
-  depends_on = [ azuread_application.uami_blueprint_principal ]
+  depends_on = [azuread_service_principal.uami_blueprint_principal]
 }
 
 # facilitate migration from v0.1.0 of the module

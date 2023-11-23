@@ -176,7 +176,7 @@ resource "azurerm_role_assignment" "meshcloud_replicator" {
   scope              = var.scope
   role_definition_id = azurerm_role_definition.meshcloud_replicator.role_definition_resource_id
   principal_id       = azuread_service_principal.meshcloud_replicator.id
-  depends_on         = [azuread_application.meshcloud_replicator]
+  depends_on         = [azuread_service_principal.meshcloud_replicator]
 }
 
 //---------------------------------------------------------------------------
