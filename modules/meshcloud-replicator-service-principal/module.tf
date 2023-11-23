@@ -148,7 +148,7 @@ resource "time_rotating" "replicator_secret_rotation" {
   rotation_days = 365
 }
 resource "azuread_application_password" "application_pw" {
-  application_id = azuread_application.meshcloud_replicator.client_id
+  application_id = azuread_application.meshcloud_replicator.id
   rotate_when_changed = {
     rotation = time_rotating.replicator_secret_rotation.id
   }

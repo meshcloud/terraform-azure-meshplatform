@@ -44,5 +44,5 @@ resource "azuread_application" "meshcloud_sso" {
 }
 
 resource "azuread_application_password" "meshcloud_sso" {
-  application_id = azuread_application.meshcloud_sso.client_id
+  application_id = azuread_application.meshcloud_sso.id
 }
