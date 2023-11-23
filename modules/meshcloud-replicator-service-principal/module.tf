@@ -176,7 +176,7 @@ resource "azurerm_role_assignment" "meshcloud_replicator" {
   scope              = var.scope
   role_definition_id = azurerm_role_definition.meshcloud_replicator.role_definition_resource_id
   principal_id       = azuread_service_principal.meshcloud_replicator.id
-  depends_on = [ azuread_application.meshcloud_replicator ]
+  depends_on         = [azuread_application.meshcloud_replicator]
 }
 
 //---------------------------------------------------------------------------
@@ -186,21 +186,21 @@ resource "azuread_app_role_assignment" "meshcloud_replicator-directory" {
   app_role_id         = data.azuread_service_principal.msgraph.app_role_ids["Directory.Read.All"]
   principal_object_id = azuread_service_principal.meshcloud_replicator.object_id
   resource_object_id  = data.azuread_service_principal.msgraph.object_id
-   depends_on = [ azuread_application.meshcloud_replicator ]
+  depends_on          = [azuread_application.meshcloud_replicator]
 }
 
 resource "azuread_app_role_assignment" "meshcloud_replicator-group" {
   app_role_id         = data.azuread_service_principal.msgraph.app_role_ids["Group.ReadWrite.All"]
   principal_object_id = azuread_service_principal.meshcloud_replicator.object_id
   resource_object_id  = data.azuread_service_principal.msgraph.object_id
-   depends_on = [ azuread_application.meshcloud_replicator ]
+  depends_on          = [azuread_application.meshcloud_replicator]
 }
 
 resource "azuread_app_role_assignment" "meshcloud_replicator-user" {
   app_role_id         = data.azuread_service_principal.msgraph.app_role_ids["User.Invite.All"]
   principal_object_id = azuread_service_principal.meshcloud_replicator.object_id
   resource_object_id  = data.azuread_service_principal.msgraph.object_id
-   depends_on = [ azuread_application.meshcloud_replicator ]
+  depends_on          = [azuread_application.meshcloud_replicator]
 }
 
 
