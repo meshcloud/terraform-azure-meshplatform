@@ -1,13 +1,13 @@
 terraform {
-  required_version = ">= 1.0"
+  required_version = "> 1.0"
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = "3.3.0"
+      version = "3.81.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = "2.18.0"
+      version = "2.46.0"
     }
   }
 }
@@ -15,7 +15,7 @@ terraform {
 data "azuread_application_published_app_ids" "well_known" {}
 
 data "azuread_service_principal" "msgraph" {
-  application_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
+  client_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
 }
 
 resource "azuread_application" "meshcloud_idp_lookup" {
@@ -50,7 +50,7 @@ resource "azuread_application" "meshcloud_idp_lookup" {
 }
 
 resource "azuread_service_principal" "meshcloud_idp_lookup" {
-  application_id = azuread_application.meshcloud_idp_lookup.application_id
+  client_id = azuread_application.meshcloud_idp_lookup.client_id
 }
 
 resource "azuread_app_role_assignment" "meshcloud_idp_lookup" {
