@@ -2,7 +2,7 @@ output "service_principal" {
   description = "Service Principal application id and object id"
   value = {
     object_id = azuread_service_principal.meshcloud_idp_lookup.id
-    app_id    = azuread_service_principal.meshcloud_idp_lookup.application_id
+    app_id    = azuread_service_principal.meshcloud_idp_lookup.client_id
     password  = "Execute `terraform output idp_lookup_service_principal_password` to see the password"
   }
 }
