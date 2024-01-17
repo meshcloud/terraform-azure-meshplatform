@@ -15,6 +15,12 @@ variable "replicator_assignment_scopes" {
   description = "Names or UUIDs of the Management Groups which replicator should manage."
 }
 
+variable "sso_enabled" {
+  type        = bool
+  default     = true
+  description = "Whether to create SSO Service Principal or not."
+}
+
 # ---------------------------------------------------------------------------------------------------------------------
 # OPTIONAL PARAMETERS
 # These parameters have reasonable defaults.
