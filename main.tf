@@ -42,16 +42,6 @@ module "idp_lookup_service_principal" {
   service_principal_name_suffix = var.service_principal_name_suffix
 }
 
-module "uami_blueprint_user_principal" {
-  count  = length(var.subscriptions)
-  source = "./modules/uami-blueprint-user-principal/"
-
-  service_principal_name_suffix = var.service_principal_name_suffix
-  subscriptions                 = var.subscriptions
-}
-
-data "azuread_client_config" "current" {}
-
 # facilitate migration from v0.1.0 of the module
 moved {
   from = module.replicator_spp
