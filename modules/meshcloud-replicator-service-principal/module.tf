@@ -19,8 +19,8 @@ terraform {
 // Role Definition for the Replicator on the specified Scope
 //---------------------------------------------------------------------------
 resource "azurerm_role_definition" "meshcloud_replicator" {
-  name        = "replicator.${var.service_principal_name_suffix}"
-  scope       = var.scope
+  name        = var.service_principal_name
+  scope       = var.custom_role_scope
   description = "Permissions required by meshcloud in order to configure subscriptions and manage users"
 
   permissions {
@@ -59,7 +59,7 @@ resource "azurerm_role_definition" "meshcloud_replicator" {
   }
 
   assignable_scopes = [
-    var.scope
+    var.custom_role_scope
   ]
 }
 
@@ -83,7 +83,7 @@ data "azuread_application_template" "enterprise_app" {
   template_id = "8adf8e6e-67b2-4cf2-a259-e3dc5476c621"
 }
 resource "azuread_application" "meshcloud_replicator" {
-  display_name = "replicator.${var.service_principal_name_suffix}"
+  display_name = var.service_principal_name
   template_id  = data.azuread_application_template.enterprise_app.template_id
   feature_tags {
     enterprise = true
@@ -173,7 +173,8 @@ resource "azuread_service_principal" "meshcloud_replicator" {
 // Assign the created ARM role to the Enterprise application
 //---------------------------------------------------------------------------
 resource "azurerm_role_assignment" "meshcloud_replicator" {
-  scope              = var.scope
+  for_each           = var.assignment_scopes
+  scope              = each.key
   role_definition_id = azurerm_role_definition.meshcloud_replicator.role_definition_resource_id
   principal_id       = azuread_service_principal.meshcloud_replicator.id
   depends_on         = [azuread_service_principal.meshcloud_replicator]
@@ -213,7 +214,7 @@ resource "azurerm_policy_definition" "privilege_escalation_prevention" {
   policy_type         = "Custom"
   mode                = "All"
   display_name        = "meshcloud Privilege Escalation Prevention"
-  management_group_id = var.scope
+  management_group_id = var.custom_role_scope
 
   policy_rule = <<RULE
   {
@@ -240,5 +241,5 @@ RULE
 resource "azurerm_management_group_policy_assignment" "privilege-escalation-prevention" {
   name                 = "mesh-priv-escal-prev"
   policy_definition_id = azurerm_policy_definition.privilege_escalation_prevention.id
-  management_group_id  = var.scope
+  management_group_id  = var.custom_role_scope
 }

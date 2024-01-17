@@ -20,7 +20,7 @@ terraform {
 //---------------------------------------------------------------------------
 # For now we are using the following built-in role
 resource "azurerm_role_assignment" "meshcloud_metering" {
-  scope                = var.scope
+  scope                = var.assignment_scope
   role_definition_name = "Cost Management Reader"
   principal_id         = azuread_service_principal.meshcloud_metering.id
   depends_on           = [azuread_service_principal.meshcloud_metering]
@@ -31,7 +31,7 @@ resource "azurerm_role_assignment" "meshcloud_metering" {
 // Create New application in Microsoft Entra ID
 //---------------------------------------------------------------------------
 resource "azuread_application" "meshcloud_metering" {
-  display_name = "metering.${var.service_principal_name_suffix}"
+  display_name = var.service_principal_name
 
   feature_tags {
     enterprise = true
