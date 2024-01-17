@@ -12,16 +12,30 @@ terraform {
   }
 }
 
-data "azurerm_management_group" "root" {
-  name = var.mgmt_group_name
+data "azurerm_management_group" "replicator_custom_role_scope" {
+  name = var.replicator_custom_role_scope
 }
+
+data "azurerm_management_group" "replicator_assignment_scopes" {
+  for_each = var.replicator_assignment_scopes
+  name     = each.key
+}
+
+locals {
+  replicator_assignment_scopes = [
+    for management_group in data.azurerm_management_group.replicator_assignment_scopes : management_group.id
+  ]
+}
+
+data "azuread_client_config" "current" {}
 
 module "replicator_service_principal" {
   count  = var.replicator_enabled || var.replicator_rg_enabled ? 1 : 0
   source = "./modules/meshcloud-replicator-service-principal/"
 
-  service_principal_name_suffix = var.service_principal_name_suffix
-  scope                         = data.azurerm_management_group.root.id
+  service_principal_name = var.replicator_service_principal_name
+  custom_role_scope      = data.azurerm_management_group.replicator_custom_role_scope.id
+  assignment_scopes      = local.replicator_assignment_scopes
 
   additional_required_resource_accesses = var.additional_required_resource_accesses
   additional_permissions                = var.additional_permissions
@@ -31,15 +45,8 @@ module "metering_service_principal" {
   count  = var.metering_enabled ? 1 : 0
   source = "./modules/meshcloud-metering-service-principal/"
 
-  service_principal_name_suffix = var.service_principal_name_suffix
-  scope                         = data.azurerm_management_group.root.id
-}
-
-module "idp_lookup_service_principal" {
-  count  = var.idplookup_enabled ? 1 : 0
-  source = "./modules/meshcloud-idp-lookup-service-principal/"
-
-  service_principal_name_suffix = var.service_principal_name_suffix
+  service_principal_name = var.metering_service_principal_name
+  assignment_scope       = data.azuread_client_config.current.tenant_id
 }
 
 # facilitate migration from v0.1.0 of the module

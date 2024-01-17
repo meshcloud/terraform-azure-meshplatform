@@ -1,11 +1,16 @@
-variable "service_principal_name_suffix" {
+variable "service_principal_name" {
   type        = string
-  description = "Service principal name suffix."
+  description = "Display name of the replicator service principal."
 }
 
-variable "scope" {
+variable "custom_role_scope" {
   type        = string
-  description = "The scope to which Service Principal permissions should be assigned to. Usually this is the management group id of form `/providers/Microsoft.Management/managementGroups/<tenantId>` that sits atop the subscriptions."
+  description = "The scope to which Service Principal permissions can be assigned to. Usually this is the management group id of form `/providers/Microsoft.Management/managementGroups/<tenantId>` that sits atop the subscriptions."
+}
+
+variable "assignment_scopes" {
+  type        = list(string)
+  description = "The scopes to which Service Principal permissions is assigned to. List of management group id of form `/providers/Microsoft.Management/managementGroups/<mgmtGroupId>/`."
 }
 
 variable "additional_required_resource_accesses" {

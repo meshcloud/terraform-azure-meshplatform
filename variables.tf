@@ -1,11 +1,18 @@
-variable "service_principal_name_suffix" {
+variable "replicator_service_principal_name" {
   type        = string
-  description = "Service principal name suffix. Make sure this is unique."
+  default     = "replicator"
+  description = "Service principal for managing subscriptions. Replicator is the name of the meshStack component. Name must be unique per Entra ID."
 }
 
-variable "mgmt_group_name" {
+variable "metering_service_principal_name" {
   type        = string
-  description = "The name or UUID of the Management Group."
+  default     = "kraken"
+  description = "Service principal for collecting cost data. Kraken ist the name of the meshStack component. Name must be unique per Entra ID."
+}
+
+variable "replicator_assignment_scopes" {
+  type        = list(string)
+  description = "Names or UUIDs of the Management Groups which replicator should manage."
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -17,6 +24,12 @@ variable "replicator_enabled" {
   type        = bool
   default     = true
   description = "Whether to create replicator Service Principal or not."
+}
+
+variable "replicator_custom_role_scope" {
+  type        = string
+  default     = "Tenant Root Group"
+  description = "Name or UUID of the Management Group of the replicator custom role definition. The custom role definition must be available for all assignment scopes."
 }
 
 variable "replicator_rg_enabled" {
