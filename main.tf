@@ -54,7 +54,7 @@ module "metering_service_principal" {
   source = "./modules/meshcloud-metering-service-principal/"
 
   service_principal_name = var.metering_service_principal_name
-  assignment_scopes       = local.metering_assignment_scopes
+  assignment_scopes      = local.metering_assignment_scopes
 }
 
 module "sso_service_principal" {
