@@ -129,16 +129,6 @@ resource "azuread_application" "meshcloud_replicator" {
       }
     }
   }
-
-  # NOTE: currently it is not possible to automate the "Grant admin consent button"
-  # https://github.com/terraform-providers/terraform-provider-azuread/issues/33
-  # As a result we have to ignore this value in terraform for now
-  # In addition please keep in mind you have to grant admin consent manually
-  lifecycle {
-    ignore_changes = [
-      app_role
-    ]
-  }
 }
 
 //---------------------------------------------------------------------------

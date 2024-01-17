@@ -58,9 +58,3 @@ variable "additional_permissions" {
   default     = []
   description = "Additional Subscription-Level Permissions the Service Principal needs."
 }
-
-variable "subscriptions" {
-  type        = list(any)
-  default     = []
-  description = "The scope to which UAMI blueprint service principal role assignment is applied."
-}
