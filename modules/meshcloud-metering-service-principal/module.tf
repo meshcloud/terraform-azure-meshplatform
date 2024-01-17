@@ -18,9 +18,9 @@ terraform {
 //---------------------------------------------------------------------------
 // Assign Cost Management reader role to the enterprise application
 //---------------------------------------------------------------------------
-# For now we are using the following built-in role
 resource "azurerm_role_assignment" "meshcloud_metering" {
-  scope                = var.assignment_scope
+  for_each             = toset(var.assignment_scopes)
+  scope                = each.key
   role_definition_name = "Cost Management Reader"
   principal_id         = azuread_service_principal.meshcloud_metering.id
   depends_on           = [azuread_service_principal.meshcloud_metering]

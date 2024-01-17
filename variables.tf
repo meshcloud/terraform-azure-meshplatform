@@ -4,10 +4,9 @@ variable "replicator_service_principal_name" {
   description = "Service principal for managing subscriptions. Replicator is the name of the meshStack component. Name must be unique per Entra ID."
 }
 
-variable "metering_service_principal_name" {
+variable "replicator_custom_role_scope" {
   type        = string
-  default     = "kraken"
-  description = "Service principal for collecting cost data. Kraken ist the name of the meshStack component. Name must be unique per Entra ID."
+  description = "Name or UUID of the Management Group of the replicator custom role definition. The custom role definition must be available for all assignment scopes."
 }
 
 variable "replicator_assignment_scopes" {
@@ -15,10 +14,33 @@ variable "replicator_assignment_scopes" {
   description = "Names or UUIDs of the Management Groups which replicator should manage."
 }
 
+variable "metering_service_principal_name" {
+  type        = string
+  default     = "kraken"
+  description = "Service principal for collecting cost data. Kraken ist the name of the meshStack component. Name must be unique per Entra ID."
+}
+
+variable "metering_assignment_scopes" {
+  type        = list(string)
+  description = "Names or UUIDs of the Management Groups that kraken should collect costs for."
+}
+
 variable "sso_enabled" {
   type        = bool
   default     = true
   description = "Whether to create SSO Service Principal or not."
+}
+
+variable "sso_service_principal_name" {
+  type        = string
+  default     = "sso"
+  description = "Service principal for Entra ID SSO. Name must be unique per Entra ID."
+}
+
+variable "sso_meshstack_redirect_uri" {
+  type        = string
+  default     = "<replace with uri>"
+  description = "Redirect URI that was provided by meshcloud. It is individual per meshStack."
 }
 
 # ---------------------------------------------------------------------------------------------------------------------
@@ -30,12 +52,6 @@ variable "replicator_enabled" {
   type        = bool
   default     = true
   description = "Whether to create replicator Service Principal or not."
-}
-
-variable "replicator_custom_role_scope" {
-  type        = string
-  default     = "Tenant Root Group"
-  description = "Name or UUID of the Management Group of the replicator custom role definition. The custom role definition must be available for all assignment scopes."
 }
 
 variable "replicator_rg_enabled" {
