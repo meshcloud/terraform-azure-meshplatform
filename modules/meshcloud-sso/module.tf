@@ -11,6 +11,10 @@ terraform {
     }
   }
 }
+//---------------------------------------------------------------------------
+// Queries Entra ID for information about well-known application IDs.
+// Retrieve details about the service principal 
+//---------------------------------------------------------------------------
 
 data "azuread_application_published_app_ids" "well_known" {}
 
@@ -18,8 +22,21 @@ data "azuread_service_principal" "msgraph" {
   client_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
 }
 
+//---------------------------------------------------------------------------
+// Create New application in Microsoft Entra ID
+//---------------------------------------------------------------------------
+data "azuread_application_template" "enterprise_app" {
+  # will create the application based on this template ID to have features like Provisioning
+  # available in the enterprise application
+  template_id = "8adf8e6e-67b2-4cf2-a259-e3dc5476c621"
+}
+
 resource "azuread_application" "meshcloud_sso" {
-  display_name = "sso.${var.service_principal_name_suffix}"
+  display_name = var.service_principal_name
+  template_id  = data.azuread_application_template.enterprise_app.template_id
+  feature_tags {
+    enterprise = true
+  }
 
   required_resource_access {
     resource_app_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
@@ -29,18 +46,16 @@ resource "azuread_application" "meshcloud_sso" {
       type = "Scope"
     }
   }
-
   web {
     redirect_uris = [var.meshstack_redirect_uri]
   }
+}
 
-  # As far as we know it is not possible to automate the "Grant admin consent button" for app registrations
-  # You have to grant admin consent manually
-  lifecycle {
-    ignore_changes = [
-      app_role
-    ]
-  }
+resource "azuread_app_role_assignment" "meshcloud_sso_user_read" {
+  app_role_id         = data.azuread_service_principal.msgraph.app_role_ids["User.Read"]
+  principal_object_id = azuread_application.meshcloud_sso.object_id
+  resource_object_id  = data.azuread_service_principal.msgraph.object_id
+  depends_on          = [azuread_application.meshcloud_sso]
 }
 
 resource "azuread_application_password" "meshcloud_sso" {

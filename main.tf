@@ -49,6 +49,13 @@ module "metering_service_principal" {
   assignment_scope       = data.azuread_client_config.current.tenant_id
 }
 
+module "sso_service_principal" {
+  count  = var.sso_enabled ? 1 : 0
+  source = "./modules/meshcloud-sso/"
+
+  service_principal_name = var.metering_service_principal_name
+}
+
 # facilitate migration from v0.1.0 of the module
 moved {
   from = module.replicator_spp
