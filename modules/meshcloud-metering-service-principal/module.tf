@@ -15,36 +15,6 @@ terraform {
   }
 }
 
-# At this point, we would have liked to use a custom role for the following reasons:
-# - permissions are explicitedly stated and can easily be fine tuned in the future
-# - we are independent of changes to Built-In Roles by Microsoft
-# - we could have restricted the existence of the role to just it's scope
-# HOWEVER, since Microsoft decided you cannot assign the 'Microsoft.Billing/billingPeriods/read' via the api (Status=400 Code="InvalidActionOrNotAction" Message="'Microsoft.Billing/billingPeriods/read' does not match any of the actions supported by the providers.")
-# we have to use a built in role for now that has that permission. If in the future they fix this problem, we can use the following custom role snippet
-# resource azurerm_role_definition meshcloud_metering {
-#   name        = "metering.${var.service_principal_name_suffix}"
-#   scope       = var.scope
-#   description = "Permissions required by meshcloud in order to supply billing and usage data via its metering module"
-
-#   permissions {
-#     actions = [
-#       "Microsoft.Consumption/*/read",
-#       "Microsoft.CostManagement/*/read",
-#       "Microsoft.Billing/billingPeriods/read",
-#       "Microsoft.Resources/subscriptions/read",
-#       "Microsoft.Resources/subscriptions/resourceGroups/read",
-#       "Microsoft.Support/*",
-#       "Microsoft.Advisor/configurations/read",
-#       "Microsoft.Advisor/recommendations/read",
-#       "Microsoft.Management/managementGroups/read"
-#     ]
-#   }
-
-#   assignable_scopes = [
-#     var.scope
-#   ]
-# }
-
 //---------------------------------------------------------------------------
 // Assign Cost Management reader role to the enterprise application
 //---------------------------------------------------------------------------
