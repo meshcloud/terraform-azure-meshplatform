@@ -31,12 +31,6 @@ variable "metering_enabled" {
   description = "Whether to create Metering Service Principal or not."
 }
 
-variable "idplookup_enabled" {
-  type        = bool
-  default     = false
-  description = "Whether to create idplookup Service Principal or not."
-}
-
 # additional_required_resource_accesses are useful if replicator needs
 # resource access specifically scoped to a meshstack implementation (e.g. accessing an azure function)
 # For an example usage, see https://github.com/meshcloud/terraform-azure-meshplatform/tree/main/examples/azure-integration-with-additional-resource-access

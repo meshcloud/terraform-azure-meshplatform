@@ -52,8 +52,3 @@ moved {
   from = module.metering_spp
   to   = module.metering_service_principal
 }
-
-moved {
-  from = module.idp_lookup_spp
-  to   = module.idp_lookup_service_principal
-}
