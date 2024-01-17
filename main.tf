@@ -17,13 +17,21 @@ data "azurerm_management_group" "replicator_custom_role_scope" {
 }
 
 data "azurerm_management_group" "replicator_assignment_scopes" {
-  for_each = var.replicator_assignment_scopes
+  for_each = toset(var.replicator_assignment_scopes)
+  name     = each.key
+}
+
+data "azurerm_management_group" "metering_assignment_scopes" {
+  for_each = toset(var.metering_assignment_scopes)
   name     = each.key
 }
 
 locals {
   replicator_assignment_scopes = [
     for management_group in data.azurerm_management_group.replicator_assignment_scopes : management_group.id
+  ]
+  metering_assignment_scopes = [
+    for management_group in data.azurerm_management_group.metering_assignment_scopes : management_group.id
   ]
 }
 
@@ -46,14 +54,15 @@ module "metering_service_principal" {
   source = "./modules/meshcloud-metering-service-principal/"
 
   service_principal_name = var.metering_service_principal_name
-  assignment_scope       = data.azuread_client_config.current.tenant_id
+  assignment_scopes       = local.metering_assignment_scopes
 }
 
 module "sso_service_principal" {
   count  = var.sso_enabled ? 1 : 0
   source = "./modules/meshcloud-sso/"
 
-  service_principal_name = var.metering_service_principal_name
+  service_principal_name = var.sso_service_principal_name
+  meshstack_redirect_uri = var.sso_meshstack_redirect_uri
 }
 
 # facilitate migration from v0.1.0 of the module

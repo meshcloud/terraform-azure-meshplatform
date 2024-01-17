@@ -163,7 +163,7 @@ resource "azuread_service_principal" "meshcloud_replicator" {
 // Assign the created ARM role to the Enterprise application
 //---------------------------------------------------------------------------
 resource "azurerm_role_assignment" "meshcloud_replicator" {
-  for_each           = var.assignment_scopes
+  for_each           = toset(var.assignment_scopes)
   scope              = each.key
   role_definition_id = azurerm_role_definition.meshcloud_replicator.role_definition_resource_id
   principal_id       = azuread_service_principal.meshcloud_replicator.id
