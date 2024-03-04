@@ -10,6 +10,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 ### Added
 
 - Added privilege escalation prevention policy for replicator
+- New configuration option `workload_identity_federation` to create federated credentials. Unset by default.
+- New configuration option `create_passwords` to enable/disable creation of password credentials. Defaults to `true`.
 
 ## [v0.2.0]
 

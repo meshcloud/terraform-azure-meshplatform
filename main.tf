@@ -35,7 +35,15 @@ locals {
   ]
 }
 
-data "azuread_client_config" "current" {}
+data "azuread_client_config" "current" {
+  # This precondition doesn't have anything to do with the data source but we want to check this condition on the top level.
+  lifecycle {
+    precondition {
+      condition     = anytrue([var.create_passwords, var.workload_identity_federation != null])
+      error_message = "Set at least one of `create_passwords` and `workload_identity_federation`."
+    }
+  }
+}
 
 module "replicator_service_principal" {
   count  = var.replicator_enabled || var.replicator_rg_enabled ? 1 : 0
@@ -47,6 +55,12 @@ module "replicator_service_principal" {
 
   additional_required_resource_accesses = var.additional_required_resource_accesses
   additional_permissions                = var.additional_permissions
+
+  create_password = var.create_passwords
+  workload_identity_federation = var.workload_identity_federation == null ? null : {
+    issuer  = var.workload_identity_federation.issuer,
+    subject = var.workload_identity_federation.replicator_subject
+  }
 }
 
 module "metering_service_principal" {
@@ -55,6 +69,12 @@ module "metering_service_principal" {
 
   service_principal_name = var.metering_service_principal_name
   assignment_scopes      = local.metering_assignment_scopes
+
+  create_password = var.create_passwords
+  workload_identity_federation = var.workload_identity_federation == null ? null : {
+    issuer  = var.workload_identity_federation.issuer,
+    subject = var.workload_identity_federation.kraken_subject
+  }
 }
 
 module "sso_service_principal" {
