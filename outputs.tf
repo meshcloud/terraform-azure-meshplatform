@@ -1,4 +1,3 @@
-
 output "replicator_service_principal" {
   description = "Replicator Service Principal."
   value       = length(module.replicator_service_principal) > 0 ? module.replicator_service_principal[0].credentials : null

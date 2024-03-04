@@ -80,3 +80,15 @@ variable "additional_permissions" {
   default     = []
   description = "Additional Subscription-Level Permissions the Service Principal needs."
 }
+
+variable "create_passwords" {
+  type        = bool
+  default     = true
+  description = "Create passwords for service principals."
+}
+
+variable "workload_identity_federation" {
+  default     = null
+  description = "Enable workload identity federation by creating federated credentials for enterprise applications. Usually you'd receive the required settings when attempting to configure a platform with workload identity federation in meshStack."
+  type        = object({ issuer = string, replicator_subject = string, kraken_subject = string })
+}

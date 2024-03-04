@@ -132,20 +132,7 @@ resource "azuread_application" "meshcloud_replicator" {
 }
 
 //---------------------------------------------------------------------------
-// Create new client secret and associate it with the previous application
-//---------------------------------------------------------------------------
-resource "time_rotating" "replicator_secret_rotation" {
-  rotation_days = 365
-}
-resource "azuread_application_password" "application_pw" {
-  application_id = azuread_application.meshcloud_replicator.id
-  rotate_when_changed = {
-    rotation = time_rotating.replicator_secret_rotation.id
-  }
-}
-
-//---------------------------------------------------------------------------
-// Create new Enterprise Application and associate it with the previous application
+// Create new Enterprise Application and associate it with the application
 //---------------------------------------------------------------------------
 resource "azuread_service_principal" "meshcloud_replicator" {
   client_id = azuread_application.meshcloud_replicator.client_id
