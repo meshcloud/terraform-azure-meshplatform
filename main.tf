@@ -49,6 +49,8 @@ module "replicator_service_principal" {
   count  = var.replicator_enabled || var.replicator_rg_enabled ? 1 : 0
   source = "./modules/meshcloud-replicator-service-principal/"
 
+  replicator_rg_enabled = var.replicator_rg_enabled
+
   service_principal_name = var.replicator_service_principal_name
   custom_role_scope      = data.azurerm_management_group.replicator_custom_role_scope.id
   assignment_scopes      = local.replicator_assignment_scopes
