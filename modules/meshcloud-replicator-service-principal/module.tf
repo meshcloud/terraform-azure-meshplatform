@@ -15,6 +15,10 @@ terraform {
   }
 }
 
+locals {
+  spp_hash = substr(sha256(var.service_principal_name), 0, 5)
+}
+
 //---------------------------------------------------------------------------
 // Role Definition for the Replicator on the specified Scope
 //---------------------------------------------------------------------------
@@ -187,7 +191,7 @@ resource "azuread_app_role_assignment" "meshcloud_replicator-user" {
 // Assign it to the specified scope
 //---------------------------------------------------------------------------
 resource "azurerm_policy_definition" "privilege_escalation_prevention" {
-  name                = "meshcloud-privilege-escalation-prevention"
+  name                = "meshcloud-privilege-escalation-prevention-${local.spp_hash}"
   policy_type         = "Custom"
   mode                = "All"
   display_name        = "meshcloud Privilege Escalation Prevention"
@@ -216,7 +220,7 @@ RULE
 
 
 resource "azurerm_management_group_policy_assignment" "privilege-escalation-prevention" {
-  name                 = "mesh-priv-escal-prev"
+  name                 = "msh-escal-prev-${local.spp_hash}"
   policy_definition_id = azurerm_policy_definition.privilege_escalation_prevention.id
   management_group_id  = var.custom_role_scope
 }
