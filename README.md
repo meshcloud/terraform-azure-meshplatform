@@ -20,9 +20,11 @@ To run this module, you need the following:
 - Permissions on Azure Resource Level: User Access Administrator on the Management Group that should be managed by meshStack
 
 ### If using an Enterprise Agreement
+
 - Permissions on [Enterprise Agreement level](https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles): Account Owner for the enrollment account that should be used for creating subscriptions
 
 ### If using a Microsoft Customer Agreement
+
 - Permissions in Source Tenant for granting access to the billing account used for subscription creation: Account Administrator
 
 ## How to Use This Module
@@ -62,20 +64,24 @@ To run this module, you need the following:
     ```
 
 #### If Using an Enterprise Agreement
+
 1. Grant access on the enrollment account as described in the section [Use an Enteprise Enrollment](https://docs.meshcloud.io/docs/meshstack.how-to.integrate-meshplatform-azure-manually.html#use-an-enterprise-enrollment).
 
 #### If Using Microsoft Customer Agreement
+>
+> Until <https://github.com/hashicorp/terraform-provider-azurerm/issues/15211> is resolved, MCA service principal setup can only be done manually.
+
 1. Switch to the Tenant Directory that contains your Billing Account and follow the steps to [Register an Application](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#register-an-application) and [Add Credentials](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#add-credentials). Make sure to copy down the **Directory (tenant) ID**, **Application (client) ID**, **Object ID** and the **App Secret** value that was generated. The App Secret is only visible during the creation process.
 2. You must grant the Enterprise Application permissions on the Billing Account, Billing Profile, or Invoice Section so that it can generate new subscriptions. Follow the steps in [this guide](https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/understand-mca-roles#manage-billing-roles-in-the-azure-portal) to grant the necessary permissions. You must grant one of the following permissions
-  - Billing Account or Billing Profile: Owner, Contributor
-  - Invoice Section: Owner, Contributor, Azure Subscription Creator
+    - Billing Account or Billing Profile: Owner, Contributor
+    - Invoice Section: Owner, Contributor, Azure Subscription Creator
 3. Write down the Billing Scope ID that looks something like this <samp>/providers/Microsoft.Billing/billingAccounts/5e98e158-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_xxxx-xx-xx/billingProfiles/AW4F-xxxx-xxx-xxx/invoiceSections/SH3V-xxxx-xxx-xxx</samp>
 4. Use the following information to configure the platform in meshStack
-  - Billing Scope
-  - Destination Tenant ID
-  - Source Tenant ID
-  - Billing Account Principal Client ID (Application Client ID that will be used to create new subscriptions)
-  - Principal Client Secret (Application Secret created in the Source Tenant)
+    - Billing Scope
+    - Destination Tenant ID
+    - Source Tenant ID
+    - Billing Account Principal Client ID (Application Client ID that will be used to create new subscriptions)
+    - Principal Client Secret (Application Secret created in the Source Tenant)
 
 ### Using CLI
 
