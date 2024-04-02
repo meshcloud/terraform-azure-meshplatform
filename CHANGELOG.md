@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.7.0]
+
+### Added
+
+- Microsoft Customer Agreement (MCA) support
+
 ## [v0.6.0]
 
 ### Added
@@ -52,10 +58,11 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial Release
 
-[unreleased]: https://github.com/meshcloud/terraform-azure-meshplatform/compare/v0.6.0...HEAD
+[unreleased]: https://github.com/meshcloud/terraform-azure-meshplatform/compare/v0.7.0...HEAD
 [v0.1.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.1.0
 [v0.2.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.2.0
 [v0.3.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.3.0
 [v0.4.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.4.0
 [v0.5.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.5.0
 [v0.6.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.6.0
+[v0.7.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.7.0

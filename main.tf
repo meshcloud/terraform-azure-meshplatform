@@ -9,7 +9,27 @@ terraform {
       source  = "hashicorp/azuread"
       version = "2.46.0"
     }
+    azapi = {
+      source  = "Azure/azapi"
+      version = "1.13.1"
+    }
   }
+}
+
+provider "azapi" {
+  alias                      = "azapi_mca_source"
+  tenant_id                  = var.mca.source_tenant
+  skip_provider_registration = true
+}
+provider "azuread" {
+  alias     = "azuread_mca_source"
+  tenant_id = var.mca.source_tenant
+}
+provider "azurerm" {
+  features {}
+  alias                      = "azurerm_mca_source"
+  tenant_id                  = var.mca.source_tenant
+  skip_provider_registration = true
 }
 
 data "azurerm_management_group" "replicator_custom_role_scope" {
@@ -65,6 +85,23 @@ module "replicator_service_principal" {
     issuer  = var.workload_identity_federation.issuer,
     subject = var.workload_identity_federation.replicator_subject
   }
+}
+
+module "mca_service_principal" {
+  providers = {
+    azapi   = azapi.azapi_mca_source
+    azurerm = azurerm.azurerm_mca_source
+    azuread = azuread.azuread_mca_source
+  }
+
+  count  = var.mca != null ? 1 : 0
+  source = "./modules/meshcloud-mca-service-principal"
+
+  service_principal_name = var.mca.service_principal_name
+
+  billing_account_name = var.mca.billing_account_name
+  billing_profile_name = var.mca.billing_profile_name
+  invoice_section_name = var.mca.invoice_section_name
 }
 
 module "metering_service_principal" {

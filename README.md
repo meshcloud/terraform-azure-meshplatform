@@ -81,20 +81,32 @@ To run this module, you need the following:
 
 ### Using Microsoft Customer Agreement
 
-> Until <https://github.com/hashicorp/terraform-provider-azurerm/issues/15211> is resolved, MCA service principal setup can only be done manually outside of terraform.
+**Prerequisites**:
 
-1. Ensure you have permissions in the source AAD Tenant for granting access to the billing account used for subscription creation using the `Account Administrator` role
-2. Switch to the Tenant Directory that contains your Billing Account and follow the steps to [Register an Application](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#register-an-application) and [Add Credentials](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#add-credentials). Make sure to copy down the **Directory (tenant) ID**, **Application (client) ID**, **Object ID** and the **App Secret** value that was generated. The App Secret is only visible during the creation process.
-3. You must grant the Enterprise Application permissions on the Billing Account, Billing Profile, or Invoice Section so that it can generate new subscriptions. Follow the steps in [this guide](https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/understand-mca-roles#manage-billing-roles-in-the-azure-portal) to grant the necessary permissions. You must grant one of the following permissions
-    - Billing Account or Billing Profile: Owner, Contributor
-    - Invoice Section: Owner, Contributor, Azure Subscription Creator
-4. Write down the Billing Scope ID that looks something like this <samp>/providers/Microsoft.Billing/billingAccounts/5e98e158-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_xxxx-xx-xx/billingProfiles/AW4F-xxxx-xxx-xxx/invoiceSections/SH3V-xxxx-xxx-xxx</samp>
-5. Use the following information to configure the platform in meshStack
-    - Billing Scope
-    - Destination Tenant ID
-    - Source Tenant ID
-    - Billing Account Principal Client ID (Application Client ID that will be used to create new subscriptions)
-    - Principal Client Secret (Application Secret created in the Source Tenant)
+- Ensure you have permissions in the source AAD Tenant for granting access to the billing account used for subscription creation using the `Account Administrator` role
+
+**Create an MCA service principal**:
+
+Add an `mca` block when calling this module.
+
+e.g.:
+
+```hcl
+module "meshplatform" {
+  source  = "meshcloud/meshplatform/azure"
+  # required inputs
+
+  mca = {
+      source_tenant          = "<aad-tenant-id>"
+      service_principal_name = "your-mca-sp-name"
+      billing_account_name   = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_xxxx-xx-xx"
+      billing_profile_name   = "xxxx-xxxx-xxx-xxx"
+      invoice_section_name   = "xxxx-xxxx-xxx-xxx"
+  }
+}
+```
+
+> note that the source_tenant is the tenant ID of the AAD with the billing account in which you can create subscriptions. This module supports creating MCA and Replicator service principals in different AAD tenants.
 
 ### Using Pre-provisioned Subscriptions
 
@@ -147,6 +159,7 @@ Before opening a Pull Request, please do the following:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | > 1.1 |
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | 1.13.1 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | 2.46.0 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 3.81.0 |
 
@@ -161,6 +174,7 @@ Before opening a Pull Request, please do the following:
 
 | Name | Source | Version |
 |------|--------|---------|
+| <a name="module_mca_service_principal"></a> [mca\_service\_principal](#module\_mca\_service\_principal) | ./modules/meshcloud-mca-service-principal | n/a |
 | <a name="module_metering_service_principal"></a> [metering\_service\_principal](#module\_metering\_service\_principal) | ./modules/meshcloud-metering-service-principal/ | n/a |
 | <a name="module_replicator_service_principal"></a> [replicator\_service\_principal](#module\_replicator\_service\_principal) | ./modules/meshcloud-replicator-service-principal/ | n/a |
 | <a name="module_sso_service_principal"></a> [sso\_service\_principal](#module\_sso\_service\_principal) | ./modules/meshcloud-sso/ | n/a |
@@ -183,6 +197,7 @@ Before opening a Pull Request, please do the following:
 | <a name="input_can_cancel_subscriptions_in_scopes"></a> [can\_cancel\_subscriptions\_in\_scopes](#input\_can\_cancel\_subscriptions\_in\_scopes) | The scopes to which Service Principal cancel subscription permission is assigned to. List of management group id of form `/providers/Microsoft.Management/managementGroups/<mgmtGroupId>/`. | `list(string)` | `[]` | no |
 | <a name="input_can_delete_rgs_in_scopes"></a> [can\_delete\_rgs\_in\_scopes](#input\_can\_delete\_rgs\_in\_scopes) | The scopes to which Service Principal delete resource group permission is assigned to. Only relevant when `replicator_rg_enabled`. List of subscription scopes of form `/subscriptions/<subscriptionId>`. | `list(string)` | `[]` | no |
 | <a name="input_create_passwords"></a> [create\_passwords](#input\_create\_passwords) | Create passwords for service principals. | `bool` | `true` | no |
+| <a name="input_mca"></a> [mca](#input\_mca) | n/a | <pre>object({<br>    source_tenant          = string<br>    service_principal_name = string<br>    billing_account_name   = string<br>    billing_profile_name   = string<br>    invoice_section_name   = string<br>  })</pre> | `null` | no |
 | <a name="input_metering_assignment_scopes"></a> [metering\_assignment\_scopes](#input\_metering\_assignment\_scopes) | Names or UUIDs of the Management Groups that kraken should collect costs for. | `list(string)` | n/a | yes |
 | <a name="input_metering_enabled"></a> [metering\_enabled](#input\_metering\_enabled) | Whether to create Metering Service Principal or not. | `bool` | `true` | no |
 | <a name="input_metering_service_principal_name"></a> [metering\_service\_principal\_name](#input\_metering\_service\_principal\_name) | Service principal for collecting cost data. Kraken ist the name of the meshStack component. Name must be unique per Entra ID. | `string` | `"kraken"` | no |
@@ -201,6 +216,8 @@ Before opening a Pull Request, please do the following:
 | Name | Description |
 |------|-------------|
 | <a name="output_azure_ad_tenant_id"></a> [azure\_ad\_tenant\_id](#output\_azure\_ad\_tenant\_id) | The Azure AD tenant id. |
+| <a name="output_mca_service_principal"></a> [mca\_service\_principal](#output\_mca\_service\_principal) | MCA Service Principal. |
+| <a name="output_mca_service_principal_password"></a> [mca\_service\_principal\_password](#output\_mca\_service\_principal\_password) | Password for MCA Service Principal. |
 | <a name="output_metering_service_principal"></a> [metering\_service\_principal](#output\_metering\_service\_principal) | Metering Service Principal. |
 | <a name="output_metering_service_principal_password"></a> [metering\_service\_principal\_password](#output\_metering\_service\_principal\_password) | Password for Metering Service Principal. |
 | <a name="output_replicator_service_principal"></a> [replicator\_service\_principal](#output\_replicator\_service\_principal) | Replicator Service Principal. |
