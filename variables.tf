@@ -104,3 +104,14 @@ variable "workload_identity_federation" {
   description = "Enable workload identity federation by creating federated credentials for enterprise applications. Usually you'd receive the required settings when attempting to configure a platform with workload identity federation in meshStack."
   type        = object({ issuer = string, replicator_subject = string, kraken_subject = string })
 }
+
+variable "mca" {
+  type = object({
+    source_tenant          = string
+    service_principal_name = string
+    billing_account_name   = string
+    billing_profile_name   = string
+    invoice_section_name   = string
+  })
+  default = null
+}

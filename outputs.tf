@@ -9,6 +9,17 @@ output "replicator_service_principal_password" {
   sensitive   = true
 }
 
+output "mca_service_principal" {
+  description = "MCA Service Principal."
+  value       = length(module.mca_service_principal) > 0 ? module.mca_service_principal[0].credentials : null
+}
+
+output "mca_service_principal_password" {
+  description = "Password for MCA Service Principal."
+  value       = length(module.mca_service_principal) > 0 ? module.mca_service_principal[0].application_client_secret : null
+  sensitive   = true
+}
+
 output "metering_service_principal" {
   description = "Metering Service Principal."
   value       = length(module.metering_service_principal) > 0 ? module.metering_service_principal[0].credentials : null

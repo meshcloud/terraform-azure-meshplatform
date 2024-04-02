@@ -13,7 +13,7 @@
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.46.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.81.0 |
-| <a name="provider_time"></a> [time](#provider\_time) | 0.11.1 |
+| <a name="provider_time"></a> [time](#provider\_time) | 0.11.2 |
 
 ## Modules
 
