@@ -14,6 +14,12 @@ variable "replicator_assignment_scopes" {
   description = "Names or UUIDs of the Management Groups which replicator should manage."
 }
 
+variable "can_cancel_subscriptions_in_scopes" {
+  type        = list(string)
+  description = "The scopes to which Service Principal cancel subscription permission is assigned to. List of management group id of form `/providers/Microsoft.Management/managementGroups/<mgmtGroupId>/`."
+  default     = []
+}
+
 variable "metering_service_principal_name" {
   type        = string
   default     = "kraken"

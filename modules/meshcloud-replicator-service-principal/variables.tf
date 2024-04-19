@@ -13,6 +13,12 @@ variable "assignment_scopes" {
   description = "The scopes to which Service Principal permissions is assigned to. List of management group id of form `/providers/Microsoft.Management/managementGroups/<mgmtGroupId>/`."
 }
 
+variable "can_cancel_subscriptions_in_scopes" {
+  type        = list(string)
+  description = "The scopes to which Service Principal cancel subscription permission is assigned to. List of management group id of form `/providers/Microsoft.Management/managementGroups/<mgmtGroupId>/`."
+  default     = []
+}
+
 variable "additional_required_resource_accesses" {
   type        = list(object({ resource_app_id = string, resource_accesses = list(object({ id = string, type = string })) }))
   default     = []
