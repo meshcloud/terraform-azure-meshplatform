@@ -67,6 +67,21 @@ resource "azurerm_role_definition" "meshcloud_replicator" {
   ]
 }
 
+resource "azurerm_role_definition" "meshcloud_replicator_subscription_canceler" {
+  count       = length(var.can_cancel_subscriptions_in_scopes) > 0 ? 1 : 0
+  name        = var.service_principal_name
+  scope       = var.custom_role_scope
+  description = "Permissions required by meshcloud in order to cancel subscriptions"
+
+  permissions {
+    actions = ["Microsoft.Subscription/cancel/action"]
+  }
+
+  assignable_scopes = [
+    var.custom_role_scope
+  ]
+}
+
 //---------------------------------------------------------------------------
 // Queries Entra ID for information about well-known application IDs.
 // Retrieve details about the service principal 
@@ -157,6 +172,14 @@ resource "azurerm_role_assignment" "meshcloud_replicator" {
   for_each           = toset(var.assignment_scopes)
   scope              = each.key
   role_definition_id = azurerm_role_definition.meshcloud_replicator.role_definition_resource_id
+  principal_id       = azuread_service_principal.meshcloud_replicator.id
+  depends_on         = [azuread_service_principal.meshcloud_replicator]
+}
+
+resource "azurerm_role_assignment" "meshcloud_replicator_subscription_canceler" {
+  for_each           = toset(var.can_cancel_subscriptions_in_scopes)
+  scope              = each.key
+  role_definition_id = azurerm_role_definition.meshcloud_replicator_subscription_canceler[0].role_definition_resource_id
   principal_id       = azuread_service_principal.meshcloud_replicator.id
   depends_on         = [azuread_service_principal.meshcloud_replicator]
 }

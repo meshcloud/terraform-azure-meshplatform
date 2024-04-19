@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- Option to provide replicator service principal permission to cancel subscriptions on specified scopes (i.e. landing zones)
+
 ## [v0.5.0]
 
 ### Changed
