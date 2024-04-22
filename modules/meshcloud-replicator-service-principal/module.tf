@@ -23,9 +23,9 @@ locals {
 // Role Definition for the Replicator on the specified Scope
 //---------------------------------------------------------------------------
 resource "azurerm_role_definition" "meshcloud_replicator" {
-  name        = var.service_principal_name
+  name        = "${var.service_principal_name}-base"
   scope       = var.custom_role_scope
-  description = "Permissions required by meshcloud in order to configure subscriptions and manage users"
+  description = "Permissions required by meshStack replicator in order to configure subscriptions and manage users"
 
   permissions {
     actions = concat([
@@ -69,9 +69,9 @@ resource "azurerm_role_definition" "meshcloud_replicator" {
 
 resource "azurerm_role_definition" "meshcloud_replicator_subscription_canceler" {
   count       = length(var.can_cancel_subscriptions_in_scopes) > 0 ? 1 : 0
-  name        = var.service_principal_name
+  name        = "${var.service_principal_name}-cancel-subscriptions"
   scope       = var.custom_role_scope
-  description = "Permissions required by meshcloud in order to cancel subscriptions"
+  description = "Additional permissions required by meshStack replicator in order to cancel subscriptions"
 
   permissions {
     actions = ["Microsoft.Subscription/cancel/action"]
