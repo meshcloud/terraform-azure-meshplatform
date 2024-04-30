@@ -55,6 +55,7 @@ module "replicator_service_principal" {
   custom_role_scope                  = data.azurerm_management_group.replicator_custom_role_scope.id
   assignment_scopes                  = local.replicator_assignment_scopes
   can_cancel_subscriptions_in_scopes = var.can_cancel_subscriptions_in_scopes
+  can_delete_rgs_in_scopes           = var.can_delete_rgs_in_scopes
 
   additional_required_resource_accesses = var.additional_required_resource_accesses
   additional_permissions                = var.additional_permissions
