@@ -20,6 +20,12 @@ variable "can_cancel_subscriptions_in_scopes" {
   default     = []
 }
 
+variable "can_delete_rgs_in_scopes" {
+  type        = list(string)
+  description = "The scopes to which Service Principal delete resource group permission is assigned to. Only relevant when `replicator_rg_enabled`. List of subscription scopes of form `/subscriptions/<subscriptionId>`."
+  default     = []
+}
+
 variable "metering_service_principal_name" {
   type        = string
   default     = "kraken"

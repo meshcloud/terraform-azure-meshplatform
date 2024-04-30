@@ -82,9 +82,24 @@ resource "azurerm_role_definition" "meshcloud_replicator_subscription_canceler" 
   ]
 }
 
+resource "azurerm_role_definition" "meshcloud_replicator_rg_deleter" {
+  count       = length(var.can_delete_rgs_in_scopes) > 0 ? 1 : 0
+  name        = "${var.service_principal_name}-delete-resourceGroups"
+  scope       = var.custom_role_scope
+  description = "Additional permissions required by meshStack replicator in order to delete Resource Groups"
+
+  permissions {
+    actions = ["Microsoft.Resources/subscriptions/resourceGroups/delete"]
+  }
+
+  assignable_scopes = [
+    var.custom_role_scope
+  ]
+}
+
 //---------------------------------------------------------------------------
 // Queries Entra ID for information about well-known application IDs.
-// Retrieve details about the service principal 
+// Retrieve details about the service principal
 //---------------------------------------------------------------------------
 
 data "azuread_application_published_app_ids" "well_known" {}
@@ -180,6 +195,14 @@ resource "azurerm_role_assignment" "meshcloud_replicator_subscription_canceler" 
   for_each           = toset(var.can_cancel_subscriptions_in_scopes)
   scope              = each.key
   role_definition_id = azurerm_role_definition.meshcloud_replicator_subscription_canceler[0].role_definition_resource_id
+  principal_id       = azuread_service_principal.meshcloud_replicator.id
+  depends_on         = [azuread_service_principal.meshcloud_replicator]
+}
+
+resource "azurerm_role_assignment" "meshcloud_replicator_rg_deleter" {
+  for_each           = toset(var.can_delete_rgs_in_scopes)
+  scope              = each.key
+  role_definition_id = azurerm_role_definition.meshcloud_replicator_rg_deleter[0].role_definition_resource_id
   principal_id       = azuread_service_principal.meshcloud_replicator.id
   depends_on         = [azuread_service_principal.meshcloud_replicator]
 }
