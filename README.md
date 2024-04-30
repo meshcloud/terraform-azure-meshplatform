@@ -2,7 +2,7 @@
 
 Terraform module to integrate Azure as a meshPlatform into meshStack instance. With this module, service principals used by meshStack are created with the required permissions. The output of this module is a set of credentials that need to be configured in meshStack as described in [meshcloud public docs](https://docs.meshcloud.io/docs/meshstack.how-to.integrate-meshplatform.html).
 
-We currently support [Microsoft Enterprise Agreements](https://www.microsoft.com/en-us/licensing/licensing-programs/enterprise?activetab=enterprise-tab%3aprimaryr2) and [Microsoft Customer Agreements](https://www.microsoft.com/en-us/licensing/how-to-buy/microsoft-customer-agreement) when integrating Azure as a meshPlatform.
+We currently support [Microsoft Enterprise Agreements](https://www.microsoft.com/en-us/licensing/licensing-programs/enterprise?activetab=enterprise-tab%3aprimaryr2) and [Microsoft Customer Agreements](https://www.microsoft.com/en-us/licensing/how-to-buy/microsoft-customer-agreement) as well as pre-provisioned subscriptions when integrating Azure as a meshPlatform.
 
 <p align="center">
   <img src="https://github.com/meshcloud/terraform-azure-meshplatform/assets/96071919/b18a128b-8a43-44ea-80da-bf42e58fd61a" width="250">
@@ -18,14 +18,6 @@ To run this module, you need the following:
   1. Global Administrator
   2. Privileged Role Administrator AND (Cloud) Application Administrator
 - Permissions on Azure Resource Level: User Access Administrator on the Management Group that should be managed by meshStack
-
-### If using an Enterprise Agreement
-
-- Permissions on [Enterprise Agreement level](https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles): Account Owner for the enrollment account that should be used for creating subscriptions
-
-### If using a Microsoft Customer Agreement
-
-- Permissions in Source Tenant for granting access to the billing account used for subscription creation: Account Administrator
 
 ## How to Use This Module
 
@@ -63,14 +55,30 @@ To run this module, you need the following:
     terraform output -json
     ```
 
-#### If Using an Enterprise Agreement
+### Using CLI
 
-1. Grant access on the enrollment account as described in the section [Use an Enteprise Enrollment](https://docs.meshcloud.io/docs/meshstack.how-to.integrate-meshplatform-azure-manually.html#use-an-enterprise-enrollment).
+1. Login with az CLI
 
-#### If Using Microsoft Customer Agreement
->
-> Until <https://github.com/hashicorp/terraform-provider-azurerm/issues/15211> is resolved, MCA service principal setup can only be done manually.
+    ```sh
+   az login --tenant TENANT_ID
+   ```
 
+2. Follow the instructions for Azure Portal
+
+## Configuring the Azure meshPlatform module
+
+### Using an Enterprise Agreement
+
+> Using an Enterprise Agreement enrollment account requires manual steps outside of terraform.
+
+1. Ensure you have permissions on [Enterprise Agreement level](https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/understand-ea-roles): `Account Owner` for the enrollment account that should be used for creating subscriptions
+2. Grant access on the enrollment account as described in the section [Use an Enteprise Enrollment](https://docs.meshcloud.io/docs/meshstack.how-to.integrate-meshplatform-azure-manually.html#use-an-enterprise-enrollment).
+
+### Using Microsoft Customer Agreement
+
+> Until <https://github.com/hashicorp/terraform-provider-azurerm/issues/15211> is resolved, MCA service principal setup can only be done manually outside of terraform.
+
+1. Ensure you have permissions in the source AAD Tenant for granting access to the billing account used for subscription creation using the `Account Administrator` role
 1. Switch to the Tenant Directory that contains your Billing Account and follow the steps to [Register an Application](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#register-an-application) and [Add Credentials](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#add-credentials). Make sure to copy down the **Directory (tenant) ID**, **Application (client) ID**, **Object ID** and the **App Secret** value that was generated. The App Secret is only visible during the creation process.
 2. You must grant the Enterprise Application permissions on the Billing Account, Billing Profile, or Invoice Section so that it can generate new subscriptions. Follow the steps in [this guide](https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/understand-mca-roles#manage-billing-roles-in-the-azure-portal) to grant the necessary permissions. You must grant one of the following permissions
     - Billing Account or Billing Profile: Owner, Contributor
@@ -83,19 +91,40 @@ To run this module, you need the following:
     - Billing Account Principal Client ID (Application Client ID that will be used to create new subscriptions)
     - Principal Client Secret (Application Secret created in the Source Tenant)
 
-### Using CLI
+### Using Pre-provisioned Subscriptions
 
-1. Login with az CLI
+meshStack will need to be able to read subscriptions at the source location
+(typically the root of your management group hierarchy) and then have permission to rename them.
+Please include the following `additional_permission` when configuring this terraform module.
 
-    ```sh
-   az login --tenant TENANT_ID
-   ```
+```hcl
+  additional_permissions = ["Microsoft.Subscription/rename/action"]
+```
 
-2. Follow the instructions for Azure Portal
+### Enabling Azure Functions for Landing Zones
 
-## Example Usages
+In order to enable meshStack to call Azure Functions as part of tenant replication for your landing zones, you must
+provide the SPN with access to the function.
 
-Check [examples](./examples/) for different use cases. As a quick start we recommend using [basic-azure-integration](./examples/basic-azure-integration) example.
+```hcl
+
+  additional_required_resource_accesses = [
+    # The block below configures replicator access
+    # to the app with id `fe81736c-99c6-4fca-8cc2-2818a2365451` with the appRole with id `e29066a1-ecb1-4a8e-af2d-1627fae35711`
+    #
+    # This example configures access to an azure function
+    {
+      resource_app_id = "fe81736c-99c6-4fca-8cc2-2818a2365451" # https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application#resource_app_id
+      resource_accesses = [
+        # https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application#resource_access
+        {
+          id   = "e29066a1-ecb1-4a8e-af2d-1627fae35711"
+          type = "Role"
+        },
+      ]
+    },
+  ]
+```
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
