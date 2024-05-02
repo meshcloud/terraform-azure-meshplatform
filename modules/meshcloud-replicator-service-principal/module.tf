@@ -196,10 +196,20 @@ resource "azurerm_role_assignment" "meshcloud_replicator_subscription_canceler" 
 }
 
 resource "azurerm_role_assignment" "meshcloud_replicator_rg_deleter" {
-  for_each           = toset(var.can_delete_rgs_in_scopes)
-  scope              = each.key
-  role_definition_id = azurerm_role_definition.meshcloud_replicator_rg_deleter.role_definition_resource_id
-  principal_id       = azuread_service_principal.meshcloud_replicator.id
+  for_each     = toset(var.can_delete_rgs_in_scopes)
+  scope        = each.key
+  principal_id = azuread_service_principal.meshcloud_replicator.id
+
+  # The azurerm provider requires this must be a scoped id, so unfortuantely we need to construct the id of the role
+  # definition at the assignment scope in order to make this stable for subsequent terraform apply's.
+  # See https://github.com/hashicorp/terraform-provider-azurerm/issues/4847#issuecomment-2085122502
+  # Apparently, this problem only comes up when the scope is a subscription, it seems management groups are not affected.
+  # RG deletion is typically only selectively enabled for specific subscriptions.
+  role_definition_id = join("", [
+    each.key,
+    "/providers/Microsoft.Authorization/roleDefinitions/",
+    azurerm_role_definition.meshcloud_replicator_rg_deleter.role_definition_id
+  ])
 }
 
 //---------------------------------------------------------------------------
