@@ -68,7 +68,6 @@ resource "azurerm_role_definition" "meshcloud_replicator" {
 }
 
 resource "azurerm_role_definition" "meshcloud_replicator_subscription_canceler" {
-  count       = length(var.can_cancel_subscriptions_in_scopes) > 0 ? 1 : 0
   name        = "${var.service_principal_name}-cancel-subscriptions"
   scope       = var.custom_role_scope
   description = "Additional permissions required by meshStack replicator in order to cancel subscriptions"
@@ -83,7 +82,6 @@ resource "azurerm_role_definition" "meshcloud_replicator_subscription_canceler" 
 }
 
 resource "azurerm_role_definition" "meshcloud_replicator_rg_deleter" {
-  count       = length(var.can_delete_rgs_in_scopes) > 0 ? 1 : 0
   name        = "${var.service_principal_name}-delete-resourceGroups"
   scope       = var.custom_role_scope
   description = "Additional permissions required by meshStack replicator in order to delete Resource Groups"
@@ -194,7 +192,7 @@ resource "azurerm_role_assignment" "meshcloud_replicator" {
 resource "azurerm_role_assignment" "meshcloud_replicator_subscription_canceler" {
   for_each           = toset(var.can_cancel_subscriptions_in_scopes)
   scope              = each.key
-  role_definition_id = azurerm_role_definition.meshcloud_replicator_subscription_canceler[0].role_definition_resource_id
+  role_definition_id = azurerm_role_definition.meshcloud_replicator_subscription_canceler.role_definition_resource_id
   principal_id       = azuread_service_principal.meshcloud_replicator.id
   depends_on         = [azuread_service_principal.meshcloud_replicator]
 }
@@ -202,7 +200,7 @@ resource "azurerm_role_assignment" "meshcloud_replicator_subscription_canceler" 
 resource "azurerm_role_assignment" "meshcloud_replicator_rg_deleter" {
   for_each           = toset(var.can_delete_rgs_in_scopes)
   scope              = each.key
-  role_definition_id = azurerm_role_definition.meshcloud_replicator_rg_deleter[0].role_definition_resource_id
+  role_definition_id = azurerm_role_definition.meshcloud_replicator_rg_deleter.role_definition_resource_id
   principal_id       = azuread_service_principal.meshcloud_replicator.id
   depends_on         = [azuread_service_principal.meshcloud_replicator]
 }
@@ -231,16 +229,24 @@ resource "azuread_app_role_assignment" "meshcloud_replicator-user" {
   depends_on          = [azuread_application.meshcloud_replicator]
 }
 
+locals {
+  assignable_role_definition_ids = compact([
+    azurerm_role_definition.meshcloud_replicator.role_definition_id,
+    azurerm_role_definition.meshcloud_replicator_subscription_canceler.role_definition_id,
+    azurerm_role_definition.meshcloud_replicator_rg_deleter.role_definition_id
+  ])
+}
 
 //---------------------------------------------------------------------------
 // Policy Definition for preventing the Application from assigning other privileges to itself
 // Assign it to the specified scope
 //---------------------------------------------------------------------------
 resource "azurerm_policy_definition" "privilege_escalation_prevention" {
-  name                = "meshcloud-privilege-escalation-prevention-${local.spp_hash}"
+  name                = "meshStack-privilege-escalation-prevention-${local.spp_hash}"
   policy_type         = "Custom"
   mode                = "All"
-  display_name        = "meshcloud Privilege Escalation Prevention"
+  description         = "Prevents assigning additional roles to the meshStack replicator service principal"
+  display_name        = "meshStack Privilege Escalation Prevention"
   management_group_id = var.custom_role_scope
 
   policy_rule = <<RULE
@@ -254,6 +260,10 @@ resource "azurerm_policy_definition" "privilege_escalation_prevention" {
           {
             "field": "Microsoft.Authorization/roleAssignments/principalId",
             "equals": "${azuread_service_principal.meshcloud_replicator.object_id}"
+          },
+          {
+            "field": "Microsoft.Authorization/roleAssignments/roleDefinitionId",
+            "notIn": ${jsonencode(local.assignable_role_definition_ids)}
           }
         ]
       },
