@@ -186,7 +186,6 @@ resource "azurerm_role_assignment" "meshcloud_replicator" {
   scope              = each.key
   role_definition_id = azurerm_role_definition.meshcloud_replicator.role_definition_resource_id
   principal_id       = azuread_service_principal.meshcloud_replicator.id
-  depends_on         = [azuread_service_principal.meshcloud_replicator]
 }
 
 resource "azurerm_role_assignment" "meshcloud_replicator_subscription_canceler" {
@@ -194,7 +193,6 @@ resource "azurerm_role_assignment" "meshcloud_replicator_subscription_canceler" 
   scope              = each.key
   role_definition_id = azurerm_role_definition.meshcloud_replicator_subscription_canceler.role_definition_resource_id
   principal_id       = azuread_service_principal.meshcloud_replicator.id
-  depends_on         = [azuread_service_principal.meshcloud_replicator]
 }
 
 resource "azurerm_role_assignment" "meshcloud_replicator_rg_deleter" {
@@ -202,7 +200,6 @@ resource "azurerm_role_assignment" "meshcloud_replicator_rg_deleter" {
   scope              = each.key
   role_definition_id = azurerm_role_definition.meshcloud_replicator_rg_deleter.role_definition_resource_id
   principal_id       = azuread_service_principal.meshcloud_replicator.id
-  depends_on         = [azuread_service_principal.meshcloud_replicator]
 }
 
 //---------------------------------------------------------------------------
@@ -229,14 +226,6 @@ resource "azuread_app_role_assignment" "meshcloud_replicator-user" {
   depends_on          = [azuread_application.meshcloud_replicator]
 }
 
-locals {
-  assignable_role_definition_ids = compact([
-    azurerm_role_definition.meshcloud_replicator.role_definition_id,
-    azurerm_role_definition.meshcloud_replicator_subscription_canceler.role_definition_id,
-    azurerm_role_definition.meshcloud_replicator_rg_deleter.role_definition_id
-  ])
-}
-
 //---------------------------------------------------------------------------
 // Policy Definition for preventing the Application from assigning other privileges to itself
 // Assign it to the specified scope
@@ -260,10 +249,6 @@ resource "azurerm_policy_definition" "privilege_escalation_prevention" {
           {
             "field": "Microsoft.Authorization/roleAssignments/principalId",
             "equals": "${azuread_service_principal.meshcloud_replicator.object_id}"
-          },
-          {
-            "field": "Microsoft.Authorization/roleAssignments/roleDefinitionId",
-            "notIn": ${jsonencode(local.assignable_role_definition_ids)}
           }
         ]
       },
@@ -274,9 +259,38 @@ resource "azurerm_policy_definition" "privilege_escalation_prevention" {
 RULE
 }
 
+resource "terraform_data" "allowed_assignments" {
+  input = compact(
+    concat(
+      var.assignment_scopes,
+      var.can_cancel_subscriptions_in_scopes,
+      var.can_delete_rgs_in_scopes
+  ))
+}
 
 resource "azurerm_management_group_policy_assignment" "privilege-escalation-prevention" {
-  name                 = "msh-escal-prev-${local.spp_hash}"
+  name                 = "meshStack-PEP-${local.spp_hash}"
+  description          = azurerm_policy_definition.privilege_escalation_prevention.description
   policy_definition_id = azurerm_policy_definition.privilege_escalation_prevention.id
   management_group_id  = var.custom_role_scope
+
+  lifecycle {
+    # ensure we unassign the policy whenver we make intentional changes to the replicators role assignments and then reassign it after
+    # note that we can't directly depend on the azurerm_role_assignment resources here because terraform fails with
+    # >  Error: no change found for azurerm_role_assignment.meshcloud_replicator_rg_deleter
+    # whenever no role_assignment exists because the for_each condition is empty (so no instances exist).
+    # We therefore trigger the replacement directly using the for_each keys
+    replace_triggered_by = [
+      terraform_data.allowed_assignments
+    ]
+  }
+
+  # only deploy this after the replicator roles have been assigned, here it's fine for terraform to directly reference
+  # resources that use for_each, even if there are no instances of that resources
+  depends_on = [
+    azurerm_role_assignment.meshcloud_replicator,
+    azurerm_role_assignment.meshcloud_replicator_rg_deleter,
+    azurerm_role_assignment.meshcloud_replicator_subscription_canceler
+  ]
 }
+

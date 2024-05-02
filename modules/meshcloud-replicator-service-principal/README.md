@@ -13,6 +13,7 @@
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.46.0 |
 | <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.81.0 |
+| <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
 | <a name="provider_time"></a> [time](#provider\_time) | 0.11.1 |
 
 ## Modules
@@ -38,6 +39,7 @@ No modules.
 | [azurerm_role_definition.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azurerm/3.81.0/docs/resources/role_definition) | resource |
 | [azurerm_role_definition.meshcloud_replicator_rg_deleter](https://registry.terraform.io/providers/hashicorp/azurerm/3.81.0/docs/resources/role_definition) | resource |
 | [azurerm_role_definition.meshcloud_replicator_subscription_canceler](https://registry.terraform.io/providers/hashicorp/azurerm/3.81.0/docs/resources/role_definition) | resource |
+| [terraform_data.allowed_assignments](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [time_rotating.replicator_secret_rotation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating) | resource |
 | [azuread_application_published_app_ids.well_known](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/data-sources/application_published_app_ids) | data source |
 | [azuread_application_template.enterprise_app](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/data-sources/application_template) | data source |
