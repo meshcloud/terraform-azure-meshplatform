@@ -13,7 +13,7 @@ terraform {
 }
 //---------------------------------------------------------------------------
 // Queries Entra ID for information about well-known application IDs.
-// Retrieve details about the service principal 
+// Retrieve details about the service principal
 //---------------------------------------------------------------------------
 
 data "azuread_application_published_app_ids" "well_known" {}
