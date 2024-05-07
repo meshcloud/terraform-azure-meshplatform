@@ -29,17 +29,22 @@ To run this module, you need the following:
 
 2. Open a cloud shell.
 
-3. Download the example `main.tf` and `outputs.tf` files.
+3. Create a terraform file that calls this module and produces outputs. Similar to:
 
-    ```powershell
-    # Downloads main.tf and outputs.tf files into ~/terraform-azure-meshplatform
-    wget https://raw.githubusercontent.com/meshcloud/terraform-azure-meshplatform/main/examples/basic-azure-integration/main.tf -P ~/terraform-azure-meshplatform
-    wget https://raw.githubusercontent.com/meshcloud/terraform-azure-meshplatform/main/examples/basic-azure-integration/outputs.tf -P ~/terraform-azure-meshplatform
+    ```hcl
+    module "meshplatform" {
+      source = "git::https://github.com/meshcloud/terraform-azure-meshplatform.git"
+      # FILL INPUTS
+    }
+    output "meshplatform" {
+      sensitive = true
+      value     = module.meshplatform
+    }
     ```
 
-4. Open `~/terraform-azure-meshplatform/main.tf` with a text editor. Modify the module variables and Terraform state backend settings in the file.
+    > It is highly recommended to configure a [terraform backend](https://developer.hashicorp.com/terraform/language/settings/backends/configuration), otherwise you risk losing track of your applied resources.
 
-5. Execute the module.
+4. Execute the module.
 
     ```powershell
     # Changes into ~/terraform-azure-meshplatform and applies terraform
@@ -48,7 +53,7 @@ To run this module, you need the following:
     terraform apply
     ```
 
-6. Use the information from terraform output to configure the platform in meshStack.
+5. Use the information from terraform output to configure the platform in meshStack.
 
     ```sh
     # The JSON output contains sensitive values that must not be transmitted anywhere other then the platform config screen in meshStack.
@@ -79,12 +84,12 @@ To run this module, you need the following:
 > Until <https://github.com/hashicorp/terraform-provider-azurerm/issues/15211> is resolved, MCA service principal setup can only be done manually outside of terraform.
 
 1. Ensure you have permissions in the source AAD Tenant for granting access to the billing account used for subscription creation using the `Account Administrator` role
-1. Switch to the Tenant Directory that contains your Billing Account and follow the steps to [Register an Application](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#register-an-application) and [Add Credentials](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#add-credentials). Make sure to copy down the **Directory (tenant) ID**, **Application (client) ID**, **Object ID** and the **App Secret** value that was generated. The App Secret is only visible during the creation process.
-2. You must grant the Enterprise Application permissions on the Billing Account, Billing Profile, or Invoice Section so that it can generate new subscriptions. Follow the steps in [this guide](https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/understand-mca-roles#manage-billing-roles-in-the-azure-portal) to grant the necessary permissions. You must grant one of the following permissions
+2. Switch to the Tenant Directory that contains your Billing Account and follow the steps to [Register an Application](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#register-an-application) and [Add Credentials](https://learn.microsoft.com/en-us/azure/active-directory/develop/quickstart-register-app#add-credentials). Make sure to copy down the **Directory (tenant) ID**, **Application (client) ID**, **Object ID** and the **App Secret** value that was generated. The App Secret is only visible during the creation process.
+3. You must grant the Enterprise Application permissions on the Billing Account, Billing Profile, or Invoice Section so that it can generate new subscriptions. Follow the steps in [this guide](https://learn.microsoft.com/en-us/azure/cost-management-billing/manage/understand-mca-roles#manage-billing-roles-in-the-azure-portal) to grant the necessary permissions. You must grant one of the following permissions
     - Billing Account or Billing Profile: Owner, Contributor
     - Invoice Section: Owner, Contributor, Azure Subscription Creator
-3. Write down the Billing Scope ID that looks something like this <samp>/providers/Microsoft.Billing/billingAccounts/5e98e158-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_xxxx-xx-xx/billingProfiles/AW4F-xxxx-xxx-xxx/invoiceSections/SH3V-xxxx-xxx-xxx</samp>
-4. Use the following information to configure the platform in meshStack
+4. Write down the Billing Scope ID that looks something like this <samp>/providers/Microsoft.Billing/billingAccounts/5e98e158-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_xxxx-xx-xx/billingProfiles/AW4F-xxxx-xxx-xxx/invoiceSections/SH3V-xxxx-xxx-xxx</samp>
+5. Use the following information to configure the platform in meshStack
     - Billing Scope
     - Destination Tenant ID
     - Source Tenant ID
@@ -125,6 +130,16 @@ provide the SPN with access to the function.
     },
   ]
 ```
+
+## Contributing Guide
+
+Before opening a Pull Request, please do the following:
+
+1. Install [pre-commit](https://pre-commit.com/#install)
+
+   We use pre-commit to perform several terraform related tasks such as `terraform validate`, `terraform fmt`, and generating terraform docs with `terraform_docs`
+
+2. Execute `pre-commit install`: Hooks configured in `.pre-commit-config.yaml` will be executed automatically on commit. For manual execution, you can use `pre-commit run -a`.
 
 <!-- BEGIN_TF_DOCS -->
 ## Requirements
