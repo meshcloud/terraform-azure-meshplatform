@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.8.0]
+
+### Changed
+
+- Multiple MCA service principals support
+
 ## [v0.7.0]
 
 ### Added

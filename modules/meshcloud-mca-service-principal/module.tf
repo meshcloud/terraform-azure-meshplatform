@@ -28,11 +28,13 @@ data "azurerm_billing_mca_account_scope" "mca" {
 }
 
 resource "azuread_application" "mca" {
-  display_name = var.service_principal_name
+  for_each     = toset(var.service_principal_names)
+  display_name = each.key
 }
 
 resource "azuread_service_principal" "mca" {
-  client_id = azuread_application.mca.client_id
+  for_each  = toset(var.service_principal_names)
+  client_id = azuread_application.mca[each.key].client_id
 }
 
 data "azapi_resource_list" "billing_role_definitions" {
@@ -49,6 +51,8 @@ locals {
 }
 
 resource "azapi_resource_action" "add_role_assignment_subscription_creator" {
+  for_each = toset(var.service_principal_names)
+
   type                   = "Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections@2019-10-01-preview"
   resource_id            = data.azurerm_billing_mca_account_scope.mca.id
   action                 = "createBillingRoleAssignment"
@@ -57,15 +61,17 @@ resource "azapi_resource_action" "add_role_assignment_subscription_creator" {
   response_export_values = ["*"]
   body = jsonencode({
     properties = {
-      principalId      = azuread_service_principal.mca.object_id
+      principalId      = azuread_service_principal.mca[each.key].object_id
       roleDefinitionId = local.azure_subscription_creator_role_id
     }
   })
 }
 
 resource "azapi_resource_action" "remove_role_assignment_subscription_creator" {
+  for_each = toset(var.service_principal_names)
+
   type        = "Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/billingRoleAssignments@2019-10-01-preview"
-  resource_id = jsondecode(azapi_resource_action.add_role_assignment_subscription_creator.output).id
+  resource_id = jsondecode(azapi_resource_action.add_role_assignment_subscription_creator[each.key].output).id
   method      = "DELETE"
   when        = "destroy"
 }
@@ -78,7 +84,9 @@ resource "time_rotating" "mca_secret_rotation" {
 }
 
 resource "azuread_application_password" "mca" {
-  application_id = azuread_application.mca.id
+  for_each = toset(var.service_principal_names)
+
+  application_id = azuread_application.mca[each.key].id
   rotate_when_changed = {
     rotation = time_rotating.mca_secret_rotation.id
   }
