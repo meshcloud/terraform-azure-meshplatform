@@ -16,22 +16,6 @@ terraform {
   }
 }
 
-provider "azapi" {
-  alias                      = "azapi_mca_source"
-  tenant_id                  = var.mca.source_tenant
-  skip_provider_registration = true
-}
-provider "azuread" {
-  alias     = "azuread_mca_source"
-  tenant_id = var.mca.source_tenant
-}
-provider "azurerm" {
-  features {}
-  alias                      = "azurerm_mca_source"
-  tenant_id                  = var.mca.source_tenant
-  skip_provider_registration = true
-}
-
 data "azurerm_management_group" "replicator_custom_role_scope" {
   name = var.replicator_custom_role_scope
 }
@@ -88,16 +72,10 @@ module "replicator_service_principal" {
 }
 
 module "mca_service_principal" {
-  providers = {
-    azapi   = azapi.azapi_mca_source
-    azurerm = azurerm.azurerm_mca_source
-    azuread = azuread.azuread_mca_source
-  }
-
   count  = var.mca != null ? 1 : 0
   source = "./modules/meshcloud-mca-service-principal"
 
-  service_principal_name = var.mca.service_principal_name
+  service_principal_names = var.mca.service_principal_names
 
   billing_account_name = var.mca.billing_account_name
   billing_profile_name = var.mca.billing_profile_name

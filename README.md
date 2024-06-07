@@ -85,7 +85,9 @@ To run this module, you need the following:
 
 - Ensure you have permissions in the source AAD Tenant for granting access to the billing account used for subscription creation using the `Account Administrator` role
 
-**Create an MCA service principal**:
+**Create MCA service principals**:
+
+> With this module, you can create multiple MCA service principals by passing a list of `mca.service_principal_names`. This is useful for environments with restricted acceses to the AAD tenant holding the MCA license.
 
 Add an `mca` block when calling this module.
 
@@ -97,16 +99,13 @@ module "meshplatform" {
   # required inputs
 
   mca = {
-      source_tenant          = "<aad-tenant-id>"
-      service_principal_name = "your-mca-sp-name"
-      billing_account_name   = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_xxxx-xx-xx"
-      billing_profile_name   = "xxxx-xxxx-xxx-xxx"
-      invoice_section_name   = "xxxx-xxxx-xxx-xxx"
+      service_principal_names = ["your-mca-sp-name-1", "your-mca-sp-name-2", "..."]
+      billing_account_name    = "xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx:xxxxxxxx-xxxx-xxxx-xxxx-xxxxxxxxxxxx_xxxx-xx-xx"
+      billing_profile_name    = "xxxx-xxxx-xxx-xxx"
+      invoice_section_name    = "xxxx-xxxx-xxx-xxx"
   }
 }
 ```
-
-> note that the source_tenant is the tenant ID of the AAD with the billing account in which you can create subscriptions. This module supports creating MCA and Replicator service principals in different AAD tenants.
 
 ### Using Pre-provisioned Subscriptions
 
@@ -197,7 +196,7 @@ Before opening a Pull Request, please do the following:
 | <a name="input_can_cancel_subscriptions_in_scopes"></a> [can\_cancel\_subscriptions\_in\_scopes](#input\_can\_cancel\_subscriptions\_in\_scopes) | The scopes to which Service Principal cancel subscription permission is assigned to. List of management group id of form `/providers/Microsoft.Management/managementGroups/<mgmtGroupId>/`. | `list(string)` | `[]` | no |
 | <a name="input_can_delete_rgs_in_scopes"></a> [can\_delete\_rgs\_in\_scopes](#input\_can\_delete\_rgs\_in\_scopes) | The scopes to which Service Principal delete resource group permission is assigned to. Only relevant when `replicator_rg_enabled`. List of subscription scopes of form `/subscriptions/<subscriptionId>`. | `list(string)` | `[]` | no |
 | <a name="input_create_passwords"></a> [create\_passwords](#input\_create\_passwords) | Create passwords for service principals. | `bool` | `true` | no |
-| <a name="input_mca"></a> [mca](#input\_mca) | n/a | <pre>object({<br>    source_tenant          = string<br>    service_principal_name = string<br>    billing_account_name   = string<br>    billing_profile_name   = string<br>    invoice_section_name   = string<br>  })</pre> | `null` | no |
+| <a name="input_mca"></a> [mca](#input\_mca) | n/a | <pre>object({<br>    service_principal_names = list(string)<br>    billing_account_name    = string<br>    billing_profile_name    = string<br>    invoice_section_name    = string<br>  })</pre> | `null` | no |
 | <a name="input_metering_assignment_scopes"></a> [metering\_assignment\_scopes](#input\_metering\_assignment\_scopes) | Names or UUIDs of the Management Groups that kraken should collect costs for. | `list(string)` | n/a | yes |
 | <a name="input_metering_enabled"></a> [metering\_enabled](#input\_metering\_enabled) | Whether to create Metering Service Principal or not. | `bool` | `true` | no |
 | <a name="input_metering_service_principal_name"></a> [metering\_service\_principal\_name](#input\_metering\_service\_principal\_name) | Service principal for collecting cost data. Kraken ist the name of the meshStack component. Name must be unique per Entra ID. | `string` | `"kraken"` | no |
