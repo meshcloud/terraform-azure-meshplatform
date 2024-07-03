@@ -31,14 +31,20 @@ output "metering_service_principal_password" {
   sensitive   = true
 }
 
-output "sso_service_principal" {
+output "sso_service_principal_client_id" {
   description = "SSO Service Principal."
-  value       = length(module.sso_service_principal) > 0 ? module.sso_service_principal[0].credentials : null
+  value       = length(module.sso_service_principal) > 0 ? module.sso_service_principal[0].application_client_id : null
 }
 
 output "sso_service_principal_password" {
   description = "Password for SSO Service Principal."
-  value       = length(module.sso_service_principal) > 0 ? module.sso_service_principal[0].application_client_secret : null
+  value       = length(module.sso_service_principal) > 0 ? module.sso_service_principal[0].application_password : null
+  sensitive   = true
+}
+
+output "sso_discovery_url" {
+  description = "SSO applications's discovery url (OpenID Connect metadata document)"
+  value       = length(module.sso_service_principal) > 0 ? module.sso_service_principal[0].discovery_url : null
   sensitive   = true
 }
 

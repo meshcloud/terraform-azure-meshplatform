@@ -100,8 +100,10 @@ module "sso_service_principal" {
   count  = var.sso_enabled ? 1 : 0
   source = "./modules/meshcloud-sso/"
 
-  service_principal_name = var.sso_service_principal_name
-  meshstack_redirect_uri = var.sso_meshstack_redirect_uri
+  service_principal_name       = var.sso_service_principal_name
+  meshstack_idp_domain         = var.sso_meshstack_idp_domain
+  identity_provider_alias      = var.sso_identity_provider_alias
+  app_role_assignment_required = var.sso_app_role_assignment_required
 }
 
 # facilitate migration from v0.1.0 of the module

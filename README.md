@@ -142,6 +142,19 @@ provide the SPN with access to the function.
   ]
 ```
 
+## Single Sign On (SSO) Integration
+
+>While this does not belong to a meshplatform, you can enable sso using this module. This is subject to change and sso can be moved out in the future.
+
+To login to meshStack with Microsoft Entra ID, you can create an SSO service principal by adding the following inputs when calling this module:
+
+```hcl
+sso_enabled = true
+
+# This is required as it will construct the redirect uri. A default has been added only so that it's not mandatory to setup sso (i.e. when sso_enabled = false)
+sso_meshstack_idp_domain = "sso.<domain>"
+```
+
 ## Contributing Guide
 
 Before opening a Pull Request, please do the following:
@@ -205,9 +218,11 @@ Before opening a Pull Request, please do the following:
 | <a name="input_replicator_enabled"></a> [replicator\_enabled](#input\_replicator\_enabled) | Whether to create replicator Service Principal or not. | `bool` | `true` | no |
 | <a name="input_replicator_rg_enabled"></a> [replicator\_rg\_enabled](#input\_replicator\_rg\_enabled) | Whether the created replicator Service Principal should be usable for Azure Resource Group based replication. Implicitly enables replicator\_enabled if set to true. | `bool` | `false` | no |
 | <a name="input_replicator_service_principal_name"></a> [replicator\_service\_principal\_name](#input\_replicator\_service\_principal\_name) | Service principal for managing subscriptions. Replicator is the name of the meshStack component. Name must be unique per Entra ID. | `string` | `"replicator"` | no |
-| <a name="input_sso_enabled"></a> [sso\_enabled](#input\_sso\_enabled) | Whether to create SSO Service Principal or not. | `bool` | `true` | no |
-| <a name="input_sso_meshstack_redirect_uri"></a> [sso\_meshstack\_redirect\_uri](#input\_sso\_meshstack\_redirect\_uri) | Redirect URI that was provided by meshcloud. It is individual per meshStack. | `string` | `"<replace with uri>"` | no |
-| <a name="input_sso_service_principal_name"></a> [sso\_service\_principal\_name](#input\_sso\_service\_principal\_name) | Service principal for Entra ID SSO. Name must be unique per Entra ID. | `string` | `"sso"` | no |
+| <a name="input_sso_app_role_assignment_required"></a> [sso\_app\_role\_assignment\_required](#input\_sso\_app\_role\_assignment\_required) | Whether all users can login using the created application (false), or only assigned users (true) | `bool` | `false` | no |
+| <a name="input_sso_enabled"></a> [sso\_enabled](#input\_sso\_enabled) | Whether to create SSO Service Principal. This service principal is used to integrate meshStack identity provider with your own identity provider. | `bool` | `false` | no |
+| <a name="input_sso_identity_provider_alias"></a> [sso\_identity\_provider\_alias](#input\_sso\_identity\_provider\_alias) | Identity provider alias. This value needs to be passed to meshcloud to configure the identity provider. | `string` | `"oidc"` | no |
+| <a name="input_sso_meshstack_idp_domain"></a> [sso\_meshstack\_idp\_domain](#input\_sso\_meshstack\_idp\_domain) | meshStack identity provider domain that was provided by meshcloud. It is individual per meshStack. In most cases it is sso.<portal-domain> | `string` | `"replaceme"` | no |
+| <a name="input_sso_service_principal_name"></a> [sso\_service\_principal\_name](#input\_sso\_service\_principal\_name) | Service principal for Entra ID SSO. Name must be unique per Entra ID. | `string` | `"meshcloud SSO"` | no |
 | <a name="input_workload_identity_federation"></a> [workload\_identity\_federation](#input\_workload\_identity\_federation) | Enable workload identity federation by creating federated credentials for enterprise applications. Usually you'd receive the required settings when attempting to configure a platform with workload identity federation in meshStack. | `object({ issuer = string, replicator_subject = string, kraken_subject = string })` | `null` | no |
 
 ## Outputs
@@ -221,6 +236,7 @@ Before opening a Pull Request, please do the following:
 | <a name="output_metering_service_principal_password"></a> [metering\_service\_principal\_password](#output\_metering\_service\_principal\_password) | Password for Metering Service Principal. |
 | <a name="output_replicator_service_principal"></a> [replicator\_service\_principal](#output\_replicator\_service\_principal) | Replicator Service Principal. |
 | <a name="output_replicator_service_principal_password"></a> [replicator\_service\_principal\_password](#output\_replicator\_service\_principal\_password) | Password for Replicator Service Principal. |
-| <a name="output_sso_service_principal"></a> [sso\_service\_principal](#output\_sso\_service\_principal) | SSO Service Principal. |
+| <a name="output_sso_discovery_url"></a> [sso\_discovery\_url](#output\_sso\_discovery\_url) | SSO applications's discovery url (OpenID Connect metadata document) |
+| <a name="output_sso_service_principal_client_id"></a> [sso\_service\_principal\_client\_id](#output\_sso\_service\_principal\_client\_id) | SSO Service Principal. |
 | <a name="output_sso_service_principal_password"></a> [sso\_service\_principal\_password](#output\_sso\_service\_principal\_password) | Password for SSO Service Principal. |
 <!-- END_TF_DOCS -->

@@ -1,10 +1,6 @@
 terraform {
   required_version = "> 1.0"
   required_providers {
-    azurerm = {
-      source  = "hashicorp/azurerm"
-      version = "3.81.0"
-    }
     azuread = {
       source  = "hashicorp/azuread"
       version = "2.46.0"
@@ -42,20 +38,22 @@ resource "azuread_application" "meshcloud_sso" {
     resource_app_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
 
     resource_access {
-      id   = data.azuread_service_principal.msgraph.app_role_ids["User.Read"]
+      id   = data.azuread_service_principal.msgraph.oauth2_permission_scope_ids["User.Read"]
       type = "Scope"
     }
   }
   web {
-    redirect_uris = [var.meshstack_redirect_uri]
+    redirect_uris = ["https://${var.meshstack_idp_domain}/auth/realms/meshfed/broker/${var.identity_provider_alias}/endpoint"]
+    implicit_grant {
+      id_token_issuance_enabled = true
+    }
   }
 }
 
-resource "azuread_app_role_assignment" "meshcloud_sso_user_read" {
-  app_role_id         = data.azuread_service_principal.msgraph.app_role_ids["User.Read"]
-  principal_object_id = azuread_application.meshcloud_sso.object_id
-  resource_object_id  = data.azuread_service_principal.msgraph.object_id
-  depends_on          = [azuread_application.meshcloud_sso]
+resource "azuread_service_principal" "meshcloud_sso" {
+  use_existing                 = true
+  app_role_assignment_required = var.app_role_assignment_required
+  client_id                    = azuread_application.meshcloud_sso.client_id
 }
 
 resource "azuread_application_password" "meshcloud_sso" {
