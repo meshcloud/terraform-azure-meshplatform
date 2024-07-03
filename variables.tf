@@ -37,28 +37,37 @@ variable "metering_assignment_scopes" {
   description = "Names or UUIDs of the Management Groups that kraken should collect costs for."
 }
 
+# SSO inputs
+
 variable "sso_enabled" {
   type        = bool
-  default     = true
-  description = "Whether to create SSO Service Principal or not."
+  default     = false
+  description = "Whether to create SSO Service Principal. This service principal is used to integrate meshStack identity provider with your own identity provider."
 }
 
 variable "sso_service_principal_name" {
   type        = string
-  default     = "sso"
+  default     = "meshcloud SSO"
   description = "Service principal for Entra ID SSO. Name must be unique per Entra ID."
 }
 
-variable "sso_meshstack_redirect_uri" {
+variable "sso_meshstack_idp_domain" {
   type        = string
-  default     = "<replace with uri>"
-  description = "Redirect URI that was provided by meshcloud. It is individual per meshStack."
+  default     = "replaceme"
+  description = "meshStack identity provider domain that was provided by meshcloud. It is individual per meshStack. In most cases it is sso.<portal-domain>"
 }
 
-# ---------------------------------------------------------------------------------------------------------------------
-# OPTIONAL PARAMETERS
-# These parameters have reasonable defaults.
-# ---------------------------------------------------------------------------------------------------------------------
+variable "sso_identity_provider_alias" {
+  type        = string
+  default     = "oidc"
+  description = "Identity provider alias. This value needs to be passed to meshcloud to configure the identity provider."
+}
+
+variable "sso_app_role_assignment_required" {
+  type        = bool
+  default     = false
+  description = "Whether all users can login using the created application (false), or only assigned users (true)"
+}
 
 variable "replicator_enabled" {
   type        = bool
