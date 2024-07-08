@@ -171,16 +171,16 @@ Before opening a Pull Request, please do the following:
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | > 1.1 |
-| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | 1.13.1 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | 2.46.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 3.81.0 |
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | >=1.13.1 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >=2.46.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.81.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.46.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.81.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.53.1 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.111.0 |
 
 ## Modules
 
@@ -195,10 +195,10 @@ Before opening a Pull Request, please do the following:
 
 | Name | Type |
 |------|------|
-| [azuread_client_config.current](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/data-sources/client_config) | data source |
-| [azurerm_management_group.metering_assignment_scopes](https://registry.terraform.io/providers/hashicorp/azurerm/3.81.0/docs/data-sources/management_group) | data source |
-| [azurerm_management_group.replicator_assignment_scopes](https://registry.terraform.io/providers/hashicorp/azurerm/3.81.0/docs/data-sources/management_group) | data source |
-| [azurerm_management_group.replicator_custom_role_scope](https://registry.terraform.io/providers/hashicorp/azurerm/3.81.0/docs/data-sources/management_group) | data source |
+| [azuread_client_config.current](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/client_config) | data source |
+| [azurerm_management_group.metering_assignment_scopes](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) | data source |
+| [azurerm_management_group.replicator_assignment_scopes](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) | data source |
+| [azurerm_management_group.replicator_custom_role_scope](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/data-sources/management_group) | data source |
 
 ## Inputs
 

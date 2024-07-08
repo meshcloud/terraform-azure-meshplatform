@@ -4,13 +4,13 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | > 1.0 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | 2.46.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >=2.46.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.46.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.18.0 |
 
 ## Modules
 
@@ -20,13 +20,13 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [azuread_application.meshcloud_sso](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/resources/application) | resource |
-| [azuread_application_password.meshcloud_sso](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/resources/application_password) | resource |
-| [azuread_service_principal.meshcloud_sso](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/resources/service_principal) | resource |
-| [azuread_application_published_app_ids.well_known](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/data-sources/application_published_app_ids) | data source |
-| [azuread_application_template.enterprise_app](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/data-sources/application_template) | data source |
-| [azuread_client_config.current](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/data-sources/client_config) | data source |
-| [azuread_service_principal.msgraph](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/data-sources/service_principal) | data source |
+| [azuread_application.meshcloud_sso](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application) | resource |
+| [azuread_application_password.meshcloud_sso](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_password) | resource |
+| [azuread_service_principal.meshcloud_sso](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) | resource |
+| [azuread_application_published_app_ids.well_known](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application_published_app_ids) | data source |
+| [azuread_application_template.enterprise_app](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application_template) | data source |
+| [azuread_client_config.current](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/client_config) | data source |
+| [azuread_service_principal.msgraph](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
 
 ## Inputs
 
