@@ -4,17 +4,17 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | > 1.0 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | 2.46.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 3.81.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >=2.46.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.81.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.46.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.81.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.18.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.3.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
-| <a name="provider_time"></a> [time](#provider\_time) | 0.11.2 |
+| <a name="provider_time"></a> [time](#provider\_time) | n/a |
 
 ## Modules
 
@@ -24,26 +24,26 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [azuread_app_role_assignment.meshcloud_replicator-directory](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/resources/app_role_assignment) | resource |
-| [azuread_app_role_assignment.meshcloud_replicator-group](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/resources/app_role_assignment) | resource |
-| [azuread_app_role_assignment.meshcloud_replicator-user](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/resources/app_role_assignment) | resource |
-| [azuread_application.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/resources/application) | resource |
-| [azuread_application_federated_identity_credential.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/resources/application_federated_identity_credential) | resource |
-| [azuread_application_password.application_pw](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/resources/application_password) | resource |
-| [azuread_service_principal.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/resources/service_principal) | resource |
-| [azurerm_management_group_policy_assignment.privilege-escalation-prevention](https://registry.terraform.io/providers/hashicorp/azurerm/3.81.0/docs/resources/management_group_policy_assignment) | resource |
-| [azurerm_policy_definition.privilege_escalation_prevention](https://registry.terraform.io/providers/hashicorp/azurerm/3.81.0/docs/resources/policy_definition) | resource |
-| [azurerm_role_assignment.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azurerm/3.81.0/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.meshcloud_replicator_rg_deleter](https://registry.terraform.io/providers/hashicorp/azurerm/3.81.0/docs/resources/role_assignment) | resource |
-| [azurerm_role_assignment.meshcloud_replicator_subscription_canceler](https://registry.terraform.io/providers/hashicorp/azurerm/3.81.0/docs/resources/role_assignment) | resource |
-| [azurerm_role_definition.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azurerm/3.81.0/docs/resources/role_definition) | resource |
-| [azurerm_role_definition.meshcloud_replicator_rg_deleter](https://registry.terraform.io/providers/hashicorp/azurerm/3.81.0/docs/resources/role_definition) | resource |
-| [azurerm_role_definition.meshcloud_replicator_subscription_canceler](https://registry.terraform.io/providers/hashicorp/azurerm/3.81.0/docs/resources/role_definition) | resource |
+| [azuread_app_role_assignment.meshcloud_replicator-directory](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/app_role_assignment) | resource |
+| [azuread_app_role_assignment.meshcloud_replicator-group](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/app_role_assignment) | resource |
+| [azuread_app_role_assignment.meshcloud_replicator-user](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/app_role_assignment) | resource |
+| [azuread_application.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application) | resource |
+| [azuread_application_federated_identity_credential.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_federated_identity_credential) | resource |
+| [azuread_application_password.application_pw](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_password) | resource |
+| [azuread_service_principal.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) | resource |
+| [azurerm_management_group_policy_assignment.privilege-escalation-prevention](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group_policy_assignment) | resource |
+| [azurerm_policy_definition.privilege_escalation_prevention](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/policy_definition) | resource |
+| [azurerm_role_assignment.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.meshcloud_replicator_rg_deleter](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_assignment.meshcloud_replicator_subscription_canceler](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
+| [azurerm_role_definition.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_definition) | resource |
+| [azurerm_role_definition.meshcloud_replicator_rg_deleter](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_definition) | resource |
+| [azurerm_role_definition.meshcloud_replicator_subscription_canceler](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_definition) | resource |
 | [terraform_data.allowed_assignments](https://registry.terraform.io/providers/hashicorp/terraform/latest/docs/resources/data) | resource |
 | [time_rotating.replicator_secret_rotation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating) | resource |
-| [azuread_application_published_app_ids.well_known](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/data-sources/application_published_app_ids) | data source |
-| [azuread_application_template.enterprise_app](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/data-sources/application_template) | data source |
-| [azuread_service_principal.msgraph](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/data-sources/service_principal) | data source |
+| [azuread_application_published_app_ids.well_known](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application_published_app_ids) | data source |
+| [azuread_application_template.enterprise_app](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application_template) | data source |
+| [azuread_service_principal.msgraph](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/service_principal) | data source |
 
 ## Inputs
 

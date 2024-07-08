@@ -4,15 +4,15 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | > 1.0 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | 2.46.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | 3.81.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >=2.46.0 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.81.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.46.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.81.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.53.1 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.111.0 |
 | <a name="provider_time"></a> [time](#provider\_time) | 0.11.2 |
 
 ## Modules
@@ -23,11 +23,11 @@ No modules.
 
 | Name | Type |
 |------|------|
-| [azuread_application.meshcloud_metering](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/resources/application) | resource |
-| [azuread_application_federated_identity_credential.meshcloud_metering](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/resources/application_federated_identity_credential) | resource |
-| [azuread_application_password.application_pw](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/resources/application_password) | resource |
-| [azuread_service_principal.meshcloud_metering](https://registry.terraform.io/providers/hashicorp/azuread/2.46.0/docs/resources/service_principal) | resource |
-| [azurerm_role_assignment.meshcloud_metering](https://registry.terraform.io/providers/hashicorp/azurerm/3.81.0/docs/resources/role_assignment) | resource |
+| [azuread_application.meshcloud_metering](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application) | resource |
+| [azuread_application_federated_identity_credential.meshcloud_metering](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_federated_identity_credential) | resource |
+| [azuread_application_password.application_pw](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_password) | resource |
+| [azuread_service_principal.meshcloud_metering](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) | resource |
+| [azurerm_role_assignment.meshcloud_metering](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/role_assignment) | resource |
 | [time_rotating.replicator_secret_rotation](https://registry.terraform.io/providers/hashicorp/time/latest/docs/resources/rotating) | resource |
 
 ## Inputs
