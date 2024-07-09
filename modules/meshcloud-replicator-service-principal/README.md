@@ -11,10 +11,10 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.18.0 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.3.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.53.1 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.111.0 |
 | <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
-| <a name="provider_time"></a> [time](#provider\_time) | n/a |
+| <a name="provider_time"></a> [time](#provider\_time) | 0.11.2 |
 
 ## Modules
 

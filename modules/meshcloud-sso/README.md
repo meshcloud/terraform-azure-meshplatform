@@ -10,7 +10,7 @@
 
 | Name | Version |
 |------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.18.0 |
+| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.53.1 |
 
 ## Modules
 
