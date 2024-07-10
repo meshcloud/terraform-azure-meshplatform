@@ -7,6 +7,16 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.9.0]
+
+### Added
+
+- SSO support
+
+### Changed
+
+- Minimal provider versions are specified instead of specific versions
+
 ## [v0.8.0]
 
 ### Changed
