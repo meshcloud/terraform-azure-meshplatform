@@ -7,6 +7,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+### Added
+
+- New configuration option `applications_owners` to add application owners to applications and service principals
+
 ## [v0.9.0]
 
 ### Added
