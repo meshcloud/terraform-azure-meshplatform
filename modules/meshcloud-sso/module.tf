@@ -29,6 +29,7 @@ data "azuread_application_template" "enterprise_app" {
 
 resource "azuread_application" "meshcloud_sso" {
   display_name = var.service_principal_name
+  owners       = var.application_owners
   template_id  = data.azuread_application_template.enterprise_app.template_id
   feature_tags {
     enterprise = true
@@ -54,6 +55,7 @@ resource "azuread_service_principal" "meshcloud_sso" {
   use_existing                 = true
   app_role_assignment_required = var.app_role_assignment_required
   client_id                    = azuread_application.meshcloud_sso.client_id
+  owners                       = var.application_owners
 }
 
 resource "azuread_application_password" "meshcloud_sso" {

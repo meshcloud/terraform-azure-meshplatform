@@ -69,6 +69,8 @@ module "replicator_service_principal" {
     issuer  = var.workload_identity_federation.issuer,
     subject = var.workload_identity_federation.replicator_subject
   }
+
+  application_owners = var.application_owners
 }
 
 module "mca_service_principal" {
@@ -80,6 +82,8 @@ module "mca_service_principal" {
   billing_account_name = var.mca.billing_account_name
   billing_profile_name = var.mca.billing_profile_name
   invoice_section_name = var.mca.invoice_section_name
+
+  application_owners = var.application_owners
 }
 
 module "metering_service_principal" {
@@ -94,6 +98,8 @@ module "metering_service_principal" {
     issuer  = var.workload_identity_federation.issuer,
     subject = var.workload_identity_federation.kraken_subject
   }
+
+  application_owners = var.application_owners
 }
 
 module "sso_service_principal" {
@@ -104,6 +110,8 @@ module "sso_service_principal" {
   meshstack_idp_domain         = var.sso_meshstack_idp_domain
   identity_provider_alias      = var.sso_identity_provider_alias
   app_role_assignment_required = var.sso_app_role_assignment_required
+
+  application_owners = var.application_owners
 }
 
 # facilitate migration from v0.1.0 of the module

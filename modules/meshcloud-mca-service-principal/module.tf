@@ -30,11 +30,13 @@ data "azurerm_billing_mca_account_scope" "mca" {
 resource "azuread_application" "mca" {
   for_each     = toset(var.service_principal_names)
   display_name = each.key
+  owners       = var.application_owners
 }
 
 resource "azuread_service_principal" "mca" {
   for_each  = toset(var.service_principal_names)
   client_id = azuread_application.mca[each.key].client_id
+  owners    = var.application_owners
 }
 
 data "azapi_resource_list" "billing_role_definitions" {

@@ -123,3 +123,9 @@ variable "mca" {
   })
   default = null
 }
+
+variable "application_owners" {
+  type        = list(string)
+  description = "List of user principals that should be added as owners to the created service principals."
+  default     = []
+}

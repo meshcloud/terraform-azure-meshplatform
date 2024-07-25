@@ -13,3 +13,9 @@ variable "billing_profile_name" {
 variable "invoice_section_name" {
   type = string
 }
+
+variable "application_owners" {
+  type        = list(string)
+  description = "List of user principals that should be added as owners to the mca service principal."
+  default     = []
+}
