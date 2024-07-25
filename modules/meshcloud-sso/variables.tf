@@ -20,3 +20,9 @@ variable "app_role_assignment_required" {
   default     = false
   description = "Whether all users can login using the created application (false), or only assigned users (true)"
 }
+
+variable "application_owners" {
+  type        = list(string)
+  description = "List of user principals that should be added as owners to the sso service principal."
+  default     = []
+}

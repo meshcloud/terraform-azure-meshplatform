@@ -32,6 +32,7 @@ resource "azurerm_role_assignment" "meshcloud_metering" {
 //---------------------------------------------------------------------------
 resource "azuread_application" "meshcloud_metering" {
   display_name = var.service_principal_name
+  owners       = var.application_owners
 
   feature_tags {
     enterprise = true
@@ -50,6 +51,7 @@ resource "azuread_application" "meshcloud_metering" {
 //---------------------------------------------------------------------------
 resource "azuread_service_principal" "meshcloud_metering" {
   client_id = azuread_application.meshcloud_metering.client_id
+  owners    = var.application_owners
   feature_tags {
     enterprise = true
   }

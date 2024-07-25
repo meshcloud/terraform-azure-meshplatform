@@ -116,6 +116,7 @@ data "azuread_application_template" "enterprise_app" {
 }
 resource "azuread_application" "meshcloud_replicator" {
   display_name = var.service_principal_name
+  owners       = var.application_owners
   template_id  = data.azuread_application_template.enterprise_app.template_id
   feature_tags {
     enterprise = true
@@ -168,6 +169,7 @@ resource "azuread_application" "meshcloud_replicator" {
 //---------------------------------------------------------------------------
 resource "azuread_service_principal" "meshcloud_replicator" {
   client_id = azuread_application.meshcloud_replicator.client_id
+  owners    = var.application_owners
   feature_tags {
     enterprise = true
   }
