@@ -33,6 +33,7 @@ No modules.
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
 | <a name="input_app_role_assignment_required"></a> [app\_role\_assignment\_required](#input\_app\_role\_assignment\_required) | Whether all users can login using the created application (false), or only assigned users (true) | `bool` | `false` | no |
+| <a name="input_application_owners"></a> [application\_owners](#input\_application\_owners) | List of user principals that should be added as owners to the sso service principal. | `list(string)` | `[]` | no |
 | <a name="input_identity_provider_alias"></a> [identity\_provider\_alias](#input\_identity\_provider\_alias) | Identity provider alias. This value needs to be passed to meshcloud to configure the identity provider. | `string` | `"oidc"` | no |
 | <a name="input_meshstack_idp_domain"></a> [meshstack\_idp\_domain](#input\_meshstack\_idp\_domain) | meshStack identity provider domain that was provided by meshcloud. It is individual per meshStack. In most cases it is sso.<portal-domain> | `string` | n/a | yes |
 | <a name="input_service_principal_name"></a> [service\_principal\_name](#input\_service\_principal\_name) | Service principal for Entra ID SSO. Name must be unique per Entra ID. | `string` | `"meshcloud SSO"` | no |

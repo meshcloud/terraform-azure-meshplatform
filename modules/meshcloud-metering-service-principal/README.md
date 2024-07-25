@@ -12,8 +12,8 @@
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.53.1 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.111.0 |
-| <a name="provider_time"></a> [time](#provider\_time) | 0.11.2 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.113.0 |
+| <a name="provider_time"></a> [time](#provider\_time) | 0.12.0 |
 
 ## Modules
 
@@ -34,6 +34,7 @@ No modules.
 
 | Name | Description | Type | Default | Required |
 |------|-------------|------|---------|:--------:|
+| <a name="input_application_owners"></a> [application\_owners](#input\_application\_owners) | List of user principals that should be added as owners to the metering service principal. | `list(string)` | `[]` | no |
 | <a name="input_assignment_scopes"></a> [assignment\_scopes](#input\_assignment\_scopes) | The scopes to which Service Principal permissions should be assigned to. Usually this is the management group id of form `/providers/Microsoft.Management/managementGroups/<tenantId>` that sits atop the subscriptions. | `list(string)` | n/a | yes |
 | <a name="input_create_password"></a> [create\_password](#input\_create\_password) | Create a password for the enterprise application. | `bool` | n/a | yes |
 | <a name="input_service_principal_name"></a> [service\_principal\_name](#input\_service\_principal\_name) | Service principal name. Must be unique per Entra ID. | `string` | n/a | yes |
