@@ -23,6 +23,7 @@ No modules.
 | [azuread_application.meshcloud_sso](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application) | resource |
 | [azuread_application_password.meshcloud_sso](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_password) | resource |
 | [azuread_service_principal.meshcloud_sso](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) | resource |
+| [azuread_service_principal_delegated_permission_grant.meshcloud_sso](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal_delegated_permission_grant) | resource |
 | [azuread_application_published_app_ids.well_known](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application_published_app_ids) | data source |
 | [azuread_application_template.enterprise_app](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/application_template) | data source |
 | [azuread_client_config.current](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/data-sources/client_config) | data source |
