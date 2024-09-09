@@ -180,7 +180,7 @@ Before opening a Pull Request, please do the following:
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 2.53.1 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.114.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 3.111.0 |
 
 ## Modules
 
@@ -208,6 +208,7 @@ Before opening a Pull Request, please do the following:
 | <a name="input_additional_required_resource_accesses"></a> [additional\_required\_resource\_accesses](#input\_additional\_required\_resource\_accesses) | Additional AAD-Level Resource Accesses the replicator Service Principal needs. | `list(object({ resource_app_id = string, resource_accesses = list(object({ id = string, type = string })) }))` | `[]` | no |
 | <a name="input_application_owners"></a> [application\_owners](#input\_application\_owners) | List of user principals that should be added as owners to the created service principals. | `list(string)` | `[]` | no |
 | <a name="input_can_cancel_subscriptions_in_scopes"></a> [can\_cancel\_subscriptions\_in\_scopes](#input\_can\_cancel\_subscriptions\_in\_scopes) | The scopes to which Service Principal cancel subscription permission is assigned to. List of management group id of form `/providers/Microsoft.Management/managementGroups/<mgmtGroupId>/`. | `list(string)` | `[]` | no |
+| <a name="input_can_create_subscriptions_in_enterprise_enrollment_account"></a> [can\_create\_subscriptions\_in\_enterprise\_enrollment\_account](#input\_can\_create\_subscriptions\_in\_enterprise\_enrollment\_account) | The billing account and enrollment account for which Service Principal will create subscriptions. | `object({ billing_account_id = string, enrollment_account_id = string })` | `null` | no |
 | <a name="input_can_delete_rgs_in_scopes"></a> [can\_delete\_rgs\_in\_scopes](#input\_can\_delete\_rgs\_in\_scopes) | The scopes to which Service Principal delete resource group permission is assigned to. Only relevant when `replicator_rg_enabled`. List of subscription scopes of form `/subscriptions/<subscriptionId>`. | `list(string)` | `[]` | no |
 | <a name="input_create_passwords"></a> [create\_passwords](#input\_create\_passwords) | Create passwords for service principals. | `bool` | `true` | no |
 | <a name="input_mca"></a> [mca](#input\_mca) | n/a | <pre>object({<br>    service_principal_names = list(string)<br>    billing_account_name    = string<br>    billing_profile_name    = string<br>    invoice_section_name    = string<br>  })</pre> | `null` | no |
