@@ -59,3 +59,9 @@ variable "application_owners" {
   description = "List of user principals that should be added as owners to the replicator service principal."
   default     = []
 }
+
+variable "can_create_subscriptions_in_enterprise_enrollment_account" {
+  default     = null
+  type        = object({ billing_account_id = string, enrollment_account_id = string })
+  description = "The billing account and enrollment account for which Service Principal will create subscriptions."
+}

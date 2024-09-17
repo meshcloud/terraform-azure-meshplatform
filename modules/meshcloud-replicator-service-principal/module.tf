@@ -20,8 +20,7 @@ locals {
 }
 
 //---------------------------------------------------------------------------
-// Role Definition for the Replicator on the specified Scope
-//---------------------------------------------------------------------------
+// Role Definition for the Replicator on the specified Scope ---------------------------------------------------------------------------
 resource "azurerm_role_definition" "meshcloud_replicator" {
   name        = "${var.service_principal_name}-base"
   scope       = var.custom_role_scope
@@ -236,6 +235,26 @@ resource "azuread_app_role_assignment" "meshcloud_replicator-user" {
   principal_object_id = azuread_service_principal.meshcloud_replicator.object_id
   resource_object_id  = data.azuread_service_principal.msgraph.object_id
   depends_on          = [azuread_application.meshcloud_replicator]
+}
+
+//---------------------------------------------------------------------------
+// Assign Enrollment Account Subscription Creator Role to the Enterprise application
+//---------------------------------------------------------------------------
+data "azuread_client_config" "current" {}
+
+resource "terraform_data" "set_enrollment_account_permission" {
+  triggers_replace = [uuid()] # The script is idempotent so we run it every time
+
+  provisioner "local-exec" {
+    command     = <<COMMAND
+    .'${path.module}\\set-enrollment-account-permission.ps1'
+      -principalId '${azuread_service_principal.meshcloud_replicator.object_id}'
+      -aadTenantId '${data.azuread_client_config.current.tenant_id}'
+      -billingAccountId '${var.can_create_subscriptions_in_enterprise_enrollment_account.billing_account_id}'
+      -enrollmentAccountId '${var.can_create_subscriptions_in_enterprise_enrollment_account.enrollment_account_id}'
+    COMMAND
+    interpreter = ["PowerShell", "-Command"]
+  }
 }
 
 //---------------------------------------------------------------------------
