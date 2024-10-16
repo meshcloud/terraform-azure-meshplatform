@@ -61,3 +61,9 @@ resource "azuread_service_principal" "meshcloud_sso" {
 resource "azuread_application_password" "meshcloud_sso" {
   application_id = azuread_application.meshcloud_sso.id
 }
+
+resource "azuread_service_principal_delegated_permission_grant" "meshcloud_sso" {
+  service_principal_object_id          = azuread_service_principal.meshcloud_sso.object_id
+  resource_service_principal_object_id = data.azuread_service_principal.msgraph.object_id
+  claim_values                         = ["User.Read"]
+}
