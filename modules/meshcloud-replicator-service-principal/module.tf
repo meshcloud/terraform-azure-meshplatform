@@ -6,11 +6,11 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">=3.81.0"
+      version = ">=4.11.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = ">=2.46.0"
+      version = ">=3.0.2"
     }
   }
 }
@@ -187,20 +187,20 @@ resource "azurerm_role_assignment" "meshcloud_replicator" {
   for_each           = toset(var.assignment_scopes)
   scope              = each.key
   role_definition_id = azurerm_role_definition.meshcloud_replicator.role_definition_resource_id
-  principal_id       = azuread_service_principal.meshcloud_replicator.id
+  principal_id       = azuread_service_principal.meshcloud_replicator.object_id
 }
 
 resource "azurerm_role_assignment" "meshcloud_replicator_subscription_canceler" {
   for_each           = toset(var.can_cancel_subscriptions_in_scopes)
   scope              = each.key
   role_definition_id = azurerm_role_definition.meshcloud_replicator_subscription_canceler.role_definition_resource_id
-  principal_id       = azuread_service_principal.meshcloud_replicator.id
+  principal_id       = azuread_service_principal.meshcloud_replicator.object_id
 }
 
 resource "azurerm_role_assignment" "meshcloud_replicator_rg_deleter" {
   for_each     = toset(var.can_delete_rgs_in_scopes)
   scope        = each.key
-  principal_id = azuread_service_principal.meshcloud_replicator.id
+  principal_id = azuread_service_principal.meshcloud_replicator.object_id
 
   # The azurerm provider requires this must be a scoped id, so unfortuantely we need to construct the id of the role
   # definition at the assignment scope in order to make this stable for subsequent terraform apply's.

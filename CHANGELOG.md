@@ -7,6 +7,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+- Upgraded minimum terraform provider versions
+
 ## [v0.10.0]
 
 ### Added

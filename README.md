@@ -172,15 +172,15 @@ Before opening a Pull Request, please do the following:
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | > 1.1 |
 | <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | >=1.13.1 |
-| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >=2.46.0 |
-| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=3.81.0 |
+| <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >=3.0.2 |
+| <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=4.11.0 |
 
 ## Providers
 
 | Name | Version |
 |------|---------|
 | <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.0.2 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.5.0 |
+| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.11.0 |
 
 ## Modules
 
