@@ -6,11 +6,11 @@ terraform {
   required_providers {
     azurerm = {
       source  = "hashicorp/azurerm"
-      version = ">=3.81.0"
+      version = ">=4.11.0"
     }
     azuread = {
       source  = "hashicorp/azuread"
-      version = ">=2.46.0"
+      version = ">=3.0.2"
     }
   }
 }
@@ -22,7 +22,7 @@ resource "azurerm_role_assignment" "meshcloud_metering" {
   for_each             = toset(var.assignment_scopes)
   scope                = each.key
   role_definition_name = "Cost Management Reader"
-  principal_id         = azuread_service_principal.meshcloud_metering.id
+  principal_id         = azuread_service_principal.meshcloud_metering.object_id
   depends_on           = [azuread_service_principal.meshcloud_metering]
 }
 
