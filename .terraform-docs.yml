@@ -19,3 +19,7 @@ output:
 sort:
   enabled: true
   by: name
+
+sections:
+  hide: # we remove the providers section because the actual provider used depends on the local build environment, we only document version constraints
+    - providers
