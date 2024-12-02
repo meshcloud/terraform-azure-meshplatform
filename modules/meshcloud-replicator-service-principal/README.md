@@ -7,15 +7,6 @@
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >=3.0.2 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=4.11.0 |
 
-## Providers
-
-| Name | Version |
-|------|---------|
-| <a name="provider_azuread"></a> [azuread](#provider\_azuread) | 3.0.2 |
-| <a name="provider_azurerm"></a> [azurerm](#provider\_azurerm) | 4.11.0 |
-| <a name="provider_terraform"></a> [terraform](#provider\_terraform) | n/a |
-| <a name="provider_time"></a> [time](#provider\_time) | 0.12.1 |
-
 ## Modules
 
 No modules.
