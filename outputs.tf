@@ -20,6 +20,10 @@ output "mca_service_principal_password" {
   sensitive   = true
 }
 
+output "mca_service_billing_scope" {
+  value = length(module.mca_service_principal) > 0 ? module.mca_service_principal[0].billing_scope : null
+}
+
 output "metering_service_principal" {
   description = "Metering Service Principal."
   value       = length(module.metering_service_principal) > 0 ? module.metering_service_principal[0].credentials : null
