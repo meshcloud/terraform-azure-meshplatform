@@ -3,6 +3,12 @@ variable "service_principal_name" {
   description = "Display name of the replicator service principal."
 }
 
+variable "administrative_unit_name" {
+  type        = string
+  default     = null
+  description = "Display name of the adminstration-unit name where the user groups are managed."
+}
+
 variable "custom_role_scope" {
   type        = string
   description = "The scope to which Service Principal permissions can be assigned to. Usually this is the management group id of form `/providers/Microsoft.Management/managementGroups/<tenantId>` that sits atop the subscriptions."

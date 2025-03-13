@@ -37,6 +37,13 @@ variable "metering_assignment_scopes" {
   description = "Names or UUIDs of the Management Groups that kraken should collect costs for."
 }
 
+
+variable "administrative_unit_name" {
+  type        = string
+  description = "Display name of the adminstration-unit name where the user groups are managed."
+  default     = null
+}
+
 # SSO inputs
 
 variable "sso_enabled" {
