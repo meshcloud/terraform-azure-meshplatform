@@ -128,22 +128,26 @@ resource "azuread_application" "meshcloud_replicator" {
       access_token_issuance_enabled = false
     }
   }
-  required_resource_access {
-    resource_app_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
+  dynamic "required_resource_access" {
+    for_each = var.administrative_unit_name == null ? [1] : []
 
-    resource_access {
-      id   = data.azuread_service_principal.msgraph.app_role_ids["Directory.Read.All"]
-      type = "Role"
-    }
+    content {
+      resource_app_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
 
-    resource_access {
-      id   = data.azuread_service_principal.msgraph.app_role_ids["Group.ReadWrite.All"]
-      type = "Role"
-    }
+      resource_access {
+        id   = data.azuread_service_principal.msgraph.app_role_ids["Directory.Read.All"]
+        type = "Role"
+      }
 
-    resource_access {
-      id   = data.azuread_service_principal.msgraph.app_role_ids["User.Invite.All"]
-      type = "Role"
+      resource_access {
+        id   = data.azuread_service_principal.msgraph.app_role_ids["Group.ReadWrite.All"]
+        type = "Role"
+      }
+
+      resource_access {
+        id   = data.azuread_service_principal.msgraph.app_role_ids["User.Invite.All"]
+        type = "Role"
+      }
     }
   }
 
@@ -306,3 +310,28 @@ resource "azurerm_management_group_policy_assignment" "privilege-escalation-prev
   ]
 }
 
+//---------------------------------------------------------------------------
+// Administrative Unit
+//---------------------------------------------------------------------------
+resource "azuread_administrative_unit" "meshcloud_replicator_au" {
+  count        = var.administrative_unit_name == null ? 0 : 1
+  display_name = var.administrative_unit_name
+}
+
+//---------------------------------------------------------------------------
+// Directory Role (Admin Role)
+//---------------------------------------------------------------------------
+resource "azuread_directory_role" "meshcloud_replicator_role" {
+  count        = var.administrative_unit_name == null ? 0 : 1
+  display_name = "Groups Administrator"
+}
+
+//---------------------------------------------------------------------------
+// Assign the Service Principal to the Directory Role in the Administrative Unit
+//---------------------------------------------------------------------------
+resource "azuread_administrative_unit_role_member" "meshcloud_replicator_role_member" {
+  count                         = var.administrative_unit_name == null ? 0 : 1
+  role_object_id                = azuread_directory_role.meshcloud_replicator_role[0].object_id
+  administrative_unit_object_id = azuread_administrative_unit.meshcloud_replicator_au[0].object_id
+  member_object_id              = azuread_service_principal.meshcloud_replicator.object_id
+}
