@@ -315,6 +315,7 @@ resource "azurerm_management_group_policy_assignment" "privilege-escalation-prev
 //---------------------------------------------------------------------------
 resource "azuread_administrative_unit" "meshcloud_replicator_au" {
   count        = var.administrative_unit_name == null ? 0 : 1
+  description  = "Administrative Unit for meshStack replicator"
   display_name = var.administrative_unit_name
 }
 
