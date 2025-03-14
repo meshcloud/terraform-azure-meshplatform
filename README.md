@@ -225,6 +225,7 @@ Before opening a Pull Request, please do the following:
 | Name | Description |
 |------|-------------|
 | <a name="output_azure_ad_tenant_id"></a> [azure\_ad\_tenant\_id](#output\_azure\_ad\_tenant\_id) | The Azure AD tenant id. |
+| <a name="output_mca_service_billing_scope"></a> [mca\_service\_billing\_scope](#output\_mca\_service\_billing\_scope) | n/a |
 | <a name="output_mca_service_principal"></a> [mca\_service\_principal](#output\_mca\_service\_principal) | MCA Service Principal. |
 | <a name="output_mca_service_principal_password"></a> [mca\_service\_principal\_password](#output\_mca\_service\_principal\_password) | Password for MCA Service Principal. |
 | <a name="output_metering_service_principal"></a> [metering\_service\_principal](#output\_metering\_service\_principal) | Metering Service Principal. |
