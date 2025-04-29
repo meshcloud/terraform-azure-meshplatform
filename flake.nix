@@ -1,5 +1,5 @@
 {
-  description = "Flake for terraform-aks-meshplatform";
+  description = "Flake for terraform-azure-meshplatform";
 
   inputs = {
     nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-24.05";
@@ -50,7 +50,7 @@
         pkgs = importNixpkgs system;
       in {
         default = pkgs.mkShell {
-          name = "terraform-aks-meshplatform";
+          name = "terraform-azure-meshplatform";
           packages = (github_actions_preinstalled pkgs) ++ (core_packages pkgs);
         };
       };
