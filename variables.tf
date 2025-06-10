@@ -118,7 +118,25 @@ variable "create_passwords" {
 variable "workload_identity_federation" {
   default     = null
   description = "Enable workload identity federation by creating federated credentials for enterprise applications. Usually you'd receive the required settings when attempting to configure a platform with workload identity federation in meshStack."
-  type        = object({ issuer = string, replicator_subject = string, kraken_subject = string })
+  type = object({
+    issuer             = string
+    replicator_subject = string
+    kraken_subject     = string
+    # For MCA service principals: can be either a single subject for all SPs or a map of SP name to subject
+    mca_subject  = optional(string)
+    mca_subjects = optional(map(string))
+  })
+
+  validation {
+    condition = var.workload_identity_federation == null || (
+      var.workload_identity_federation.mca_subject == null && var.workload_identity_federation.mca_subjects == null
+      ) || (
+      var.workload_identity_federation.mca_subject != null && var.workload_identity_federation.mca_subjects == null
+      ) || (
+      var.workload_identity_federation.mca_subject == null && var.workload_identity_federation.mca_subjects != null
+    )
+    error_message = "For MCA configuration, either 'mca_subject' (for all service principals) or 'mca_subjects' (per service principal) can be provided, but not both."
+  }
 }
 
 variable "mca" {

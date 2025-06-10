@@ -84,6 +84,14 @@ module "mca_service_principal" {
   billing_profile_name = var.mca.billing_profile_name
   invoice_section_name = var.mca.invoice_section_name
 
+  create_password = var.create_passwords
+  workload_identity_federation = var.workload_identity_federation == null ? null : {
+    issuer = var.workload_identity_federation.issuer
+    # Use per-service-principal subjects if provided, otherwise fall back to single subject
+    subject  = var.workload_identity_federation.mca_subjects == null ? var.workload_identity_federation.mca_subject : null
+    subjects = var.workload_identity_federation.mca_subjects
+  }
+
   application_owners = var.application_owners
 }
 
