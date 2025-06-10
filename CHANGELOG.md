@@ -7,6 +7,22 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.12.0]
+
+### Added
+
+- Optional administrative unit support
+- Support workload identity federation for MCA service principals
+
+## [v0.11.0]
+
+### Added
+
+- Billing scope to outputs
+- Admin consent for delegated permission in SSO module
+
+### Changed
+
 - Upgraded minimum terraform provider versions
 
 ## [v0.10.0]
@@ -82,7 +98,9 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial Release
 
-[unreleased]: https://github.com/meshcloud/terraform-azure-meshplatform/compare/v0.10.0...HEAD
+[unreleased]: https://github.com/meshcloud/terraform-azure-meshplatform/compare/v0.12.0...HEAD
+[v0.12.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.12.0
+[v0.11.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.11.0
 [v0.1.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.1.0
 [v0.2.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.2.0
 [v0.3.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.3.0

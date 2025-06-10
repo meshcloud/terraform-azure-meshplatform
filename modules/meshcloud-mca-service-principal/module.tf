@@ -82,14 +82,45 @@ resource "azapi_resource_action" "remove_role_assignment_subscription_creator" {
 // Create new client secret and associate it with the application
 //---------------------------------------------------------------------------
 resource "time_rotating" "mca_secret_rotation" {
+  count = var.create_password ? 1 : 0
+
   rotation_days = 365
 }
 
 resource "azuread_application_password" "mca" {
-  for_each = toset(var.service_principal_names)
+  for_each = var.create_password ? toset(var.service_principal_names) : toset([])
 
   application_id = azuread_application.mca[each.key].id
   rotate_when_changed = {
-    rotation = time_rotating.mca_secret_rotation.id
+    rotation = time_rotating.mca_secret_rotation[0].id
   }
+}
+
+//---------------------------------------------------------------------------
+// Create federated identity credentials
+//---------------------------------------------------------------------------
+locals {
+  # Determine the subject for each service principal
+  wif_subjects = var.workload_identity_federation == null ? {} : (
+    var.workload_identity_federation.subjects != null
+    ? var.workload_identity_federation.subjects
+    : var.workload_identity_federation.subject != null
+    ? { for name in var.service_principal_names : name => var.workload_identity_federation.subject }
+    : {}
+  )
+}
+
+resource "azuread_application_federated_identity_credential" "mca" {
+  for_each = length(local.wif_subjects) > 0 ? toset(keys(local.wif_subjects)) : toset([])
+
+  application_id = azuread_application.mca[each.key].id
+  display_name   = each.key
+  audiences      = ["api://AzureADTokenExchange"]
+  issuer         = var.workload_identity_federation.issuer
+  subject        = local.wif_subjects[each.key]
+}
+
+moved {
+  from = time_rotating.mca_secret_rotation
+  to   = time_rotating.mca_secret_rotation[0]
 }

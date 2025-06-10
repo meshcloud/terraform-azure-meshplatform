@@ -14,7 +14,7 @@ To run this module, you need the following:
 
 - [Terraform installed](https://learn.hashicorp.com/tutorials/terraform/install-cli) (already installed in Azure Portal)
 - [Azure CLI installed](https://docs.microsoft.com/en-us/cli/azure/install-azure-cli) (already installed in Azure Portal)
-- Permissions on AAD level. If using Microsoft Customer Agreement, AAD level permissions must be set in the Tenant Directory that will create the subscriptions (*Source Tenant*) as well as the Tenant Directory that will receive the subscriptions (*Destination Tenant*). An Azure account with one of the following roles:
+- Permissions on Entra ID level. If using Microsoft Customer Agreement, Entra ID level permissions must be set in the Tenant Directory that will create the subscriptions (*Source Tenant*) as well as the Tenant Directory that will receive the subscriptions (*Destination Tenant*). An Azure account with one of the following roles:
   1. Global Administrator
   2. Privileged Role Administrator AND (Cloud) Application Administrator
 - Permissions on Azure Resource Level: User Access Administrator on the Management Group that should be managed by meshStack
@@ -83,11 +83,11 @@ To run this module, you need the following:
 
 **Prerequisites**:
 
-- Ensure you have permissions in the source AAD Tenant for granting access to the billing account used for subscription creation using the `Account Administrator` role
+- Ensure you have permissions in the source Entra ID Tenant for granting access to the billing account used for subscription creation using the `Account Administrator` role
 
 **Create MCA service principals**:
 
-> With this module, you can create multiple MCA service principals by passing a list of `mca.service_principal_names`. This is useful for environments with restricted acceses to the AAD tenant holding the MCA license.
+> With this module, you can create multiple MCA service principals by passing a list of `mca.service_principal_names`. This is useful for environments with restricted access to the Entra ID tenant holding the MCA license. A sample case would be to have one "source" Entra ID tenant in your organization in which you can create Azure subscriptions, and multiple "destination" tenants.
 
 Add an `mca` block when calling this module.
 
@@ -106,6 +106,41 @@ module "meshplatform" {
   }
 }
 ```
+
+## Workload Identity Federation for Multiple Environments
+
+When using multiple MCA service principals with Workload Identity Federation (WIF), you can configure per-service-principal subjects to support different Kubernetes namespaces or environments.
+
+### Single Subject (All MCA Service Principals)
+
+Use `mca_subject` when all MCA service principals should use the same Kubernetes service account:
+
+```hcl
+workload_identity_federation = {
+  issuer             = "..."
+  replicator_subject = "system:serviceaccount:meshcloud:replicator"
+  kraken_subject     = "system:serviceaccount:meshcloud:kraken"
+  mca_subject        = "system:serviceaccount:meshcloud:replicator" # with this, all MCA SPs will have this subject in its federated credentials
+}
+```
+
+### Per-Service-Principal Subjects (Recommended for Multi-Environment)
+
+Use `mca_subjects` to configure different subjects for each MCA service principal
+
+```hcl
+workload_identity_federation = {
+  issuer             = "..."
+  replicator_subject = "system:serviceaccount:meshcloud-dev:replicator"
+  kraken_subject     = "system:serviceaccount:meshcloud-dev:kraken"
+  mca_subjects = {
+    "meshcloud-dev"  = "system:serviceaccount:meshcloud-dev:replicator"
+    "meshcloud-prod" = "system:serviceaccount:meshcloud-prod:replicator"
+  }
+}
+```
+
+This approach allows each service principal to have its own custom subject when configuring WIF.
 
 ### Using Pre-provisioned Subscriptions
 
@@ -218,7 +253,7 @@ Before opening a Pull Request, please do the following:
 | <a name="input_sso_identity_provider_alias"></a> [sso\_identity\_provider\_alias](#input\_sso\_identity\_provider\_alias) | Identity provider alias. This value needs to be passed to meshcloud to configure the identity provider. | `string` | `"oidc"` | no |
 | <a name="input_sso_meshstack_idp_domain"></a> [sso\_meshstack\_idp\_domain](#input\_sso\_meshstack\_idp\_domain) | meshStack identity provider domain that was provided by meshcloud. It is individual per meshStack. In most cases it is sso.<portal-domain> | `string` | `"replaceme"` | no |
 | <a name="input_sso_service_principal_name"></a> [sso\_service\_principal\_name](#input\_sso\_service\_principal\_name) | Service principal for Entra ID SSO. Name must be unique per Entra ID. | `string` | `"meshcloud SSO"` | no |
-| <a name="input_workload_identity_federation"></a> [workload\_identity\_federation](#input\_workload\_identity\_federation) | Enable workload identity federation by creating federated credentials for enterprise applications. Usually you'd receive the required settings when attempting to configure a platform with workload identity federation in meshStack. | `object({ issuer = string, replicator_subject = string, kraken_subject = string })` | `null` | no |
+| <a name="input_workload_identity_federation"></a> [workload\_identity\_federation](#input\_workload\_identity\_federation) | Enable workload identity federation by creating federated credentials for enterprise applications. Usually you'd receive the required settings when attempting to configure a platform with workload identity federation in meshStack. | <pre>object({<br>    issuer             = string<br>    replicator_subject = string<br>    kraken_subject     = string<br>    # For MCA service principals: can be either a single subject for all SPs or a map of SP name to subject<br>    mca_subject  = optional(string)<br>    mca_subjects = optional(map(string))<br>  })</pre> | `null` | no |
 
 ## Outputs
 
