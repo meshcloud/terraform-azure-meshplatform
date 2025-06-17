@@ -7,11 +7,13 @@ variable "replicator_service_principal_name" {
 variable "replicator_custom_role_scope" {
   type        = string
   description = "Name or UUID of the Management Group of the replicator custom role definition. The custom role definition must be available for all assignment scopes."
+  default     = null
 }
 
 variable "replicator_assignment_scopes" {
   type        = list(string)
   description = "Names or UUIDs of the Management Groups which replicator should manage."
+  default     = []
 }
 
 variable "can_cancel_subscriptions_in_scopes" {
@@ -35,8 +37,8 @@ variable "metering_service_principal_name" {
 variable "metering_assignment_scopes" {
   type        = list(string)
   description = "Names or UUIDs of the Management Groups that kraken should collect costs for."
+  default     = []
 }
-
 
 variable "administrative_unit_name" {
   type        = string
