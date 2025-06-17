@@ -17,7 +17,8 @@ terraform {
 }
 
 data "azurerm_management_group" "replicator_custom_role_scope" {
-  name = var.replicator_custom_role_scope
+  count = var.replicator_enabled || var.replicator_rg_enabled ? 1 : 0
+  name  = var.replicator_custom_role_scope
 }
 
 data "azurerm_management_group" "replicator_assignment_scopes" {
