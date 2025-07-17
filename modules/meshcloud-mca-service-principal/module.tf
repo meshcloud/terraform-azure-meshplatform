@@ -32,7 +32,7 @@ output "mca_stuff" {
 }
 
 output "id" {
-  vaule = data.azurerm_billing_mca_account_scope.mca.id
+  value = data.azurerm_billing_mca_account_scope.mca.id
 }
 
 resource "azuread_application" "mca" {
