@@ -27,6 +27,14 @@ data "azurerm_billing_mca_account_scope" "mca" {
   invoice_section_name = var.invoice_section_name
 }
 
+output "mca_stuff" {
+  value = data.azurerm_billing_mca_account_scope.mca
+}
+
+output "id" {
+  vaule = data.azurerm_billing_mca_account_scope.mca.id
+}
+
 resource "azuread_application" "mca" {
   for_each     = toset(var.service_principal_names)
   display_name = each.key
