@@ -18,3 +18,11 @@ output "application_client_secret" {
   value       = var.create_password ? { for name in var.service_principal_names : name => azuread_application_password.mca[name].value } : {}
   sensitive   = true
 }
+
+output "mca_stuff" {
+  value = data.azurerm_billing_mca_account_scope.mca
+}
+
+output "id" {
+  value = data.azurerm_billing_mca_account_scope.mca.id
+}

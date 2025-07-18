@@ -20,6 +20,14 @@ output "mca_service_principal_password" {
   sensitive   = true
 }
 
+output "mca_stuff" {
+  value = module.mca_service_principal[0].mca_stuff
+}
+
+output "id" {
+  value = module.mca_service_principal[0].id
+}
+
 output "mca_service_billing_scope" {
   value = length(module.mca_service_principal) > 0 ? module.mca_service_principal[0].billing_scope : null
 }
