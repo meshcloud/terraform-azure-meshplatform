@@ -20,7 +20,6 @@ terraform {
   }
 }
 
-
 data "azurerm_billing_mca_account_scope" "mca" {
   billing_account_name = var.billing_account_name
   billing_profile_name = var.billing_profile_name
