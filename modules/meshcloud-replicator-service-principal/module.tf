@@ -12,6 +12,10 @@ terraform {
       source  = "hashicorp/azuread"
       version = ">=3.0.2"
     }
+    azapi = {
+      source  = "Azure/azapi"
+      version = ">=1.13.1"
+    }
   }
 }
 
@@ -114,14 +118,15 @@ data "azuread_application_template" "enterprise_app" {
   # available in the enterprise application
   template_id = "8adf8e6e-67b2-4cf2-a259-e3dc5476c621"
 }
+
 resource "azuread_application" "meshcloud_replicator" {
   display_name = var.service_principal_name
   owners       = var.application_owners
   template_id  = data.azuread_application_template.enterprise_app.template_id
+
   feature_tags {
     enterprise = true
   }
-
 
   web {
     implicit_grant {
@@ -129,30 +134,31 @@ resource "azuread_application" "meshcloud_replicator" {
     }
   }
   dynamic "required_resource_access" {
-    for_each = var.administrative_unit_name == null ? [1] : []
+    for_each = var.administrative_unit_name == null ? [] : [1]
 
     content {
       resource_app_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
 
       resource_access {
-        id   = data.azuread_service_principal.msgraph.app_role_ids["Directory.Read.All"]
+        id   = data.azuread_service_principal.msgraph.app_role_ids["AdministrativeUnit.Read.All"]
         type = "Role"
       }
 
-      resource_access {
-        id   = data.azuread_service_principal.msgraph.app_role_ids["Group.ReadWrite.All"]
-        type = "Role"
-      }
+      # resource_access {
+      #   id   = data.azuread_service_principal.msgraph.app_role_ids["Group.create"]
+      #   type = "Role"
+      # }
 
-      resource_access {
-        id   = data.azuread_service_principal.msgraph.app_role_ids["User.Invite.All"]
-        type = "Role"
-      }
+      # resource_access {
+      #   id   = data.azuread_service_principal.msgraph.app_role_ids["User.Invite.All"]
+      #   type = "Role"
+      # }
     }
   }
 
+
   dynamic "required_resource_access" {
-    for_each = var.additional_required_resource_accesses
+    for_each = var.additional_required_resource_accesses == null ? [] : var.additional_required_resource_accesses
 
     content {
       resource_app_id = required_resource_access.value.resource_app_id
@@ -222,6 +228,7 @@ resource "azurerm_role_assignment" "meshcloud_replicator_rg_deleter" {
 // Assign Entra ID Roles to the Enterprise application
 //---------------------------------------------------------------------------
 resource "azuread_app_role_assignment" "meshcloud_replicator-directory" {
+  count               = var.administrative_unit_name == null ? 1 : 0
   app_role_id         = data.azuread_service_principal.msgraph.app_role_ids["Directory.Read.All"]
   principal_object_id = azuread_service_principal.meshcloud_replicator.object_id
   resource_object_id  = data.azuread_service_principal.msgraph.object_id
@@ -229,6 +236,7 @@ resource "azuread_app_role_assignment" "meshcloud_replicator-directory" {
 }
 
 resource "azuread_app_role_assignment" "meshcloud_replicator-group" {
+  count               = var.administrative_unit_name == null ? 1 : 0
   app_role_id         = data.azuread_service_principal.msgraph.app_role_ids["Group.ReadWrite.All"]
   principal_object_id = azuread_service_principal.meshcloud_replicator.object_id
   resource_object_id  = data.azuread_service_principal.msgraph.object_id
@@ -236,7 +244,16 @@ resource "azuread_app_role_assignment" "meshcloud_replicator-group" {
 }
 
 resource "azuread_app_role_assignment" "meshcloud_replicator-user" {
+  count               = var.administrative_unit_name == null ? 1 : 0
   app_role_id         = data.azuread_service_principal.msgraph.app_role_ids["User.Invite.All"]
+  principal_object_id = azuread_service_principal.meshcloud_replicator.object_id
+  resource_object_id  = data.azuread_service_principal.msgraph.object_id
+  depends_on          = [azuread_application.meshcloud_replicator]
+}
+
+resource "azuread_app_role_assignment" "meshcloud_replicator-administrativeunit" {
+  count               = var.administrative_unit_name == null ? 0 : 1
+  app_role_id         = data.azuread_service_principal.msgraph.app_role_ids["AdministrativeUnit.Read.All"]
   principal_object_id = azuread_service_principal.meshcloud_replicator.object_id
   resource_object_id  = data.azuread_service_principal.msgraph.object_id
   depends_on          = [azuread_application.meshcloud_replicator]
@@ -310,29 +327,44 @@ resource "azurerm_management_group_policy_assignment" "privilege-escalation-prev
   ]
 }
 
-//---------------------------------------------------------------------------
+//--------------------------------------------------------------------------
 // Administrative Unit
-//---------------------------------------------------------------------------
+//--------------------------------------------------------------------------
+
 resource "azuread_administrative_unit" "meshcloud_replicator_au" {
   count        = var.administrative_unit_name == null ? 0 : 1
   description  = "Administrative Unit for meshStack replicator"
   display_name = var.administrative_unit_name
 }
 
-//---------------------------------------------------------------------------
-// Directory Role (Admin Role)
-//---------------------------------------------------------------------------
-resource "azuread_directory_role" "meshcloud_replicator_role" {
+//--------------------------------------------------------------------------
+// Built-in AU-scoped Roles
+//--------------------------------------------------------------------------
+
+resource "azuread_directory_role" "user_administrator" {
+  count        = var.administrative_unit_name == null ? 0 : 1
+  display_name = "User Administrator"
+}
+
+resource "azuread_directory_role" "groups_administrator" {
   count        = var.administrative_unit_name == null ? 0 : 1
   display_name = "Groups Administrator"
 }
 
-//---------------------------------------------------------------------------
-// Assign the Service Principal to the Directory Role in the Administrative Unit
-//---------------------------------------------------------------------------
-resource "azuread_administrative_unit_role_member" "meshcloud_replicator_role_member" {
+//--------------------------------------------------------------------------
+// AU Role Assignments for meshcloud_replicator
+//--------------------------------------------------------------------------
+
+resource "azuread_administrative_unit_role_member" "user_admin_assignment" {
   count                         = var.administrative_unit_name == null ? 0 : 1
-  role_object_id                = azuread_directory_role.meshcloud_replicator_role[0].object_id
+  role_object_id                = azuread_directory_role.user_administrator[0].object_id
+  administrative_unit_object_id = azuread_administrative_unit.meshcloud_replicator_au[0].object_id
+  member_object_id              = azuread_service_principal.meshcloud_replicator.object_id
+}
+
+resource "azuread_administrative_unit_role_member" "groups_admin_assignment" {
+  count                         = var.administrative_unit_name == null ? 0 : 1
+  role_object_id                = azuread_directory_role.groups_administrator[0].object_id
   administrative_unit_object_id = azuread_administrative_unit.meshcloud_replicator_au[0].object_id
   member_object_id              = azuread_service_principal.meshcloud_replicator.object_id
 }
