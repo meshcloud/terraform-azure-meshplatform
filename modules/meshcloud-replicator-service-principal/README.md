@@ -4,6 +4,7 @@
 | Name | Version |
 |------|---------|
 | <a name="requirement_terraform"></a> [terraform](#requirement\_terraform) | > 1.0 |
+| <a name="requirement_azapi"></a> [azapi](#requirement\_azapi) | >=1.13.1 |
 | <a name="requirement_azuread"></a> [azuread](#requirement\_azuread) | >=3.0.2 |
 | <a name="requirement_azurerm"></a> [azurerm](#requirement\_azurerm) | >=4.11.0 |
 
@@ -16,14 +17,17 @@ No modules.
 | Name | Type |
 |------|------|
 | [azuread_administrative_unit.meshcloud_replicator_au](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/administrative_unit) | resource |
-| [azuread_administrative_unit_role_member.meshcloud_replicator_role_member](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/administrative_unit_role_member) | resource |
+| [azuread_administrative_unit_role_member.groups_admin_assignment](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/administrative_unit_role_member) | resource |
+| [azuread_administrative_unit_role_member.user_admin_assignment](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/administrative_unit_role_member) | resource |
+| [azuread_app_role_assignment.meshcloud_replicator-administrativeunit](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/app_role_assignment) | resource |
 | [azuread_app_role_assignment.meshcloud_replicator-directory](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/app_role_assignment) | resource |
 | [azuread_app_role_assignment.meshcloud_replicator-group](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/app_role_assignment) | resource |
 | [azuread_app_role_assignment.meshcloud_replicator-user](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/app_role_assignment) | resource |
 | [azuread_application.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application) | resource |
 | [azuread_application_federated_identity_credential.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_federated_identity_credential) | resource |
 | [azuread_application_password.application_pw](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/application_password) | resource |
-| [azuread_custom_directory_role.au_scoped_user_manager](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/custom_directory_role) | resource |
+| [azuread_directory_role.groups_administrator](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/directory_role) | resource |
+| [azuread_directory_role.user_administrator](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/directory_role) | resource |
 | [azuread_service_principal.meshcloud_replicator](https://registry.terraform.io/providers/hashicorp/azuread/latest/docs/resources/service_principal) | resource |
 | [azurerm_management_group_policy_assignment.privilege-escalation-prevention](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/management_group_policy_assignment) | resource |
 | [azurerm_policy_definition.privilege_escalation_prevention](https://registry.terraform.io/providers/hashicorp/azurerm/latest/docs/resources/policy_definition) | resource |
