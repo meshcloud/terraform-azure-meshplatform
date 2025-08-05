@@ -12,10 +12,6 @@ terraform {
       source  = "hashicorp/azuread"
       version = ">=3.0.2"
     }
-    azapi = {
-      source  = "Azure/azapi"
-      version = ">=1.13.1"
-    }
   }
 }
 
@@ -133,29 +129,6 @@ resource "azuread_application" "meshcloud_replicator" {
       access_token_issuance_enabled = false
     }
   }
-  dynamic "required_resource_access" {
-    for_each = var.administrative_unit_name == null ? [] : [1]
-
-    content {
-      resource_app_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
-
-      resource_access {
-        id   = data.azuread_service_principal.msgraph.app_role_ids["AdministrativeUnit.Read.All"]
-        type = "Role"
-      }
-
-      # resource_access {
-      #   id   = data.azuread_service_principal.msgraph.app_role_ids["Group.create"]
-      #   type = "Role"
-      # }
-
-      # resource_access {
-      #   id   = data.azuread_service_principal.msgraph.app_role_ids["User.Invite.All"]
-      #   type = "Role"
-      # }
-    }
-  }
-
 
   dynamic "required_resource_access" {
     for_each = var.additional_required_resource_accesses == null ? [] : var.additional_required_resource_accesses
@@ -327,9 +300,9 @@ resource "azurerm_management_group_policy_assignment" "privilege-escalation-prev
   ]
 }
 
-//--------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 // Administrative Unit
-//--------------------------------------------------------------------------
+//---------------------------------------------------------------------------
 
 resource "azuread_administrative_unit" "meshcloud_replicator_au" {
   count        = var.administrative_unit_name == null ? 0 : 1
@@ -338,33 +311,73 @@ resource "azuread_administrative_unit" "meshcloud_replicator_au" {
 }
 
 //--------------------------------------------------------------------------
-// Built-in AU-scoped Roles
+// Update AU properties via Microsoft Graph API using az rest
 //--------------------------------------------------------------------------
 
-resource "azuread_directory_role" "user_administrator" {
+resource "terraform_data" "patch_admin_unit" {
+  count = var.administrative_unit_name == null ? 0 : 1
+
+  lifecycle {
+    precondition {
+      condition     = var.administrative_unit_membership_rule != null
+      error_message = "When administrative_unit_name is set, administrative_unit_membership_rule must also be provided. Suggested value: \"(user.accountEnabled -eq true)\""
+    }
+  }
+
+  provisioner "local-exec" {
+    command = <<-EOT
+      az rest \
+        --method PATCH \
+        --url "https://graph.microsoft.com/v1.0/directory/administrativeUnits/${azuread_administrative_unit.meshcloud_replicator_au[0].object_id}" \
+        --body '{
+          "displayName": "${var.administrative_unit_name}",
+          "membershipType": "Dynamic",
+          "membershipRule": "${var.administrative_unit_membership_rule}",
+          "membershipRuleProcessingState": "On"
+        }'
+    EOT
+  }
+
+  triggers_replace = {
+    au_id           = azuread_administrative_unit.meshcloud_replicator_au[0].object_id
+    display_name    = var.administrative_unit_name
+    membership_rule = var.administrative_unit_membership_rule
+  }
+
+  depends_on = [azuread_administrative_unit.meshcloud_replicator_au]
+}
+//--------------------------------------------------------------------------
+// Custom AU-scoped Role
+//--------------------------------------------------------------------------
+
+resource "azuread_custom_directory_role" "meshcloud_replicator_au_role" {
   count        = var.administrative_unit_name == null ? 0 : 1
-  display_name = "User Administrator"
-}
+  display_name = "meshStack Replicator AU Role"
+  description  = "Custom role for meshStack replicator with limited User and Group permissions"
+  enabled      = true
+  version      = "1.0"
 
-resource "azuread_directory_role" "groups_administrator" {
-  count        = var.administrative_unit_name == null ? 0 : 1
-  display_name = "Groups Administrator"
+  # users permissions
+  permissions {
+    allowed_resource_actions = [
+      "microsoft.directory/users/standard/read",
+      "microsoft.directory/groups/create",
+      "microsoft.directory/groups/standard/read",
+      "microsoft.directory/groups/members/update",
+      "microsoft.directory/groups/members/read",
+      "microsoft.directory/groups/memberOf/read",
+      "microsoft.directory/administrativeUnits/members/read",
+      "microsoft.directory/administrativeUnits/members/update",
+    ]
+  }
 }
 
 //--------------------------------------------------------------------------
-// AU Role Assignments for meshcloud_replicator
+// AU Role Assignment for meshcloud_replicator
 //--------------------------------------------------------------------------
 
-resource "azuread_administrative_unit_role_member" "user_admin_assignment" {
-  count                         = var.administrative_unit_name == null ? 0 : 1
-  role_object_id                = azuread_directory_role.user_administrator[0].object_id
-  administrative_unit_object_id = azuread_administrative_unit.meshcloud_replicator_au[0].object_id
-  member_object_id              = azuread_service_principal.meshcloud_replicator.object_id
-}
-
-resource "azuread_administrative_unit_role_member" "groups_admin_assignment" {
-  count                         = var.administrative_unit_name == null ? 0 : 1
-  role_object_id                = azuread_directory_role.groups_administrator[0].object_id
-  administrative_unit_object_id = azuread_administrative_unit.meshcloud_replicator_au[0].object_id
-  member_object_id              = azuread_service_principal.meshcloud_replicator.object_id
+resource "azuread_directory_role_assignment" "meshcloud_replicator_au_assignment" {
+  count               = var.administrative_unit_name == null ? 0 : 1
+  role_id             = azuread_custom_directory_role.meshcloud_replicator_au_role[0].object_id
+  principal_object_id = azuread_service_principal.meshcloud_replicator.object_id
 }

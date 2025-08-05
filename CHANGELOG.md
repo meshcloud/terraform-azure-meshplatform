@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.13.0]
+
+### Added
+
+- Harden permissions for administrative units
+- Support for dynamic membership rules in administrative units
+
 ## [v0.12.0]
 
 ### Added
@@ -98,7 +105,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial Release
 
-[unreleased]: https://github.com/meshcloud/terraform-azure-meshplatform/compare/v0.12.0...HEAD
+[unreleased]: https://github.com/meshcloud/terraform-azure-meshplatform/compare/v0.13.0...HEAD
+[v0.13.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.13.0
 [v0.12.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.12.0
 [v0.11.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.11.0
 [v0.1.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.1.0
