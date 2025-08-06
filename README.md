@@ -119,14 +119,13 @@ Please include the following `additional_permission` when configuring this terra
 
 ### Using Azure Administrative Units
 
-To use Azure Administrative Units with this module, you can set the `administrative_unit_name` and `administrative_unit_membership_rule` variables.
+To use Azure Administrative Units with this module, you can set the `administrative_unit_name` variable.
 
 ```hcl
 module "meshplatform" {
   source = "meshcloud/meshplatform/azure"
   # required inputs
   administrative_unit_name              = "my-administrative-unit"
-  administrative_unit_membership_rule   = "(user.accountEnabled -eq true)" # Include all active users
 }
 ```
 
@@ -248,7 +247,6 @@ Before opening a Pull Request, please do the following:
 |------|-------------|------|---------|:--------:|
 | <a name="input_additional_permissions"></a> [additional\_permissions](#input\_additional\_permissions) | Additional Subscription-Level Permissions the Service Principal needs. | `list(string)` | `[]` | no |
 | <a name="input_additional_required_resource_accesses"></a> [additional\_required\_resource\_accesses](#input\_additional\_required\_resource\_accesses) | Additional AAD-Level Resource Accesses the replicator Service Principal needs. | `list(object({ resource_app_id = string, resource_accesses = list(object({ id = string, type = string })) }))` | `[]` | no |
-| <a name="input_administrative_unit_membership_rule"></a> [administrative\_unit\_membership\_rule](#input\_administrative\_unit\_membership\_rule) | Dynamic membership rule for the Administrative Unit. Required when administrative\_unit\_name is set.<br><br>Suggested default: "(user.accountEnabled -eq true)"<br>NOTE: This rule will include ALL active users in your tenant. Consider more restrictive rules for production use.<br><br>Examples for more restrictive rules:<br>- "(user.companyName -eq \"MyCompany\") and (user.accountEnabled -eq true)" - Active users from specific company<br>- "(user.userType -eq \"Member\") and (user.accountEnabled -eq true)" - Active member users only<br><br>For more information on membership rules, see:<br>https://learn.microsoft.com/en-us/entra/identity/users/groups-dynamic-membership | `string` | `null` | no |
 | <a name="input_administrative_unit_name"></a> [administrative\_unit\_name](#input\_administrative\_unit\_name) | Display name of the adminstration-unit name where the user groups are managed. | `string` | `null` | no |
 | <a name="input_application_owners"></a> [application\_owners](#input\_application\_owners) | List of user principals that should be added as owners to the created service principals. | `list(string)` | `[]` | no |
 | <a name="input_can_cancel_subscriptions_in_scopes"></a> [can\_cancel\_subscriptions\_in\_scopes](#input\_can\_cancel\_subscriptions\_in\_scopes) | The scopes to which Service Principal cancel subscription permission is assigned to. List of management group id of form `/providers/Microsoft.Management/managementGroups/<mgmtGroupId>/`. | `list(string)` | `[]` | no |

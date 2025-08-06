@@ -65,21 +65,3 @@ variable "application_owners" {
   description = "List of user principals that should be added as owners to the replicator service principal."
   default     = []
 }
-
-variable "administrative_unit_membership_rule" {
-  type        = string
-  default     = null
-  description = <<-EOT
-    Dynamic membership rule for the Administrative Unit. Required when administrative_unit_name is set.
-
-    Suggested default: "(user.accountEnabled -eq true)"
-    NOTE: This rule will include ALL active users in your tenant. Consider more restrictive rules for production use.
-
-    Examples for more restrictive rules:
-    - "(user.companyName -eq \"MyCompany\") and (user.accountEnabled -eq true)" - Active users from specific company
-    - "(user.userType -eq \"Member\") and (user.accountEnabled -eq true)" - Active member users only
-
-    For more information on membership rules, see:
-    https://learn.microsoft.com/en-us/entra/identity/users/groups-dynamic-membership
-  EOT
-}
