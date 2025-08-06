@@ -329,23 +329,12 @@ There is an issue when assigning the replicator a custom role in the AU scope, w
 
 See https://github.com/hashicorp/terraform-provider-azuread/issues/1546.
 
-For now we assign User Administrator and Groups Administrator roles as that is already restricted to the AU scope.
+For now we assign Groups Administrator role as that is already restricted to the AU scope.
 */
-resource "azuread_directory_role" "user_administrator" {
-  count        = var.administrative_unit_name == null ? 0 : 1
-  display_name = "User Administrator"
-}
 
 resource "azuread_directory_role" "groups_administrator" {
   count        = var.administrative_unit_name == null ? 0 : 1
   display_name = "Groups Administrator"
-}
-
-resource "azuread_administrative_unit_role_member" "user_admin_assignment" {
-  count                         = var.administrative_unit_name == null ? 0 : 1
-  role_object_id                = azuread_directory_role.user_administrator[0].object_id
-  administrative_unit_object_id = azuread_administrative_unit.meshcloud_replicator_au[0].object_id
-  member_object_id              = azuread_service_principal.meshcloud_replicator.object_id
 }
 
 resource "azuread_administrative_unit_role_member" "groups_admin_assignment" {

@@ -7,6 +7,12 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.13.3]
+
+### Changed
+
+- Remove User Administrator role assignment for replicator in administrative units.
+
 ## [v0.13.2]
 
 ### Changed
@@ -119,7 +125,8 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial Release
 
-[unreleased]: https://github.com/meshcloud/terraform-azure-meshplatform/compare/v0.13.2...HEAD
+[unreleased]: https://github.com/meshcloud/terraform-azure-meshplatform/compare/v0.13.3...HEAD
+[v0.13.3]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.13.3
 [v0.13.2]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.13.2
 [v0.13.1]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.13.1
 [v0.13.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.13.0
