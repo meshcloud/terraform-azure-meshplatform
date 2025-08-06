@@ -7,6 +7,13 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.13.2]
+
+### Changed
+
+- Assign User.Read.All permission to replicator when using administrative units.
+- Assign replicator to User Administrator and Groups Administrator roles in administrative units scope.
+
 ## [v0.13.1]
 
 ### Changed
