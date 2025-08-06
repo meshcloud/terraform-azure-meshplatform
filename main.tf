@@ -62,8 +62,7 @@ module "replicator_service_principal" {
   can_cancel_subscriptions_in_scopes = var.can_cancel_subscriptions_in_scopes
   can_delete_rgs_in_scopes           = var.can_delete_rgs_in_scopes
 
-  administrative_unit_name            = var.administrative_unit_name
-  administrative_unit_membership_rule = var.administrative_unit_membership_rule
+  administrative_unit_name = var.administrative_unit_name
 
   additional_required_resource_accesses = var.additional_required_resource_accesses
   additional_permissions                = var.additional_permissions

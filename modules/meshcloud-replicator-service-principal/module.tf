@@ -311,42 +311,6 @@ resource "azuread_administrative_unit" "meshcloud_replicator_au" {
 }
 
 //--------------------------------------------------------------------------
-// Update AU properties via Microsoft Graph API using az rest
-//--------------------------------------------------------------------------
-
-resource "terraform_data" "patch_admin_unit" {
-  count = var.administrative_unit_name == null ? 0 : 1
-
-  lifecycle {
-    precondition {
-      condition     = var.administrative_unit_membership_rule != null
-      error_message = "When administrative_unit_name is set, administrative_unit_membership_rule must also be provided. Suggested value: \"(user.accountEnabled -eq true)\""
-    }
-  }
-
-  provisioner "local-exec" {
-    command = <<-EOT
-      az rest \
-        --method PATCH \
-        --url "https://graph.microsoft.com/v1.0/directory/administrativeUnits/${azuread_administrative_unit.meshcloud_replicator_au[0].object_id}" \
-        --body '{
-          "displayName": "${var.administrative_unit_name}",
-          "membershipType": "Dynamic",
-          "membershipRule": "${var.administrative_unit_membership_rule}",
-          "membershipRuleProcessingState": "On"
-        }'
-    EOT
-  }
-
-  triggers_replace = {
-    au_id           = azuread_administrative_unit.meshcloud_replicator_au[0].object_id
-    display_name    = var.administrative_unit_name
-    membership_rule = var.administrative_unit_membership_rule
-  }
-
-  depends_on = [azuread_administrative_unit.meshcloud_replicator_au]
-}
-//--------------------------------------------------------------------------
 // Custom AU-scoped Role
 //--------------------------------------------------------------------------
 
@@ -361,13 +325,11 @@ resource "azuread_custom_directory_role" "meshcloud_replicator_au_role" {
   permissions {
     allowed_resource_actions = [
       "microsoft.directory/users/standard/read",
-      "microsoft.directory/groups/create",
       "microsoft.directory/groups/standard/read",
+      "microsoft.directory/groups/create",
       "microsoft.directory/groups/members/update",
       "microsoft.directory/groups/members/read",
       "microsoft.directory/groups/memberOf/read",
-      "microsoft.directory/administrativeUnits/members/read",
-      "microsoft.directory/administrativeUnits/members/update",
     ]
   }
 }
