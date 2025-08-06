@@ -232,6 +232,14 @@ resource "azuread_app_role_assignment" "meshcloud_replicator-administrativeunit"
   depends_on          = [azuread_application.meshcloud_replicator]
 }
 
+resource "azuread_app_role_assignment" "meshcloud_replicator-users_read_all" {
+  count               = var.administrative_unit_name == null ? 0 : 1
+  app_role_id         = data.azuread_service_principal.msgraph.app_role_ids["User.Read.All"]
+  principal_object_id = azuread_service_principal.meshcloud_replicator.object_id
+  resource_object_id  = data.azuread_service_principal.msgraph.object_id
+  depends_on          = [azuread_application.meshcloud_replicator]
+}
+
 //---------------------------------------------------------------------------
 // Policy Definition for preventing the Application from assigning other privileges to itself
 // Assign it to the specified scope
@@ -311,35 +319,38 @@ resource "azuread_administrative_unit" "meshcloud_replicator_au" {
 }
 
 //--------------------------------------------------------------------------
-// Custom AU-scoped Role
-//--------------------------------------------------------------------------
-
-resource "azuread_custom_directory_role" "meshcloud_replicator_au_role" {
-  count        = var.administrative_unit_name == null ? 0 : 1
-  display_name = "meshStack Replicator AU Role"
-  description  = "Custom role for meshStack replicator with limited User and Group permissions"
-  enabled      = true
-  version      = "1.0"
-
-  # users permissions
-  permissions {
-    allowed_resource_actions = [
-      "microsoft.directory/users/standard/read",
-      "microsoft.directory/groups/standard/read",
-      "microsoft.directory/groups/create",
-      "microsoft.directory/groups/members/update",
-      "microsoft.directory/groups/members/read",
-      "microsoft.directory/groups/memberOf/read",
-    ]
-  }
-}
-
-//--------------------------------------------------------------------------
 // AU Role Assignment for meshcloud_replicator
 //--------------------------------------------------------------------------
 
-resource "azuread_directory_role_assignment" "meshcloud_replicator_au_assignment" {
-  count               = var.administrative_unit_name == null ? 0 : 1
-  role_id             = azuread_custom_directory_role.meshcloud_replicator_au_role[0].object_id
-  principal_object_id = azuread_service_principal.meshcloud_replicator.object_id
+
+/*
+
+There is an issue when assigning the replicator a custom role in the AU scope, where the role is not found.
+
+See https://github.com/hashicorp/terraform-provider-azuread/issues/1546.
+
+For now we assign User Administrator and Groups Administrator roles as that is already restricted to the AU scope.
+*/
+resource "azuread_directory_role" "user_administrator" {
+  count        = var.administrative_unit_name == null ? 0 : 1
+  display_name = "User Administrator"
+}
+
+resource "azuread_directory_role" "groups_administrator" {
+  count        = var.administrative_unit_name == null ? 0 : 1
+  display_name = "Groups Administrator"
+}
+
+resource "azuread_administrative_unit_role_member" "user_admin_assignment" {
+  count                         = var.administrative_unit_name == null ? 0 : 1
+  role_object_id                = azuread_directory_role.user_administrator[0].object_id
+  administrative_unit_object_id = azuread_administrative_unit.meshcloud_replicator_au[0].object_id
+  member_object_id              = azuread_service_principal.meshcloud_replicator.object_id
+}
+
+resource "azuread_administrative_unit_role_member" "groups_admin_assignment" {
+  count                         = var.administrative_unit_name == null ? 0 : 1
+  role_object_id                = azuread_directory_role.groups_administrator[0].object_id
+  administrative_unit_object_id = azuread_administrative_unit.meshcloud_replicator_au[0].object_id
+  member_object_id              = azuread_service_principal.meshcloud_replicator.object_id
 }
