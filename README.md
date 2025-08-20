@@ -25,10 +25,10 @@ This module automatically generates comprehensive documentation about your deplo
 
 ```bash
 # View documentation in terminal
-terraform output documentation
+terraform output -json meshplatform | jq -r '.documentation'
 
 # Save documentation to markdown file
-terraform output -raw documentation > meshplatform-docs.md
+terraform output -json meshplatform | jq -r '.documentation' > meshplatform-docs.md
 ```
 
 The documentation includes:
@@ -76,12 +76,7 @@ The documentation includes:
     ```sh
     # The JSON output contains sensitive values that must not be transmitted anywhere other then the platform config screen in meshStack.
     terraform output -json
-
-    # Get comprehensive documentation about your deployment
-    terraform output documentation
-
-    # Save documentation to file
-    terraform output -raw documentation > meshplatform-docs.md
+    terraform output -json meshplatform
     ```
 
 ### Using CLI
