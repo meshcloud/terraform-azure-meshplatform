@@ -198,16 +198,16 @@ The replicator manages user roles and permissions in your Azure subscriptions an
 - **Application Client ID**: ${module.replicator_service_principal[0].credentials.Application_Client_ID}
 - **Enterprise Application Object ID**: ${module.replicator_service_principal[0].credentials.Enterprise_Application_Object_ID}
 REPLICATOR_DETAILS
-: "### Replicator Service Principal\n❌ Not deployed"}
+  : "### Replicator Service Principal\n❌ Not deployed"}
 
 ${length(module.metering_service_principal) > 0 ? <<-METERING_DETAILS
-### Metering Service Principal  
+### Metering Service Principal
 The metering service principal reads resource usage for billing and cost management.
 
 - **Application Client ID**: ${module.metering_service_principal[0].credentials.Application_Client_ID}
 - **Enterprise Application Object ID**: ${module.metering_service_principal[0].credentials.Enterprise_Application_Object_ID}
 METERING_DETAILS
-: "### Metering Service Principal\n❌ Not deployed"}
+  : "### Metering Service Principal\n❌ Not deployed"}
 
 ${length(module.mca_service_principal) > 0 ? <<-MCA_DETAILS
 ### Microsoft Customer Agreement (MCA) Service Principal(s)
