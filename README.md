@@ -19,6 +19,24 @@ To run this module, you need the following:
   2. Privileged Role Administrator AND (Cloud) Application Administrator
 - Permissions on Azure Resource Level: User Access Administrator on the Management Group that should be managed by meshStack
 
+## Documentation
+
+This module automatically generates comprehensive documentation about your deployment. After running `terraform apply`, you can view detailed information about your configuration:
+
+```bash
+# View documentation in terminal
+terraform output documentation
+
+# Save documentation to markdown file
+terraform output -raw documentation > meshplatform-docs.md
+```
+
+The documentation includes:
+- Service principal deployment status and IDs
+- Configuration details and scopes
+- meshStack integration information
+- Available terraform commands for your specific setup
+
 ## How to Use This Module
 
 ### Using Azure Portal
@@ -58,6 +76,12 @@ To run this module, you need the following:
     ```sh
     # The JSON output contains sensitive values that must not be transmitted anywhere other then the platform config screen in meshStack.
     terraform output -json
+
+    # Get comprehensive documentation about your deployment
+    terraform output documentation
+
+    # Save documentation to file
+    terraform output -raw documentation > meshplatform-docs.md
     ```
 
 ### Using CLI
