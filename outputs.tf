@@ -101,10 +101,10 @@ This Terraform module provisions Azure service principals and configurations for
 
 | Component | Enabled | Service Principal Name | Application ID |
 |-----------|---------|----------------------|----------------|
-| Replicator | ${length(module.replicator_service_principal) > 0 ? "✅ Yes" : "❌ No"} | ${length(module.replicator_service_principal) > 0 ? module.replicator_service_principal[0].credentials.display_name : "N/A"} | ${length(module.replicator_service_principal) > 0 ? module.replicator_service_principal[0].credentials.application_id : "N/A"} |
-| Metering (Kraken) | ${length(module.metering_service_principal) > 0 ? "✅ Yes" : "❌ No"} | ${length(module.metering_service_principal) > 0 ? module.metering_service_principal[0].credentials.display_name : "N/A"} | ${length(module.metering_service_principal) > 0 ? module.metering_service_principal[0].credentials.application_id : "N/A"} |
-| SSO | ${length(module.sso_service_principal) > 0 ? "✅ Yes" : "❌ No"} | ${length(module.sso_service_principal) > 0 ? module.sso_service_principal[0].application_display_name : "N/A"} | ${length(module.sso_service_principal) > 0 ? module.sso_service_principal[0].application_client_id : "N/A"} |
-| MCA | ${length(module.mca_service_principal) > 0 ? "✅ Yes" : "❌ No"} | ${length(module.mca_service_principal) > 0 ? join(", ", [for cred in module.mca_service_principal[0].credentials : cred.display_name]) : "N/A"} | ${length(module.mca_service_principal) > 0 ? join(", ", [for cred in module.mca_service_principal[0].credentials : cred.application_id]) : "N/A"} |
+| Replicator | ${length(module.replicator_service_principal) > 0 ? "✅ Yes" : "❌ No"} | ${var.replicator_service_principal_name} | ${length(module.replicator_service_principal) > 0 ? module.replicator_service_principal[0].credentials.Application_Client_ID : "N/A"} |
+| Metering (Kraken) | ${length(module.metering_service_principal) > 0 ? "✅ Yes" : "❌ No"} | ${var.metering_service_principal_name} | ${length(module.metering_service_principal) > 0 ? module.metering_service_principal[0].credentials.Application_Client_ID : "N/A"} |
+| SSO | ${length(module.sso_service_principal) > 0 ? "✅ Yes" : "❌ No"} | ${var.sso_service_principal_name} | ${length(module.sso_service_principal) > 0 ? module.sso_service_principal[0].application_client_id : "N/A"} |
+| MCA | ${length(module.mca_service_principal) > 0 ? "✅ Yes" : "❌ No"} | ${var.mca != null ? join(", ", var.mca.service_principal_names) : "N/A"} | ${length(module.mca_service_principal) > 0 ? "Multiple SPs" : "N/A"} |
 
 ## Configuration Details
 
