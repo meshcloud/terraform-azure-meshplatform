@@ -187,6 +187,49 @@ The following outputs are available after deployment:
 | azure_ad_tenant_id | Azure AD tenant ID | No | ✅ |
 | documentation | This documentation in markdown format | No | ✅ |
 
+## meshStack Integration Details
+
+This AAD tenant is configured as a meshPlatform, with tenant-level service principals allowing meshStack to access data and orchestrate Azure platform functionality.
+
+${length(module.replicator_service_principal) > 0 ? <<-REPLICATOR_DETAILS
+### Replicator Service Principal
+The replicator manages user roles and permissions in your Azure subscriptions and workloads.
+
+- **Application Client ID**: ${module.replicator_service_principal[0].credentials.Application_Client_ID}
+- **Enterprise Application Object ID**: ${module.replicator_service_principal[0].credentials.Enterprise_Application_Object_ID}
+REPLICATOR_DETAILS
+: "### Replicator Service Principal\n❌ Not deployed"}
+
+${length(module.metering_service_principal) > 0 ? <<-METERING_DETAILS
+### Metering Service Principal  
+The metering service principal reads resource usage for billing and cost management.
+
+- **Application Client ID**: ${module.metering_service_principal[0].credentials.Application_Client_ID}
+- **Enterprise Application Object ID**: ${module.metering_service_principal[0].credentials.Enterprise_Application_Object_ID}
+METERING_DETAILS
+: "### Metering Service Principal\n❌ Not deployed"}
+
+${length(module.mca_service_principal) > 0 ? <<-MCA_DETAILS
+### Microsoft Customer Agreement (MCA) Service Principal(s)
+For MCA subscription provisioning, these service principals have "Azure subscription creator" role on the invoice section level.
+
+${join("\n", [for name, properties in module.mca_service_principal[0].credentials : <<EOT
+**${name}**:
+- **Application Client ID**: ${properties.Application_Client_ID}
+- **Enterprise Application Object ID**: ${properties.Enterprise_Application_Object_ID}
+EOT
+])}
+MCA_DETAILS
+: "### MCA Service Principal\n❌ Not deployed"}
+
+${length(module.sso_service_principal) > 0 ? <<-SSO_DETAILS
+### SSO Service Principal
+Enables single sign-on integration between meshStack and your identity provider.
+
+- **Application Client ID**: ${module.sso_service_principal[0].application_client_id}
+SSO_DETAILS
+: "### SSO Service Principal\n❌ Not deployed"}
+
 ## Usage Examples
 
 ### Available Commands for Current Configuration
@@ -195,35 +238,13 @@ The following outputs are available after deployment:
 terraform output azure_ad_tenant_id
 terraform output documentation
 
-${length(module.replicator_service_principal) > 0 ? <<-REPLICATOR_CMDS
-# Replicator Service Principal (✅ deployed)
-terraform output replicator_service_principal
-terraform output -raw replicator_service_principal_password  # sensitive
-REPLICATOR_CMDS
-  : "# Replicator Service Principal (❌ not deployed)"}
+${length(module.replicator_service_principal) > 0 ? "# Replicator Service Principal (✅ deployed)\nterraform output replicator_service_principal\nterraform output -raw replicator_service_principal_password  # sensitive" : "# Replicator Service Principal (❌ not deployed)"}
 
-${length(module.metering_service_principal) > 0 ? <<-METERING_CMDS
-# Metering Service Principal (✅ deployed)
-terraform output metering_service_principal
-terraform output -raw metering_service_principal_password  # sensitive
-METERING_CMDS
-  : "# Metering Service Principal (❌ not deployed)"}
+${length(module.metering_service_principal) > 0 ? "# Metering Service Principal (✅ deployed)\nterraform output metering_service_principal\nterraform output -raw metering_service_principal_password  # sensitive" : "# Metering Service Principal (❌ not deployed)"}
 
-${length(module.sso_service_principal) > 0 ? <<-SSO_CMDS
-# SSO Service Principal (✅ deployed)
-terraform output sso_service_principal_client_id
-terraform output -raw sso_service_principal_password  # sensitive
-terraform output -raw sso_discovery_url  # sensitive
-SSO_CMDS
-  : "# SSO Service Principal (❌ not deployed)"}
+${length(module.sso_service_principal) > 0 ? "# SSO Service Principal (✅ deployed)\nterraform output sso_service_principal_client_id\nterraform output -raw sso_service_principal_password  # sensitive\nterraform output -raw sso_discovery_url  # sensitive" : "# SSO Service Principal (❌ not deployed)"}
 
-${length(module.mca_service_principal) > 0 ? <<-MCA_CMDS
-# MCA Service Principal (✅ deployed)
-terraform output mca_service_principal
-terraform output -raw mca_service_principal_password  # sensitive
-terraform output mca_service_billing_scope
-MCA_CMDS
-: "# MCA Service Principal (❌ not deployed)"}
+${length(module.mca_service_principal) > 0 ? "# MCA Service Principal (✅ deployed)\nterraform output mca_service_principal\nterraform output -raw mca_service_principal_password  # sensitive\nterraform output mca_service_billing_scope" : "# MCA Service Principal (❌ not deployed)"}
 
 # Save documentation to file
 terraform output -raw documentation > meshplatform-docs.md
