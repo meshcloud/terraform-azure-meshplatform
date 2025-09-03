@@ -20,8 +20,8 @@ output "mca_service_principal_password" {
   sensitive   = true
 }
 
-output "mca_service_billing_scope" {
-  value = length(module.mca_service_principal) > 0 ? module.mca_service_principal[0].billing_scope : null
+output "mca_service_billing_scopes" {
+  value = length(module.mca_service_principal) > 0 ? module.mca_service_principal[0].billing_scopes : null
 }
 
 output "metering_service_principal" {
@@ -153,7 +153,7 @@ The following outputs are available after deployment:
 | replicator_service_principal_password | Replicator service principal password | Yes | ${length(module.replicator_service_principal) > 0 ? "✅" : "❌"} |
 | mca_service_principal | MCA service principal credentials | No | ${length(module.mca_service_principal) > 0 ? "✅" : "❌"} |
 | mca_service_principal_password | MCA service principal password | Yes | ${length(module.mca_service_principal) > 0 ? "✅" : "❌"} |
-| mca_service_billing_scope | MCA billing scope | No | ${length(module.mca_service_principal) > 0 ? "✅" : "❌"} |
+| mca_service_billing_scopes | MCA billing scopes | No | ${length(module.mca_service_principal) > 0 ? "✅" : "❌"} |
 | metering_service_principal | Metering service principal credentials | No | ${length(module.metering_service_principal) > 0 ? "✅" : "❌"} |
 | metering_service_principal_password | Metering service principal password | Yes | ${length(module.metering_service_principal) > 0 ? "✅" : "❌"} |
 | sso_service_principal_client_id | SSO service principal client ID | No | ${length(module.sso_service_principal) > 0 ? "✅" : "❌"} |

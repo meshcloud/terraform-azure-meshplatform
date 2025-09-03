@@ -141,10 +141,13 @@ variable "workload_identity_federation" {
 
 variable "mca" {
   type = object({
-    service_principal_names = list(string)
-    billing_account_name    = string
-    billing_profile_name    = string
-    invoice_section_name    = string
+    service_principals = map(object({
+      billing_scopes = list(object({
+        billing_account_name = string
+        billing_profile_name = string
+        invoice_section_name = string
+      }))
+    }))
   })
   default = null
 }

@@ -80,11 +80,7 @@ module "mca_service_principal" {
   count  = var.mca != null ? 1 : 0
   source = "./modules/meshcloud-mca-service-principal"
 
-  service_principal_names = var.mca.service_principal_names
-
-  billing_account_name = var.mca.billing_account_name
-  billing_profile_name = var.mca.billing_profile_name
-  invoice_section_name = var.mca.invoice_section_name
+  service_principals = var.mca.service_principals
 
   create_password = var.create_passwords
   workload_identity_federation = var.workload_identity_federation == null ? null : {

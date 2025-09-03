@@ -1,17 +1,14 @@
-variable "service_principal_names" {
-  type = list(string)
-}
 
-variable "billing_account_name" {
-  type = string
-}
 
-variable "billing_profile_name" {
-  type = string
-}
-
-variable "invoice_section_name" {
-  type = string
+variable "service_principals" {
+  type = map(object({
+    billing_scopes = list(object({
+      billing_account_name = string
+      billing_profile_name = string
+      invoice_section_name = string
+    }))
+  }))
+  description = "Map of service principal names to their respective billing scopes"
 }
 
 variable "application_owners" {

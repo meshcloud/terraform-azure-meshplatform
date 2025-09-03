@@ -20,60 +20,84 @@ terraform {
   }
 }
 
+locals {
+  # Flatten all billing scopes from all service principals with unique keys
+  all_billing_scopes = merge([
+    for sp_name, sp_config in var.service_principals : {
+      for idx, scope in sp_config.billing_scopes :
+      "${sp_name}-${idx}" => scope
+    }
+  ]...)
+}
 
 data "azurerm_billing_mca_account_scope" "mca" {
-  billing_account_name = var.billing_account_name
-  billing_profile_name = var.billing_profile_name
-  invoice_section_name = var.invoice_section_name
+  for_each = local.all_billing_scopes
+
+  billing_account_name = each.value.billing_account_name
+  billing_profile_name = each.value.billing_profile_name
+  invoice_section_name = each.value.invoice_section_name
 }
 
 resource "azuread_application" "mca" {
-  for_each     = toset(var.service_principal_names)
+  for_each     = var.service_principals
   display_name = each.key
   owners       = var.application_owners
 }
 
 resource "azuread_service_principal" "mca" {
-  for_each  = toset(var.service_principal_names)
+  for_each  = var.service_principals
   client_id = azuread_application.mca[each.key].client_id
   owners    = var.application_owners
 }
 
 data "azapi_resource_list" "billing_role_definitions" {
+  for_each               = data.azurerm_billing_mca_account_scope.mca
   type                   = "Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/billingRoleDefinitions@2020-05-01"
-  parent_id              = data.azurerm_billing_mca_account_scope.mca.id
+  parent_id              = each.value.id
   response_export_values = ["*"]
 }
 
 locals {
-  azure_subscription_creator_role_id = jsondecode(
-    data.azapi_resource_list.billing_role_definitions.output).value[
-    index(jsondecode(data.azapi_resource_list.billing_role_definitions.output).value[*].properties.roleName, "Azure subscription creator")
-  ].id
+  azure_subscription_creator_role_ids = {
+    for key, role_def in data.azapi_resource_list.billing_role_definitions : key => role_def.output.value[
+      index(role_def.output.value[*].properties.roleName, "Azure subscription creator")
+    ].id
+  }
 }
 
 resource "azapi_resource_action" "add_role_assignment_subscription_creator" {
-  for_each = toset(var.service_principal_names)
+  for_each = {
+    for item in flatten([
+      for sp_name, sp_config in var.service_principals : [
+        for idx, scope in sp_config.billing_scopes : {
+          key       = "${sp_name}-${idx}"
+          sp_name   = sp_name
+          scope_id  = data.azurerm_billing_mca_account_scope.mca["${sp_name}-${idx}"].id
+          scope_key = "${sp_name}-${idx}"
+        }
+      ]
+    ]) : item.key => item
+  }
 
   type                   = "Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections@2019-10-01-preview"
-  resource_id            = data.azurerm_billing_mca_account_scope.mca.id
+  resource_id            = each.value.scope_id
   action                 = "createBillingRoleAssignment"
   method                 = "POST"
   when                   = "apply"
   response_export_values = ["*"]
-  body = jsonencode({
+  body = {
     properties = {
-      principalId      = azuread_service_principal.mca[each.key].object_id
-      roleDefinitionId = local.azure_subscription_creator_role_id
+      principalId      = azuread_service_principal.mca[each.value.sp_name].object_id
+      roleDefinitionId = local.azure_subscription_creator_role_ids[each.value.scope_key]
     }
-  })
+  }
 }
 
 resource "azapi_resource_action" "remove_role_assignment_subscription_creator" {
-  for_each = toset(var.service_principal_names)
+  for_each = azapi_resource_action.add_role_assignment_subscription_creator
 
   type        = "Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/billingRoleAssignments@2019-10-01-preview"
-  resource_id = jsondecode(azapi_resource_action.add_role_assignment_subscription_creator[each.key].output).id
+  resource_id = each.value.output.id
   method      = "DELETE"
   when        = "destroy"
 }
@@ -88,7 +112,7 @@ resource "time_rotating" "mca_secret_rotation" {
 }
 
 resource "azuread_application_password" "mca" {
-  for_each = var.create_password ? toset(var.service_principal_names) : toset([])
+  for_each = var.create_password ? var.service_principals : {}
 
   application_id = azuread_application.mca[each.key].id
   rotate_when_changed = {
@@ -105,7 +129,7 @@ locals {
     var.workload_identity_federation.subjects != null
     ? var.workload_identity_federation.subjects
     : var.workload_identity_federation.subject != null
-    ? { for name in var.service_principal_names : name => var.workload_identity_federation.subject }
+    ? { for name in keys(var.service_principals) : name => var.workload_identity_federation.subject }
     : {}
   )
 }
