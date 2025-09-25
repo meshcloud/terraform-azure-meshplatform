@@ -38,9 +38,12 @@ resource "azuread_application" "meshcloud_sso" {
   required_resource_access {
     resource_app_id = data.azuread_application_published_app_ids.well_known.result.MicrosoftGraph
 
-    resource_access {
-      id   = data.azuread_service_principal.msgraph.oauth2_permission_scope_ids["User.Read"]
-      type = "Scope"
+    dynamic "resource_access" {
+      for_each = toset(["openid", "email", "profile"])
+      content {
+        id   = data.azuread_service_principal.msgraph.oauth2_permission_scope_ids[resource_access.value]
+        type = "Scope"
+      }
     }
   }
   web {
