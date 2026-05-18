@@ -35,12 +35,8 @@ resource "azurerm_role_definition" "meshcloud_replicator" {
       "Microsoft.Authorization/roleAssignments/*",
       "Microsoft.Authorization/roleDefinitions/read",
 
-      # Assigning Blueprints
-      "Microsoft.Resources/deployments/*",
-      "Microsoft.Blueprint/blueprintAssignments/*",
-      "Microsoft.Resources/subscriptions/resourceGroups/read",
-
-      # Fetching Blueprints
+      # Assigning Subscriptions to Management Groups
+      # managementGroups/read and descendants/read are required for hierarchical management group assignment
       "Microsoft.Management/managementGroups/read",
       "Microsoft.Management/managementGroups/descendants/read",
 
@@ -56,6 +52,7 @@ resource "azurerm_role_definition" "meshcloud_replicator" {
       var.replicator_rg_enabled ? [
         # Additional permission if this principal should be used for
         # Resource Group Azure replication as well
+        "Microsoft.Resources/subscriptions/resourceGroups/read",
         "Microsoft.Resources/subscriptions/resourceGroups/write"
       ] : [],
       var.additional_permissions
