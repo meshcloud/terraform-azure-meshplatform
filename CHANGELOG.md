@@ -7,6 +7,23 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 ## [Unreleased]
 
+## [v0.15.0]
+
+### BREAKING
+
+- Remove Azure Blueprint IAM permissions from the replicator custom role.
+- The replicator role no longer includes `Microsoft.Resources/deployments/*` and `Microsoft.Blueprint/blueprintAssignments/*` by default.
+
+### Changed
+
+- Restrict `Microsoft.Resources/subscriptions/resourceGroups/read` to Resource Group replication setups (`replicator_rg_enabled = true`).
+
+## [v0.14.0]
+
+### Changed
+
+- Improve module documentation and generated docs.
+
 ## [v0.13.3]
 
 ### Changed
@@ -125,8 +142,10 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 - Initial Release
 
-[unreleased]: https://github.com/meshcloud/terraform-azure-meshplatform/compare/v0.13.3...HEAD
+[unreleased]: https://github.com/meshcloud/terraform-azure-meshplatform/compare/v0.15.0...HEAD
+[v0.15.0]: https://github.com/meshcloud/terraform-azure-meshplatform/compare/v0.14.0...v0.15.0
 [v0.13.3]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.13.3
+[v0.14.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.14.0
 [v0.13.2]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.13.2
 [v0.13.1]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.13.1
 [v0.13.0]: https://github.com/meshcloud/terraform-azure-meshplatform/releases/tag/v0.13.0
