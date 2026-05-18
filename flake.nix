@@ -2,7 +2,7 @@
   description = "Flake for terraform-azure-meshplatform";
 
   inputs = {
-    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-24.05";
+    nixpkgs.url = "github:nixos/nixpkgs?ref=nixos-25.11";
   };
 
   outputs = { self, nixpkgs }:
@@ -19,19 +19,6 @@
 
     # core packages required in CI and not preinstalled in github actions
     core_packages = pkgs:
-      let
-        tofu_terraform =
-          pkgs.stdenv.mkDerivation {
-            name = "tofu-terraform";
-            phases = [ "installPhase" ];
-            installPhase = ''
-              mkdir -p $out/bin
-              echo '#!/usr/bin/env sh' > $out/bin/terraform
-              echo 'tofu "$@"' >> $out/bin/terraform
-              chmod +x $out/bin/terraform
-            '';
-          };
-      in
       with pkgs;
       [
         opentofu
@@ -39,7 +26,6 @@
         tflint
         tfupdate
         terraform-docs
-        tofu_terraform
         pre-commit
       ];
 
