@@ -15,7 +15,7 @@ terraform {
     }
     azapi = {
       source  = "Azure/azapi"
-      version = "1.13.1"
+      version = ">=2.9.0"
     }
   }
 }
@@ -46,9 +46,8 @@ data "azapi_resource_list" "billing_role_definitions" {
 }
 
 locals {
-  azure_subscription_creator_role_id = jsondecode(
-    data.azapi_resource_list.billing_role_definitions.output).value[
-    index(jsondecode(data.azapi_resource_list.billing_role_definitions.output).value[*].properties.roleName, "Azure subscription creator")
+  azure_subscription_creator_role_id = data.azapi_resource_list.billing_role_definitions.output.value[
+    index(data.azapi_resource_list.billing_role_definitions.output.value[*].properties.roleName, "Azure subscription creator")
   ].id
 }
 
@@ -61,19 +60,19 @@ resource "azapi_resource_action" "add_role_assignment_subscription_creator" {
   method                 = "POST"
   when                   = "apply"
   response_export_values = ["*"]
-  body = jsonencode({
+  body = {
     properties = {
       principalId      = azuread_service_principal.mca[each.key].object_id
       roleDefinitionId = local.azure_subscription_creator_role_id
     }
-  })
+  }
 }
 
 resource "azapi_resource_action" "remove_role_assignment_subscription_creator" {
   for_each = toset(var.service_principal_names)
 
   type        = "Microsoft.Billing/billingAccounts/billingProfiles/invoiceSections/billingRoleAssignments@2019-10-01-preview"
-  resource_id = jsondecode(azapi_resource_action.add_role_assignment_subscription_creator[each.key].output).id
+  resource_id = azapi_resource_action.add_role_assignment_subscription_creator[each.key].output.id
   method      = "DELETE"
   when        = "destroy"
 }
